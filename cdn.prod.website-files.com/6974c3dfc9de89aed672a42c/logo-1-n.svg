@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 186.21">
+  <defs>
+    <style>
+      .cls-1 { fill: none; }
+      .cls-2 { fill: #f8f8f8; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 800; font-size: 160px; }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <rect class="cls-1" width="110" height="186.21"/>
+    <text class="cls-2" x="50%" y="145" text-anchor="middle">n</text>
+  </g>
+</svg>
