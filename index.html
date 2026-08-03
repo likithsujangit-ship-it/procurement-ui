@@ -16,6 +16,15 @@
 <meta content="Webflow" name="generator"/>
 <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" integrity="sha384-TByxXMZf+uZZRAIfZj9nOeX9SKd5BDGTfAYh9q1R4UForGhOO2feGbocAsqhBZ3U" crossorigin="anonymous"/>
 <style>
+  /* Fix: Features dropdown was clipping the second nav item (Supplier Chain)
+     behind a fixed-height overflow container inherited from the base stylesheet. */
+  .dd-list, .dd-list .dd-content, .dd-list .dd-column {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+</style>
+<style>
 @media (min-width:992px) {html.w-mod-js:not(.w-mod-ix) [data-w-id="b67283ff-8e39-7250-77bd-dac70cd758a0"] {border-color:rgba(122,122,122,0.3);}}
 </style>
 <script src="https://use.typekit.net/tfo7rcl.js" type="text/javascript"></script>
@@ -608,12 +617,27 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
                   </div>
                 </div>
               </div>
-              <nav class="dd-list w-dropdown-list">
+                                          <nav class="dd-list w-dropdown-list">
                 <div class="dd-content">
                   <div class="dd-column">
+                    <a href="generate-rfq.html#new-procurement" class="dd-navlink w-inline-block">
+                      <div>New Procurement</div>
+                      <div class="dd-link-txt">Manage active procurements and check responses</div>
+                      <div class="dd-link-dot"></div>
+                    </a>
                     <a href="generate-rfq.html" class="dd-navlink w-inline-block">
                       <div>Generate RFQ</div>
                       <div class="dd-link-txt">Create and customize RFQ workspaces and templates</div>
+                      <div class="dd-link-dot"></div>
+                    </a>
+                    <a href="generate-rfq.html#submitted-responses" class="dd-navlink w-inline-block">
+                      <div>Submitted Responses</div>
+                      <div class="dd-link-txt">Browse and manage submitted supplier responses</div>
+                      <div class="dd-link-dot"></div>
+                    </a>
+                    <a href="generate-rfq.html#suppliers" class="dd-navlink w-inline-block">
+                      <div>Supplier Chain</div>
+                      <div class="dd-link-txt">Manage vendors and onboard new suppliers</div>
                       <div class="dd-link-dot"></div>
                     </a>
                   </div>
