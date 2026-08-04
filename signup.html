@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Sign Up | nexPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root {
+      --bg-main: #F3F3F3;
+      --bg-card: #FFFFFF;
+      --text-primary: #1A1A1A;
+      --text-secondary: #7A7A7A;
+      --border-color: #D9D9D9;
+      --accent-purple: #7600E6;
+      --accent-purple-light: #AA63ED;
+      --accent-purple-dark: #510A94;
+      --accent-orange: #FF6400;
+      --accent-yellow: #FFCF21;
+      --accent-green: #00A370;
+      --accent-red: #FF0E56;
+      --accent-blue: #4700E0;
+      --accent-lightblue: #00C6FF;
+      --error-color: #FF0E56;
+      --accent-current: var(--accent-purple);
+      --accent-current-soft: rgba(118, 0, 230, 0.12);
+      --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main) !important;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(118, 0, 230, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 255, 140, 0.05) 0%, transparent 40%) !important;
+      color: var(--text-primary);
+      min-height: 100vh;
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background graphics */
+    .aurora-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.45;
+      will-change: transform;
+      mix-blend-mode: multiply;
+    }
+
+    .aurora-blob.b1 {
+      width: 620px; height: 620px;
+      top: -200px; left: -160px;
+      background: radial-gradient(circle, rgba(118, 0, 230, 0.25) 0%, transparent 70%);
+      animation: driftA 22s ease-in-out infinite;
+    }
+
+    .aurora-blob.b2 {
+      width: 560px; height: 560px;
+      bottom: -220px; right: -140px;
+      background: radial-gradient(circle, rgba(0, 255, 140, 0.22) 0%, transparent 70%);
+      animation: driftB 27s ease-in-out infinite;
+    }
+
+    @keyframes driftA {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(40px) scale(1.15); }
+    }
+    @keyframes driftB {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-40px) scale(1.1); }
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Fixed Top Navbar */
+    .navbar-div {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color) !important;
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .container.nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      text-decoration: none;
+    }
+
+    .nav-links-wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .navlink {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-primary) !important;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .navlink:hover {
+      color: var(--accent-purple) !important;
+    }
+
+    /* Form Container */
+    .signup-container {
+      max-width: 580px;
+      margin: 140px auto 60px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card-shell {
+      position: relative;
+      background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                  conic-gradient(from 0deg, var(--accent-current), var(--accent-purple-light), var(--accent-current)) border-box;
+      border: 1px solid transparent;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+      animation: borderRotate 10s linear infinite, cardEntrance 0.75s var(--ease-premium) both;
+    }
+
+    @keyframes borderRotate {
+      100% { background-image: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                              conic-gradient(from 360deg, var(--accent-current), var(--accent-purple-light), var(--accent-current)) border-box; }
+    }
+
+    @keyframes cardEntrance {
+      0% { opacity: 0; transform: translateY(40px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .signup-section {
+      padding: 48px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 23px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .logo-text {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: var(--text-primary);
+    }
+
+    .logo-highlight {
+      color: var(--accent-purple);
+    }
+
+    .signup-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-align: center;
+      margin-bottom: 32px;
+      color: var(--text-primary);
+    }
+
+    /* Tabs Pill Switcher */
+    .tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 99px;
+      padding: 4px;
+      margin-bottom: 32px;
+      position: relative;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .tab-pill {
+      position: absolute;
+      top: 4px; bottom: 4px; left: 4px;
+      width: calc(50% - 4px);
+      background: var(--bg-card);
+      border-radius: 99px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.4s var(--ease-premium);
+      z-index: 1;
+    }
+
+    .tab-btn {
+      flex: 1;
+      text-align: center;
+      padding: 11px 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      z-index: 2;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+    }
+
+    /* Form Fields Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-secondary);
+    }
+
+    .input-field {
+      height: 46px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0 16px;
+      font-family: inherit;
+      font-size: 14.5px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-primary);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent-current);
+      box-shadow: 0 0 0 4px var(--accent-current-soft);
+    }
+
+    /* Dynamic field groups transitions */
+    .role-fields-container {
+      position: relative;
+    }
+
+    .role-fields {
+      display: none;
+      animation: fadeInUp 0.45s var(--ease-premium) both;
+    }
+
+    .role-fields.active {
+      display: grid;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Terms check */
+    .terms-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      grid-column: span 2;
+      user-select: none;
+    }
+
+    .terms-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      accent-color: var(--accent-current);
+    }
+
+    .terms-label {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .terms-label a {
+      color: var(--accent-current);
+      text-decoration: underline;
+    }
+
+    /* Action Buttons */
+    .btn {
+      position: relative;
+      height: 48px;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+    }
+
+    .btn-buyer {
+      background-color: var(--accent-purple);
+    }
+    .btn-buyer:hover {
+      background-color: var(--accent-purple-dark);
+    }
+    .btn-vendor {
+      background-color: var(--accent-green);
+    }
+    .btn-vendor:hover {
+      background-color: #00875c;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* Shimmer Sweep Animation */
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+    }
+
+    .btn:hover::after {
+      left: 150%;
+      transition: left 0.85s ease-in-out;
+    }
+
+    /* Spinner loader */
+    .btn-spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #FFFFFF;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn.loading .btn-label {
+      display: none;
+    }
+    .btn.loading .btn-spinner {
+      display: block;
+    }
+
+    /* Error and Info message blocks */
+    .message {
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      margin-top: 24px;
+      display: none;
+      box-sizing: border-box;
+    }
+
+    .message.error {
+      background-color: rgba(255, 14, 86, 0.08);
+      border: 1px solid rgba(255, 14, 86, 0.15);
+      color: var(--error-color);
+      animation: shake 0.45s var(--ease-premium);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .back-login {
+      display: block;
+      text-align: center;
+      margin-top: 28px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-login:hover {
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Toast Notification */
+    .toast-notif {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translate(-50%, 40px);
+      background: #1A1A1A;
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s var(--ease-premium), opacity 0.35s var(--ease-premium);
+    }
+
+    .toast-notif.active {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width, .terms-group {
+        grid-column: span 1;
+      }
+      .signup-section {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+  <div class="aurora-layer" aria-hidden="true">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Shared Top Navbar -->
+  <div class="navbar-div">
+    <div role="banner" class="navbar w-nav">
+      <div class="container nav">
+        <a href="index.html" class="brand">
+          <div class="logo w-embed" style="display:flex; align-items:center;">
+            <svg width="150" height="40" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="10" y="55" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Public Sans', sans-serif" font-weight="900" font-size="56px" fill="#1A1A1A" letter-spacing="-2px">
+                nex<tspan fill="#00A370">Pro</tspan>
+              </text>
+            </svg>
+          </div>
+        </a>
+        <div class="nav-links-wrap">
+          <a href="index.html" class="navlink">Home</a>
+          <a href="login.html" class="navlink">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signup-container">
+    <div class="card-shell" id="card-shell">
+      <div class="signup-section">
+        <div class="logo-wrap">
+          <div class="logo-text">nex<span class="logo-highlight" id="logo-highlight">Pro</span></div>
+        </div>
+
+        <h2 class="signup-title" id="signup-title">Create your Buyer account</h2>
+
+        <div class="tabs" id="tabs">
+          <div class="tab-pill" id="tab-pill"></div>
+          <div class="tab-btn active" data-role="buyer" onclick="switchTab('buyer')">Buyer</div>
+          <div class="tab-btn" data-role="vendor" onclick="switchTab('vendor')">Vendor</div>
+        </div>
+
+        <form id="signup-form" onsubmit="handleSignupSubmit(event)">
+          <!-- Step 1 Inputs -->
+          <div id="step-1-inputs" class="form-grid" style="animation: fadeInUp 0.45s var(--ease-premium) both;">
+            <div class="form-group full-width">
+              <label for="email">Work Email</label>
+              <input type="email" id="email" class="input-field" required placeholder="name@company.com" autocomplete="email"/>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" class="input-field" required placeholder="••••••••" autocomplete="new-password"/>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password" class="input-field" required placeholder="••••••••" autocomplete="new-password"/>
+            </div>
+
+            <!-- Terms check -->
+            <div class="terms-group">
+              <input type="checkbox" id="terms" required />
+              <label for="terms" class="terms-label">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+            </div>
+          </div>
+
+          <!-- Step 2 Inputs -->
+          <div id="step-2-inputs" style="display: none; animation: fadeInUp 0.45s var(--ease-premium) both;">
+            <div class="role-fields-container">
+              <!-- Buyer details -->
+              <div class="form-grid role-fields active" id="fields-buyer">
+                <div class="form-group">
+                  <label for="b-name">Full Name</label>
+                  <input type="text" id="b-name" class="input-field" placeholder="Jane Doe" />
+                </div>
+                <div class="form-group">
+                  <label for="b-title">Designation / Job Title</label>
+                  <input type="text" id="b-title" class="input-field" placeholder="Procurement Specialist" />
+                </div>
+                <div class="form-group">
+                  <label for="b-company">Company Name</label>
+                  <input type="text" id="b-company" class="input-field" placeholder="Acme Logistics Corp" />
+                </div>
+                <div class="form-group">
+                  <label for="b-dept">Department</label>
+                  <input type="text" id="b-dept" class="input-field" placeholder="Supply Chain" />
+                </div>
+                <div class="form-group">
+                  <label for="b-phone">Phone Number</label>
+                  <input type="tel" id="b-phone" class="input-field" placeholder="+1 (555) 012-3456" />
+                </div>
+                <div class="form-group">
+                  <label for="b-city">City</label>
+                  <input type="text" id="b-city" class="input-field" placeholder="Chicago" />
+                </div>
+                <div class="form-group">
+                  <label for="b-country">Country</label>
+                  <input type="text" id="b-country" class="input-field" placeholder="United States" />
+                </div>
+                <div class="form-group full-width">
+                  <label for="b-address">Business Address</label>
+                  <input type="text" id="b-address" class="input-field" placeholder="100 N LaSalle St, Suite 400" />
+                </div>
+              </div>
+
+              <!-- Vendor details -->
+              <div class="form-grid role-fields" id="fields-vendor">
+                <div class="form-group">
+                  <label for="v-company">Company / Business Name</label>
+                  <input type="text" id="v-company" class="input-field" placeholder="Acme Suppliers Ltd" />
+                </div>
+                <div class="form-group">
+                  <label for="v-contact">Contact Person Name</label>
+                  <input type="text" id="v-contact" class="input-field" placeholder="John Smith" />
+                </div>
+                <div class="form-group">
+                  <label for="v-category">Product / Service Category</label>
+                  <input type="text" id="v-category" class="input-field" placeholder="Mechanical Parts" />
+                </div>
+                <div class="form-group">
+                  <label for="v-phone">Phone Number</label>
+                  <input type="tel" id="v-phone" class="input-field" placeholder="+1 (555) 098-7654" />
+                </div>
+                <div class="form-group">
+                  <label for="v-gst">GSTIN / Tax ID</label>
+                  <input type="text" id="v-gst" class="input-field" placeholder="US9988776655" />
+                </div>
+                <div class="form-group">
+                  <label for="v-city">City</label>
+                  <input type="text" id="v-city" class="input-field" placeholder="Austin" />
+                </div>
+                <div class="form-group full-width">
+                  <label for="v-website">Website (Optional)</label>
+                  <input type="url" id="v-website" class="input-field" placeholder="https://www.acmesuppliers.example" />
+                </div>
+                <div class="form-group full-width">
+                  <label for="v-address">Business Address</label>
+                  <input type="text" id="v-address" class="input-field" placeholder="500 Congress Ave" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="submit-btn" class="btn btn-buyer" style="margin-top: 24px;" onclick="goToStep2()">
+            <span class="btn-spinner"></span>
+            <span class="btn-label">Continue to Profile</span>
+          </button>
+        </form>
+
+        <div id="msg-box" class="message"></div>
+
+        <div style="text-align: center; margin-top: 24px;">
+          <a href="login.html" id="signup-footer-link" class="back-login">Already have an account? Log In</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast-notif"></div>
+
+  <script src="state.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    let activeRole = 'buyer';
+    let currentStep = 1;
+
+    const roleAccents = {
+      buyer: { color: '#7600E6', soft: 'rgba(118, 0, 230, 0.14)' },
+      vendor: { color: '#00A370', soft: 'rgba(0, 255, 140, 0.16)' }
+    };
+
+    // 1. Move the tab sliding pill
+    function moveTabPill(role) {
+      const tabs = document.getElementById('tabs');
+      const pill = document.getElementById('tab-pill');
+      const target = tabs.querySelector(`.tab-btn[data-role="${role}"]`);
+      if (!pill || !target) return;
+      const index = Array.from(tabs.querySelectorAll('.tab-btn')).indexOf(target);
+      pill.style.transform = `translateX(${index * 100}%)`;
+    }
+
+    // 2. Switch between Buyer and Vendor tabs
+    function switchTab(role) {
+      activeRole = role;
+      
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn[data-role="${role}"]`).classList.add('active');
+      moveTabPill(role);
+
+      // Update color settings dynamically
+      const accent = roleAccents[role];
+      if (accent) {
+        document.documentElement.style.setProperty('--accent-current', accent.color);
+        document.documentElement.style.setProperty('--accent-current-soft', accent.soft);
+        
+        const logoHighlight = document.getElementById('logo-highlight');
+        if (logoHighlight) logoHighlight.style.color = accent.color;
+      }
+
+      // Update titles and buttons
+      document.getElementById('signup-title').innerText = `Create your ${role.charAt(0).toUpperCase() + role.slice(1)} account`;
+      
+      const btn = document.getElementById('submit-btn');
+      btn.className = `btn btn-${role}`;
+      if (currentStep === 1) {
+        btn.querySelector('.btn-label').innerText = "Continue to Profile";
+      } else {
+        btn.querySelector('.btn-label').innerText = `Create ${role.charAt(0).toUpperCase() + role.slice(1)} Account`;
+      }
+
+      // Swap active field groups
+      document.querySelectorAll('.role-fields').forEach(f => f.classList.remove('active'));
+      document.getElementById(`fields-${role}`).classList.add('active');
+
+      // Make matching fields required based on active role
+      toggleRequiredFields(role);
+
+      hideMessage();
+    }
+
+    // 3. Make fields required depending on role
+    function toggleRequiredFields(role) {
+      const buyerRequired = ['b-name', 'b-title', 'b-company', 'b-dept', 'b-phone', 'b-city', 'b-country', 'b-address'];
+      const vendorRequired = ['v-company', 'v-contact', 'v-category', 'v-phone', 'v-gst', 'v-city', 'v-address'];
+
+      buyerRequired.forEach(id => {
+        document.getElementById(id).required = (role === 'buyer' && currentStep === 2);
+      });
+      vendorRequired.forEach(id => {
+        document.getElementById(id).required = (role === 'vendor' && currentStep === 2);
+      });
+    }
+
+    // 4. Read Query Parameters on load
+    function prefillFromParams() {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get('email');
+      const password = params.get('password');
+      const role = params.get('role');
+
+      if (email) document.getElementById('email').value = email;
+      if (password) {
+        document.getElementById('password').value = password;
+        document.getElementById('confirm-password').value = password;
+      }
+      if (role && (role === 'buyer' || role === 'vendor')) {
+        switchTab(role);
+      } else {
+        switchTab('buyer');
+      }
+    }
+
+    // 5. Message utilities
+    function showMessage(text, isError = true) {
+      const msgBox = document.getElementById('msg-box');
+      msgBox.innerText = text;
+      msgBox.className = `message ${isError ? 'error' : ''}`;
+      msgBox.style.display = 'block';
+    }
+
+    function hideMessage() {
+      document.getElementById('msg-box').style.display = 'none';
+    }
+
+    function showToastNotification(text) {
+      const toast = document.getElementById('toast');
+      toast.innerText = text;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 4000);
+    }
+
+    // Step navigation functions
+    function goToStep2() {
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
+      const termsInput = document.getElementById('terms');
+
+      if (!emailInput.reportValidity()) return;
+      if (!passwordInput.reportValidity()) return;
+      if (!confirmPasswordInput.reportValidity()) return;
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      if (!termsInput.checked) {
+        showMessage("You must agree to the Terms of Service and Privacy Policy.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        showMessage("Passwords do not match. Please verify.");
+        return;
+      }
+      if (password.length < 6) {
+        showMessage("Password must be at least 6 characters long.");
+        return;
+      }
+
+      // Check if email already registered for this role
+      const exists = window.appState.users.some(u => u.email.toLowerCase() === email.toLowerCase() && u.role === activeRole);
+      if (exists) {
+        showMessage("An account with this email is already registered.");
+        return;
+      }
+
+      hideMessage();
+
+      // Transition to Step 2
+      currentStep = 2;
+      
+      // Hide Step 1 elements
+      document.getElementById('step-1-inputs').style.display = 'none';
+      document.getElementById('tabs').style.display = 'none';
+      
+      // Show Step 2 elements
+      document.getElementById('step-2-inputs').style.display = 'block';
+      
+      // Update form submit button type
+      const btn = document.getElementById('submit-btn');
+      btn.type = 'submit';
+      btn.onclick = null; // Clear custom click handler to allow submit
+      btn.querySelector('.btn-label').innerText = `Create ${activeRole.charAt(0).toUpperCase() + activeRole.slice(1)} Account`;
+
+      // Enable required settings for step 2 fields
+      toggleRequiredFields(activeRole);
+
+      // Update bottom link
+      const footerLink = document.getElementById('signup-footer-link');
+      footerLink.innerText = "← Back to Account Credentials";
+      footerLink.href = "#";
+      footerLink.onclick = (e) => {
+        e.preventDefault();
+        goToStep1();
+      };
+    }
+
+    function goToStep1() {
+      currentStep = 1;
+      
+      // Show Step 1 elements
+      document.getElementById('step-1-inputs').style.display = 'grid';
+      document.getElementById('tabs').style.display = 'flex';
+      
+      // Hide Step 2 elements
+      document.getElementById('step-2-inputs').style.display = 'none';
+      
+      // Update form submit button to next step type
+      const btn = document.getElementById('submit-btn');
+      btn.type = 'button';
+      btn.onclick = goToStep2;
+      btn.querySelector('.btn-label').innerText = "Continue to Profile";
+
+      // Disable required settings for step 2 fields during step 1
+      toggleRequiredFields(activeRole);
+
+      // Update bottom link
+      const footerLink = document.getElementById('signup-footer-link');
+      footerLink.innerText = "Already have an account? Log In";
+      footerLink.href = "login.html";
+      footerLink.onclick = null;
+    }
+
+    // 6. Submit Registration Form (Step 2 completion)
+    function handleSignupSubmit(e) {
+      e.preventDefault();
+      hideMessage();
+
+      if (currentStep === 1) {
+        goToStep2();
+        return;
+      }
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Collect profile details
+      let profile = {};
+      let displayName = "";
+      if (activeRole === 'buyer') {
+        const name = document.getElementById('b-name').value.trim();
+        displayName = name;
+        profile = {
+          fullName: name,
+          designation: document.getElementById('b-title').value.trim(),
+          companyName: document.getElementById('b-company').value.trim(),
+          department: document.getElementById('b-dept').value.trim(),
+          phone: document.getElementById('b-phone').value.trim(),
+          address: document.getElementById('b-address').value.trim(),
+          city: document.getElementById('b-city').value.trim(),
+          country: document.getElementById('b-country').value.trim()
+        };
+      } else {
+        const company = document.getElementById('v-company').value.trim();
+        displayName = company;
+        profile = {
+          companyName: company,
+          contactName: document.getElementById('v-contact').value.trim(),
+          category: document.getElementById('v-category').value.trim(),
+          phone: document.getElementById('v-phone').value.trim(),
+          gstin: document.getElementById('v-gst').value.trim(),
+          address: document.getElementById('v-address').value.trim(),
+          city: document.getElementById('v-city').value.trim(),
+          website: document.getElementById('v-website').value.trim()
+        };
+      }
+
+      // Button loading state
+      const btn = document.getElementById('submit-btn');
+      btn.classList.add('loading');
+
+      // Create new user object
+      const newUser = {
+        email,
+        password,
+        role: activeRole,
+        profile
+      };
+
+      if (activeRole === 'vendor') {
+        newUser.onboarded = false;
+      }
+
+      // Save user to state
+      window.appState.users.push(newUser);
+      saveGlobalState();
+
+      // Log in immediately
+      setCurrentUser(newUser);
+
+      // Pre-fill Welcome Toast message
+      localStorage.setItem("show_welcome_toast", JSON.stringify({ name: displayName || email, role: activeRole }));
+
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        showToastNotification("Account created — welcome to nexPro!");
+        
+        setTimeout(() => {
+          window.location.href = 'platformOverview.html';
+        }, 800);
+      }, 500);
+    }
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      prefillFromParams();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Login | nexPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root {
+      --bg-main: #F3F3F3;
+      --bg-card: #FFFFFF;
+      --text-primary: #1A1A1A;
+      --text-secondary: #7A7A7A;
+      --border-color: #D9D9D9;
+      --accent-purple: #7600E6;
+      --accent-purple-light: #AA63ED;
+      --accent-purple-dark: #510A94;
+      --accent-orange: #FF6400;
+      --accent-yellow: #FFCF21;
+      --accent-green: #00FF8C;
+      --accent-red: #FF0E56;
+      --accent-blue: #4700E0;
+      --accent-lightblue: #00C6FF;
+      --error-color: #FF0E56;
+      --accent-current: var(--accent-purple);
+      --accent-current-soft: rgba(118, 0, 230, 0.12);
+      --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main) !important;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(118, 0, 230, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 255, 140, 0.05) 0%, transparent 40%) !important;
+      color: var(--text-primary);
+      min-height: 100vh;
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient aurora background layer — slow, elegant, never distracting */
+    .aurora-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.45;
+      will-change: transform;
+      mix-blend-mode: multiply;
+    }
+
+    .aurora-blob.b1 {
+      width: 620px;
+      height: 620px;
+      top: -200px;
+      left: -160px;
+      background: radial-gradient(circle, rgba(118, 0, 230, 0.25) 0%, transparent 70%);
+      animation: driftA 22s ease-in-out infinite;
+    }
+
+    .aurora-blob.b2 {
+      width: 560px;
+      height: 560px;
+      bottom: -220px;
+      right: -140px;
+      background: radial-gradient(circle, rgba(0, 255, 140, 0.22) 0%, transparent 70%);
+      animation: driftB 27s ease-in-out infinite;
+    }
+
+    .aurora-blob.b3 {
+      width: 440px;
+      height: 440px;
+      top: 38%;
+      left: 50%;
+      background: radial-gradient(circle, rgba(255, 100, 0, 0.14) 0%, transparent 70%);
+      animation: driftC 32s ease-in-out infinite;
+    }
+
+    /* Floating glass shapes — layered 3D depth around the card */
+    .glass-shape {
+      position: fixed;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.35));
+      border: 1px solid rgba(0,0,0,0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 0;
+      pointer-events: none;
+      box-shadow: 0 20px 40px rgba(31,38,135,0.08);
+    }
+
+    .glass-shape.gs1 {
+      width: 130px; height: 130px;
+      top: 14%; left: 8%;
+      transform: perspective(800px) rotateX(35deg) rotateY(-20deg) rotateZ(12deg);
+      animation: floatShape1 12s ease-in-out infinite;
+      border-radius: 50%;
+    }
+
+    .glass-shape.gs2 {
+      width: 90px; height: 90px;
+      bottom: 16%; right: 10%;
+      transform: perspective(800px) rotateX(-25deg) rotateY(25deg) rotateZ(-10deg);
+      animation: floatShape2 15s ease-in-out infinite;
+    }
+
+    .glass-shape.gs3 {
+      width: 60px; height: 60px;
+      top: 20%; right: 18%;
+      transform: perspective(800px) rotateX(20deg) rotateY(30deg);
+      animation: floatShape3 10s ease-in-out infinite;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0,255,140,0.25), rgba(255,255,255,0.4));
+    }
+
+    @keyframes floatShape1 {
+      0%, 100% { transform: perspective(800px) rotateX(35deg) rotateY(-20deg) rotateZ(12deg) translateY(0px) translateX(0px); }
+      50% { transform: perspective(800px) rotateX(20deg) rotateY(-35deg) rotateZ(20deg) translateY(-30px) translateX(15px); }
+    }
+    @keyframes floatShape2 {
+      0%, 100% { transform: perspective(800px) rotateX(-25deg) rotateY(25deg) rotateZ(-10deg) translateY(0px); }
+      50% { transform: perspective(800px) rotateX(-40deg) rotateY(10deg) rotateZ(-20deg) translateY(28px); }
+    }
+    @keyframes floatShape3 {
+      0%, 100% { transform: perspective(800px) rotateX(20deg) rotateY(30deg) translateY(0px) scale(1); }
+      50% { transform: perspective(800px) rotateX(35deg) rotateY(10deg) translateY(-18px) scale(1.15); }
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 0%, transparent 75%);
+    }
+
+    @keyframes driftA {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, 60px) scale(1.15); }
+    }
+    @keyframes driftB {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-70px, -50px) scale(1.18); }
+    }
+    @keyframes driftC {
+      0%, 100% { transform: translate(-50%, 0) scale(1); }
+      50% { transform: translate(-50%, -60px) scale(1.2); }
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: rotateX(0deg) rotateY(0deg) translateY(0px); }
+      25% { transform: rotateX(1.2deg) rotateY(-1.5deg) translateY(-5px); }
+      50% { transform: rotateX(0deg) rotateY(0deg) translateY(-10px); }
+      75% { transform: rotateX(-1.2deg) rotateY(1.5deg) translateY(-5px); }
+    }
+
+    @keyframes borderRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes cardEntrance {
+      0% { opacity: 0; transform: perspective(1600px) rotateX(18deg) translateY(60px) scale(0.92); }
+      100% { opacity: 1; transform: perspective(1600px) rotateX(0deg) translateY(0) scale(1); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translateX(-1px); }
+      20%, 80% { transform: translateX(2px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .aurora-blob, .split-layout, .flow-step, .login-section > * , .logo-glow, .glass-shape, .card-shell {
+        animation: none !important;
+      }
+      .split-layout, .card-shell { transition: none !important; }
+    }
+
+    /* Fixed Top Navbar alignment with home page */
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    .brand text {
+      fill: #1A1A1A !important;
+    }
+
+    /* Hero Main Container */
+    .login-container {
+      max-width: 1100px;
+      margin: 120px auto 60px auto;
+      padding: 0 24px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      perspective: 1600px;
+    }
+
+    .card-shell {
+      position: relative;
+      border-radius: 25px;
+      animation: cardEntrance 1s var(--ease-premium) both, cardFloat 8s ease-in-out 1s infinite;
+      transition: transform 0.25s var(--ease-premium);
+      transform-style: preserve-3d;
+    }
+
+    /* Rotating conic-gradient glow ring, masked to a bold border */
+    .card-shell::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: conic-gradient(from 0deg, var(--accent-purple), var(--accent-blue), var(--accent-green), var(--accent-purple));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.8;
+      animation: borderRotate 8s linear infinite;
+      transform-origin: center;
+      pointer-events: none;
+    }
+
+    .card-shell::after {
+      content: "";
+      position: absolute;
+      inset: -60px;
+      border-radius: inherit;
+      background: radial-gradient(ellipse at center, var(--accent-current-soft) 0%, transparent 70%);
+      opacity: 0.65;
+      filter: blur(40px);
+      z-index: -1;
+      pointer-events: none;
+      transition: background 0.4s ease;
+    }
+
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(31, 38, 135, 0.1);
+      position: relative;
+    }
+
+    /* Left Side: Schematic Sourcing Process */
+    .process-sidebar {
+      padding: 50px;
+      background: linear-gradient(135deg, rgba(118,0,230,0.03) 0%, rgba(0,255,140,0.03) 100%);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .process-header {
+      margin-bottom: 40px;
+    }
+
+    .process-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .process-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Flow Schematic Timeline */
+    .flow-schematic {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .flow-schematic::before {
+      content: "";
+      position: absolute;
+      left: 19px;
+      top: 15px;
+      bottom: 15px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-purple), var(--accent-green));
+      opacity: 0.3;
+    }
+
+    .flow-step {
+      display: flex;
+      gap: 20px;
+      position: relative;
+      opacity: 0;
+      animation: fadeInUp 0.6s var(--ease-premium) both;
+    }
+
+    .flow-step:nth-child(1) { animation-delay: 0.25s; }
+    .flow-step:nth-child(2) { animation-delay: 0.35s; }
+    .flow-step:nth-child(3) { animation-delay: 0.45s; }
+    .flow-step:nth-child(4) { animation-delay: 0.55s; }
+
+    .step-node {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-secondary);
+      z-index: 2;
+      flex-shrink: 0;
+      transition: all 0.3s var(--ease-premium);
+      box-shadow: 0 4px 10px rgba(31,38,135,0.08);
+    }
+
+    .flow-step.active .step-node {
+      border-color: var(--accent-purple);
+      color: var(--accent-purple);
+      box-shadow: 0 0 12px rgba(118, 0, 230, 0.25);
+      background: rgba(118, 0, 230, 0.05);
+    }
+
+    .flow-step.completed .step-node {
+      border-color: #00A370;
+      color: #00A370;
+      box-shadow: 0 0 12px rgba(0, 163, 112, 0.25);
+      background: rgba(0, 163, 112, 0.06);
+    }
+
+    .step-content {
+      padding-top: 4px;
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .step-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Right Side: Login Card */
+    .login-section {
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .login-section > * {
+      opacity: 0;
+      animation: fadeInUp 0.6s var(--ease-premium) 0.4s both;
+    }
+
+    .login-section > *:nth-child(2) { animation-delay: 0.48s; }
+    .login-section > *:nth-child(3) { animation-delay: 0.56s; }
+    .login-section > *:nth-child(4) { animation-delay: 0.64s; }
+    .login-section > *:nth-child(5) { animation-delay: 0.72s; }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .logo-glow {
+      position: absolute;
+      width: 160px;
+      height: 80px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse at center, var(--accent-current-soft) 0%, transparent 70%);
+      filter: blur(24px);
+      z-index: 0;
+      animation: glowPulse 4s ease-in-out infinite;
+      transition: background 0.4s ease;
+    }
+
+    .logo-text {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-highlight {
+      color: #00A370;
+    }
+
+    .tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .tab-pill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      width: calc((100% - 8px) / 3);
+      border-radius: 8px;
+      background: #FFFFFF;
+      box-shadow: 0 4px 14px var(--accent-current-soft), inset 0 0 0 1px rgba(0,0,0,0.04);
+      transition: transform 0.35s var(--ease-premium), box-shadow 0.35s ease;
+      pointer-events: none;
+    }
+
+    .tab-btn {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      font-weight: 600;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: color 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.25s ease;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 46px;
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0 16px;
+      font-size: 15px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    }
+
+    .input-field:hover {
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .input-field:focus {
+      border-color: var(--accent-current);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px var(--accent-current-soft);
+    }
+
+    .form-group:focus-within label {
+      color: var(--text-primary);
+    }
+
+    .btn {
+      width: 100%;
+      height: 48px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s var(--ease-premium), box-shadow 0.25s ease, background 0.2s ease;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn:disabled {
+      cursor: default;
+      opacity: 0.85;
+      transform: none;
+    }
+
+    .btn-spinner {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn.loading .btn-spinner {
+      display: inline-block;
+    }
+
+    .btn.loading .btn-label {
+      opacity: 0.85;
+    }
+
+    .btn-buyer {
+      background: var(--accent-purple);
+      color: white;
+    }
+    .btn-buyer:hover {
+      background: var(--accent-purple-light);
+      box-shadow: 0 8px 22px rgba(118, 0, 230, 0.28);
+    }
+
+    .btn-vendor {
+      background: var(--accent-green);
+      color: #07090e;
+    }
+    .btn-vendor:hover {
+      background: #33ffa3;
+      box-shadow: 0 8px 22px rgba(0, 255, 140, 0.35);
+    }
+    .btn-vendor .btn-spinner {
+      border: 2px solid rgba(7, 9, 14, 0.3);
+      border-top-color: #07090e;
+    }
+
+    .btn-admin {
+      background: var(--accent-blue);
+      color: white;
+    }
+    .btn-admin:hover {
+      background: #6a2bf5;
+      box-shadow: 0 8px 22px rgba(71, 0, 224, 0.3);
+    }
+
+    .message {
+      font-size: 13.5px;
+      line-height: 1.5;
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .message.error {
+      background: rgba(255, 14, 86, 0.08);
+      border: 1px solid rgba(255, 14, 86, 0.2);
+      color: #C10046;
+      display: block;
+      animation: shake 0.45s var(--ease-premium);
+    }
+
+    .signup-invite {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: 24px;
+      display: none;
+      background: rgba(0, 0, 0, 0.015);
+      border: 1px dashed var(--border-color);
+      padding: 16px;
+      border-radius: 10px;
+      animation: fadeInUp 0.4s var(--ease-premium);
+    }
+
+    .signup-btn {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 6px;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .signup-btn:hover {
+      color: var(--accent-purple);
+    }
+
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-home:hover {
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .signup-link-container {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+    .signup-link-container a {
+      color: var(--accent-current);
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .signup-link-container a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 800px) {
+      .split-layout {
+        grid-template-columns: 1fr;
+      }
+      .process-sidebar {
+        display: none;
+      }
+      .card-shell {
+        animation: cardEntrance 1s var(--ease-premium) both;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient premium background -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+  <div class="aurora-layer" aria-hidden="true">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+    <div class="aurora-blob b3"></div>
+  </div>
+  <div class="glass-shape gs1" aria-hidden="true"></div>
+  <div class="glass-shape gs2" aria-hidden="true"></div>
+  <div class="glass-shape gs3" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Shared Top Navbar matching index.html -->
+  <div class="navbar-div">
+    <div data-collapse="medium" data-animation="default" data-duration="650" role="banner" class="navbar w-nav">
+      <div class="container nav">
+        <a href="index.html" class="brand w-nav-brand">
+          <div class="logo w-embed" style="display:flex; align-items:center;">
+            <svg width="150" height="40" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="10" y="55" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Public Sans', sans-serif" font-weight="900" font-size="56px" fill="#1A1A1A" letter-spacing="-2px">
+                nex<tspan fill="#00A370">Pro</tspan>
+              </text>
+            </svg>
+          </div>
+        </a>
+        <nav role="navigation" class="nav-menu w-nav-menu">
+          <div class="nav-scroll-wrap">
+            <div class="nav-links-wrap" style="display: flex; align-items: center; justify-content: flex-end; width: 100%;">
+              <a href="platformOverview.html" class="navlink w-inline-block" style="color: #1A1A1A; margin-right: 20px;"><div class="button-txt">Platform</div></a>
+              <a href="ourStory.html" class="navlink w-inline-block" style="color: #1A1A1A; margin-right: 20px;"><div class="button-txt">About</div></a>
+              <a href="index.html" class="navlink w-inline-block" style="color: #1A1A1A; margin-right: 20px;"><div class="button-txt">Home</div></a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-container">
+    <div class="card-shell" id="card-shell">
+    <div class="split-layout">
+      <!-- Left: Schematic Sourcing Process -->
+      <div class="process-sidebar">
+        <div class="process-header">
+          <h2 class="process-title">Autonomous Sourcing Lifecycle</h2>
+          <p class="process-subtitle">Connect, audit, and award procurement pipelines with specialized AI agents.</p>
+        </div>
+
+        <div class="flow-schematic">
+          <div class="flow-step completed">
+            <div class="step-node">1</div>
+            <div class="step-content">
+              <h4 class="step-title">Requirements & Intake</h4>
+              <p class="step-desc">AI Intake Agent analyzes requirements and auto-generates comprehensive RFQ specifications.</p>
+            </div>
+          </div>
+          <div class="flow-step active">
+            <div class="step-node">2</div>
+            <div class="step-content">
+              <h4 class="step-title">Intelligent Matching</h4>
+              <p class="step-desc">Suppliers matched in real-time by category, capabilities, location, and rating metrics.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-node">3</div>
+            <div class="step-content">
+              <h4 class="step-title">Bid Execution & Distribution</h4>
+              <p class="step-desc">RFQs dispatched via public marketplace channels or targeted private invitations.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-node">4</div>
+            <div class="step-content">
+              <h4 class="step-title">Evaluation & Awards</h4>
+              <p class="step-desc">Proposals parsed, ranked, and optimized via automated vendor negotiation sprints.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Authentication Form -->
+      <div class="login-section">
+        <div class="logo-wrap">
+          <div class="logo-glow" id="logo-glow"></div>
+          <div class="logo-text">nex<span class="logo-highlight">Pro</span></div>
+        </div>
+
+        <div class="tabs" id="tabs">
+          <div class="tab-pill" id="tab-pill"></div>
+          <div class="tab-btn active" data-role="buyer" onclick="switchTab('buyer')">Buyer</div>
+          <div class="tab-btn" data-role="vendor" onclick="switchTab('vendor')">Vendor</div>
+          <div class="tab-btn" data-role="admin" onclick="switchTab('admin')">Admin</div>
+        </div>
+
+        <form id="login-form" onsubmit="handleAuthSubmit(event)">
+          <div class="form-group">
+            <label for="username">Email / Username</label>
+            <input type="text" id="username" class="input-field" required placeholder="buyer@nexpro.com" autocomplete="username"/>
+          </div>
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="input-field" required placeholder="••••••••" autocomplete="current-password"/>
+          </div>
+
+          <button type="submit" id="submit-btn" class="btn btn-buyer">
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-label">Login as Buyer</span>
+          </button>
+        </form>
+
+        <div id="signup-link-wrapper" class="signup-link-container">
+          Don't have an account? <a onclick="handleSignup()">Sign Up</a>
+        </div>
+
+        <div id="msg-box" class="message"></div>
+
+        <div id="signup-box" class="signup-invite">
+          <div id="signup-text">Account not found. Click below to sign up.</div>
+          <button class="signup-btn" onclick="handleSignup()">Create Account</button>
+        </div>
+
+        <a href="index.html" class="back-home">← Back to Marketing Site</a>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <script src="state.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    let activeRole = 'buyer';
+
+    const roleAccents = {
+      buyer: { color: '#7600E6', soft: 'rgba(118, 0, 230, 0.14)' },
+      vendor: { color: '#00A370', soft: 'rgba(0, 255, 140, 0.16)' },
+      admin: { color: '#4700E0', soft: 'rgba(71, 0, 224, 0.14)' }
+    };
+
+    function moveTabPill(role) {
+      const tabs = document.getElementById('tabs');
+      const pill = document.getElementById('tab-pill');
+      const target = tabs.querySelector(`.tab-btn[data-role="${role}"]`);
+      if (!pill || !target) return;
+      const index = Array.from(tabs.querySelectorAll('.tab-btn')).indexOf(target);
+      pill.style.transform = `translateX(${index * 100}%)`;
+    }
+
+    function switchTab(role) {
+      activeRole = role;
+      
+      // Update active tab styles
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.tab-btn[data-role="${role}"]`).classList.add('active');
+      moveTabPill(role);
+
+      // Update submit button role style and label
+      const btn = document.getElementById('submit-btn');
+      btn.className = `btn btn-${role}`;
+      btn.querySelector('.btn-label').innerText = `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+
+      // Sync ambient accent (card glow, logo glow, focus rings) to the active role
+      const accent = roleAccents[role];
+      if (accent) {
+        document.documentElement.style.setProperty('--accent-current', accent.color);
+        document.documentElement.style.setProperty('--accent-current-soft', accent.soft);
+      }
+
+      // Update placeholders
+      const usernameInput = document.getElementById('username');
+      if (role === 'buyer') {
+        usernameInput.placeholder = 'buyer@nexpro.com';
+      } else if (role === 'vendor') {
+        usernameInput.placeholder = 'vendor@nexpro.com';
+      } else {
+        usernameInput.placeholder = 'admin@nexpro.com';
+      }
+
+      // Hide signup link container for admins
+      const signupLinkWrapper = document.getElementById('signup-link-wrapper');
+      if (signupLinkWrapper) {
+        signupLinkWrapper.style.display = (role === 'admin') ? 'none' : 'block';
+      }
+
+      // Hide messages
+      hideMessage();
+    }
+
+    function showMessage(text, isError = true) {
+      const msgBox = document.getElementById('msg-box');
+      msgBox.innerText = text;
+      msgBox.className = `message ${isError ? 'error' : ''}`;
+      msgBox.style.display = 'block';
+    }
+
+    function hideMessage() {
+      document.getElementById('msg-box').style.display = 'none';
+      document.getElementById('signup-box').style.display = 'none';
+    }
+
+    function setButtonLoading(isLoading) {
+      const btn = document.getElementById('submit-btn');
+      btn.classList.toggle('loading', isLoading);
+      btn.disabled = isLoading;
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      hideMessage();
+
+      const email = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      // Find user
+      const user = window.appState.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.role === activeRole);
+
+      if (!user) {
+        // User doesn't exist for this role
+        if (activeRole === 'admin') {
+          showMessage("Admin account not found. Admin credentials are not self-serve. Please contact support or your system administrator.");
+        } else {
+          showMessage("Entered account does not exist.");
+          const signupBox = document.getElementById('signup-box');
+          const signupText = document.getElementById('signup-text');
+          signupText.innerText = `Account not found. Recommend creating a new account to access the ${activeRole.charAt(0).toUpperCase() + activeRole.slice(1)} features.`;
+          signupBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (user.password !== pass) {
+        showMessage("Incorrect password. Please try again.");
+        return;
+      }
+
+      // Successful login — brief premium loading state, then route
+      setButtonLoading(true);
+      setCurrentUser(user);
+
+      const isProfileIncomplete = !user.profile || 
+        (user.role === 'buyer' && !user.profile.fullName) || 
+        (user.role === 'vendor' && !user.profile.companyName);
+
+      setTimeout(() => {
+        if (isProfileIncomplete && user.role !== 'admin') {
+          window.location.href = 'profile.html?prompt_edit=true';
+        } else {
+          window.location.href = 'platformOverview.html';
+        }
+      }, 450);
+    }
+
+    function handleSignup() {
+      const email = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      if (activeRole === 'admin') {
+        showMessage("Admin accounts are not self-serve. Please contact support or your system administrator.");
+        return;
+      }
+
+      // Redirect to signup.html carrying over parameters
+      let url = `signup.html?role=${encodeURIComponent(activeRole)}`;
+      if (email) url += `&email=${encodeURIComponent(email)}`;
+      if (pass) url += `&password=${encodeURIComponent(pass)}`;
+      window.location.href = url;
+    }
+
+    // --- Premium polish: tab pill position + cursor-reactive 3D depth ---
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      moveTabPill(activeRole);
+
+      if (prefersReducedMotion) return;
+
+      const cardShell = document.getElementById('card-shell');
+      const container = document.querySelector('.login-container');
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        cardShell.style.transform = `perspective(1600px) rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 10).toFixed(2)}deg) translateY(-4px)`;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        cardShell.style.transform = 'perspective(1600px) rotateX(0deg) rotateY(0deg)';
+      });
+    });
+
+    window.addEventListener('resize', () => moveTabPill(activeRole));
+
+    // --- Ambient particle starfield with gentle parallax ---
+    (function initParticles() {
+      const canvas = document.getElementById('particles-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, particles;
+      let mouseX = 0, mouseY = 0;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        const count = Math.min(110, Math.floor((w * h) / 14000));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.6 + 0.4,
+          baseAlpha: Math.random() * 0.5 + 0.2,
+          twinkleSpeed: Math.random() * 0.015 + 0.005,
+          phase: Math.random() * Math.PI * 2,
+          depth: Math.random() * 0.6 + 0.2
+        }));
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        for (const p of particles) {
+          const alpha = p.baseAlpha * (0.6 + 0.4 * Math.sin(t * p.twinkleSpeed + p.phase));
+          const offsetX = (mouseX - w / 2) * p.depth * 0.02;
+          const offsetY = (mouseY - h / 2) * p.depth * 0.02;
+          ctx.beginPath();
+          ctx.arc(p.x + offsetX, p.y + offsetY, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(118, 0, 230, ${alpha * 0.6})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      resize();
+      if (!prefersReducedMotion) {
+        requestAnimationFrame(draw);
+      } else {
+        draw(0);
+      }
+    })();
+  </script>
+</body>
+</html>

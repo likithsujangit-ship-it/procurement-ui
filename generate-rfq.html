@@ -2046,6 +2046,241 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     .sf-grid, .sf-cert-grid { grid-template-columns: 1fr; }
     .supplier-panel-card { max-width: 100%; padding: 22px 18px; }
   }
+
+  /* Admin & Cumulative Dashboard Specific Styles */
+  :root {
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.25s var(--ease-premium), box-shadow 0.25s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .stat-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .stat-card.blue::after { background: #3b82f6; }
+  .stat-card.purple::after { background: var(--accent-purple); }
+  .stat-card.green::after { background: #00A370; }
+  .stat-card.yellow::after { background: var(--accent-yellow); }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+  }
+  
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .funnel-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .funnel-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .funnel-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .funnel-bar {
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    transition: width 0.8s var(--ease-premium);
+  }
+  
+  .funnel-bar.bg-blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .funnel-bar.bg-yellow { background: linear-gradient(90deg, var(--accent-yellow), #f59e0b); }
+  .funnel-bar.bg-purple { background: linear-gradient(90deg, var(--accent-purple), #a78bfa); }
+  .funnel-bar.bg-green { background: linear-gradient(90deg, #00A370, #34d399); }
+  
+  .agent-status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .agent-status-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  
+  .status-indicator.online {
+    background: #00A370;
+    box-shadow: 0 0 8px #00A370;
+  }
+  
+  .status-indicator.online::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid #00A370;
+    opacity: 0;
+    animation: ping 2s infinite;
+  }
+  
+  @keyframes ping {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  
+  .agent-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .agent-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .agent-desc {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+  }
+  
+  .health-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 4px solid #00A370;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+
+  /* Fixed Top Navbar Styling for Light Theme */
+  .navbar-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .navbar {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color) !important;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+
+  .brand text {
+    fill: #1A1A1A !important;
+  }
+  
+  .navbar-div .navlink {
+    color: #1A1A1A !important;
+  }
+  
+  .navbar-div .navlink .button-txt {
+    color: #1A1A1A !important;
+  }
+
+  .navbar-div .navlink:hover {
+    color: var(--accent-purple) !important;
+  }
+
+  .navbar-div .navlink:hover .button-txt {
+    color: var(--accent-purple) !important;
+  }
+
+  /* Override default black background hover pills */
+  .hover-bg {
+    background-color: rgba(118, 0, 230, 0.06) !important;
+  }
+
+  /* Hide marketing footer and Book a Demo marquee on workspace */
+  footer, .section.is-footer, .footer-cta-link {
+    display: none !important;
+  }
 </style>
 
 </head>
@@ -2663,6 +2898,10 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
     // Load data from localStorage or use defaults
     function loadState() {
+      if (window.appState) {
+        state = window.appState;
+        return;
+      }
       const saved = localStorage.getItem("nexpro_rfq_workspace");
       if (saved) {
         try {
@@ -2773,7 +3012,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     }
 
     function saveState() {
-      localStorage.setItem("nexpro_rfq_workspace", JSON.stringify(state));
+      if (window.appState) {
+        if (window.saveGlobalState) window.saveGlobalState();
+      } else {
+        localStorage.setItem("nexpro_rfq_workspace", JSON.stringify(state));
+      }
     }
 
     // Toast notification manager
@@ -2821,6 +3064,14 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         renderSubmittedResponsesView(viewContainer);
       } else if (currentView === "new-procurement") {
         renderNewProcurementView(viewContainer);
+      } else if (currentView === "cumulative-dashboard") {
+        renderCumulativeDashboardView(viewContainer);
+      } else if (currentView === "users-directory") {
+        renderUsersDirectoryView(viewContainer);
+      } else if (currentView === "admin-procurements") {
+        renderAdminProcurementsView(viewContainer);
+      } else if (currentView === "admin-logs") {
+        renderAdminLogsView(viewContainer);
       }
     }
 
@@ -2875,6 +3126,14 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             <span>${template ? escapeHTML(template.name) : "Template"} (Response Form)</span>
           `;
         }
+      } else if (currentView === "cumulative-dashboard") {
+        breadcrumb.innerHTML = "<span>Admin Oversight / Cumulative Dashboard</span>";
+      } else if (currentView === "users-directory") {
+        breadcrumb.innerHTML = "<span>Admin Oversight / Users Directory</span>";
+      } else if (currentView === "admin-procurements") {
+        breadcrumb.innerHTML = "<span>Admin Oversight / Procurements Oversight</span>";
+      } else if (currentView === "admin-logs") {
+        breadcrumb.innerHTML = "<span>Admin Oversight / Activity Logs & Info</span>";
       }
     }
 
@@ -2935,6 +3194,18 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         actionsEl.innerHTML = `
           <button class="secondary-btn" onclick="navigateTo('companies')" style="margin-right: 12px;">Back</button>
         `;
+      } else if (currentView === "cumulative-dashboard") {
+        titleEl.innerText = "Cumulative Dashboard";
+        actionsEl.innerHTML = "";
+      } else if (currentView === "users-directory") {
+        titleEl.innerText = "User Registry";
+        actionsEl.innerHTML = "";
+      } else if (currentView === "admin-procurements") {
+        titleEl.innerText = "Procurements Oversight";
+        actionsEl.innerHTML = "";
+      } else if (currentView === "admin-logs") {
+        titleEl.innerText = "System Activity Log";
+        actionsEl.innerHTML = "";
       }
     }
 
@@ -3307,6 +3578,413 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           render();
         }
       });
+    }
+
+    // VIEW: Cumulative Dashboard & Oversight Admin Views
+    function renderCumulativeDashboardView(container) {
+      const wrap = document.createElement("div");
+      wrap.className = "step-transition-in";
+
+      // 1. Calculate values
+      const users = state.users || [];
+      const rfqs = state.submittedResponses.filter(r => r.hasProcurement) || [];
+      const vendors = state.suppliers || [];
+      const bids = state.applications || [];
+
+      const totalUsers = users.length;
+      const buyersCount = users.filter(u => u.role === 'buyer').length;
+      const vendorsCount = vendors.length;
+      const procurementsCount = rfqs.length;
+
+      const biddingEvents = rfqs.filter(r => r.procurementStatus === "PENDING SUPPLIER").length;
+      const evaluatingEvents = rfqs.filter(r => r.procurementStatus === "EVALUATING").length;
+      const completedEvents = rfqs.filter(r => r.procurementStatus === "COMPLETED").length;
+
+      let totalSpend = 18000000; // Base value ₹1.8 Cr
+      bids.forEach(bid => {
+        if (bid.price) totalSpend += bid.price;
+      });
+      const crVal = (totalSpend / 10000000).toFixed(2);
+
+      const funnelIntakeText = `${procurementsCount} Event${procurementsCount !== 1 ? 's' : ''} (100%)`;
+      
+      const biddingTotal = biddingEvents + evaluatingEvents + completedEvents;
+      const biddingPercent = procurementsCount > 0 ? ((biddingTotal / procurementsCount) * 100) : 0;
+      const funnelBiddingText = `${biddingTotal} Event${biddingTotal !== 1 ? 's' : ''} (${Math.round(biddingPercent)}%)`;
+
+      const evalTotal = evaluatingEvents + completedEvents;
+      const evalPercent = procurementsCount > 0 ? ((evalTotal / procurementsCount) * 100) : 0;
+      const funnelEvalText = `${evalTotal} Event${evalTotal !== 1 ? 's' : ''} (${Math.round(evalPercent)}%)`;
+
+      const completedPercent = procurementsCount > 0 ? ((completedEvents / procurementsCount) * 100) : 0;
+      const funnelCompletedText = `${completedEvents} Event${completedEvents !== 1 ? 's' : ''} (${Math.round(completedPercent)}%)`;
+
+      wrap.innerHTML = `
+        <!-- Stats Banner -->
+        <div class="stat-grid">
+          <div class="stat-card blue">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value">${totalUsers}</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-label">Buyers</div>
+            <div class="stat-value">${buyersCount}</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Verified Suppliers</div>
+            <div class="stat-value">${vendorsCount}</div>
+          </div>
+          <div class="stat-card yellow">
+            <div class="stat-label">Procurements</div>
+            <div class="stat-value">${procurementsCount}</div>
+          </div>
+        </div>
+
+        <!-- Stat Visualizations / Cards -->
+        <div class="dashboard-grid">
+          <!-- Sourcing Pipeline Funnel -->
+          <div class="glass-card">
+            <div class="card-title">Sourcing Pipeline Funnel</div>
+            <div class="funnel-container">
+              <div class="funnel-stage">
+                <div class="funnel-label">Intake Specification (100%)</div>
+                <div class="funnel-bar bg-blue" style="width: 100%;">${funnelIntakeText}</div>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-label">Supplier Matching & Bidding</div>
+                <div class="funnel-bar bg-yellow" style="width: ${Math.max(15, biddingPercent)}%;">${funnelBiddingText}</div>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-label">Bid Evaluation & Awards</div>
+                <div class="funnel-bar bg-purple" style="width: ${Math.max(15, evalPercent)}%;">${funnelEvalText}</div>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-label">Completed/Awarded Sourcing</div>
+                <div class="funnel-bar bg-green" style="width: ${Math.max(15, completedPercent)}%;">${funnelCompletedText}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Sourcing Agents Status -->
+          <div class="glass-card">
+            <div class="card-title">AI Sourcing Co-Pilots Status</div>
+            <div class="agent-status-list">
+              <div class="agent-status-item">
+                <span class="status-indicator online"></span>
+                <div class="agent-details">
+                  <div class="agent-name">Intake Agent</div>
+                  <div class="agent-desc">Listening to user requirements, generating SOWs</div>
+                </div>
+              </div>
+              <div class="agent-status-item">
+                <span class="status-indicator online"></span>
+                <div class="agent-details">
+                  <div class="agent-name">Supplier Discovery Agent</div>
+                  <div class="agent-desc">Scanning 2.7M+ global suppliers dynamically</div>
+                </div>
+              </div>
+              <div class="agent-status-item">
+                <span class="status-indicator online"></span>
+                <div class="agent-details">
+                  <div class="agent-name">RFx Execution Agent</div>
+                  <div class="agent-desc">Distributing bids & checking supplier responses</div>
+                </div>
+              </div>
+              <div class="agent-status-item">
+                <span class="status-indicator online"></span>
+                <div class="agent-details">
+                  <div class="agent-name">Evaluation Agent</div>
+                  <div class="agent-desc">Analyzing submitted pricing sheets & criteria</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Summary Grid -->
+        <div class="dashboard-grid">
+          <!-- Spend & Deal Statistics -->
+          <div class="glass-card">
+            <div class="card-title">Spend Overview & Projections</div>
+            <div style="margin-top:16px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <span style="color:var(--text-secondary);">Total Pipeline Spend:</span>
+                <span style="font-weight:700;">₹${crVal} Cr</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <span style="color:var(--text-secondary);">Avg. Sourcing Cycle Time:</span>
+                <span style="font-weight:700; color:#00A370;">4.2 Days (↓ 52%)</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <span style="color:var(--text-secondary);">Average Savings Rate:</span>
+                <span style="font-weight:700; color:var(--accent-purple);">12.4% (Target: 10%)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live System Status -->
+          <div class="glass-card">
+            <div class="card-title">Live System Status</div>
+            <div style="display:flex; align-items:center; gap:20px; margin-top:20px;">
+              <div class="health-circle">
+                <div class="health-value">100%</div>
+                <div style="font-size:10px; color:var(--text-secondary);">HEALTH</div>
+              </div>
+              <div>
+                <div style="font-weight:700; font-size:15px; color:#00A370;">All Systems Nominal</div>
+                <div style="font-size:12.5px; color:var(--text-secondary); margin-top:4px;">No anomalies detected in automated matching, intake, or bid validation engines in the last 24h.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrap);
+    }
+
+    let userFilters = { search: "", role: "all" };
+
+    function renderUsersDirectoryView(container) {
+      const wrap = document.createElement("div");
+      wrap.className = "step-transition-in";
+
+      wrap.innerHTML = `
+        <div class="glass-card">
+          <div style="display:flex; gap:12px; margin-bottom:20px;">
+            <input type="text" id="user-search-input" class="app-input" style="flex:1.5; height:40px; background:rgba(0,0,0,0.01); border:1px solid var(--border-color); border-radius:8px; padding:0 16px; color:var(--text-primary);" placeholder="Search by email..." />
+            <select id="user-role-select" style="flex:1; height:40px; background:rgba(0,0,0,0.01); border:1px solid var(--border-color); border-radius:8px; padding:0 16px; color:var(--text-primary);">
+              <option value="all">All Roles</option>
+              <option value="buyer">Buyers</option>
+              <option value="vendor">Vendors</option>
+            </select>
+          </div>
+
+          <div style="width:100%; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color);">
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">User Email</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Role</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Status / Credentials</th>
+                </tr>
+              </thead>
+              <tbody id="users-directory-list-body">
+                <!-- Filled dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrap);
+
+      const searchInput = document.getElementById("user-search-input");
+      const roleSelect = document.getElementById("user-role-select");
+
+      searchInput.value = userFilters.search;
+      roleSelect.value = userFilters.role;
+
+      const renderList = () => {
+        const tbody = document.getElementById("users-directory-list-body");
+        tbody.innerHTML = "";
+
+        const query = userFilters.search.toLowerCase();
+        const role = userFilters.role;
+
+        const filtered = state.users.filter(u => {
+          if (query && !u.email.toLowerCase().includes(query)) return false;
+          if (role !== "all" && u.role !== role) return false;
+          return true;
+        });
+
+        filtered.forEach(u => {
+          let detailsText = "Access granted";
+          if (u.role === 'vendor') {
+            detailsText = u.onboarded 
+              ? `Onboarded (Linked to registry)` 
+              : `Pending onboarding profile`;
+          }
+
+          const tr = document.createElement("tr");
+          tr.style.borderBottom = "1px solid rgba(0,0,0,0.04)";
+          tr.innerHTML = `
+            <td style="font-size:14px; padding:16px; color:var(--text-primary);"><strong>${escapeHTML(u.email)}</strong></td>
+            <td style="font-size:14px; padding:16px;"><span class="card-badge" style="background:rgba(0,0,0,0.03); color:var(--text-primary); font-size:11px; padding:2px 8px; border-radius:4px; font-weight:600; text-transform:uppercase;">${escapeHTML(u.role)}</span></td>
+            <td style="font-size:13px; padding:16px; color:var(--text-secondary);">${detailsText}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      };
+
+      searchInput.oninput = (e) => {
+        userFilters.search = e.target.value.trim();
+        renderList();
+      };
+
+      roleSelect.onchange = (e) => {
+        userFilters.role = e.target.value;
+        renderList();
+      };
+
+      renderList();
+    }
+
+    let adminProcFilters = { search: "", stage: "all" };
+
+    function renderAdminProcurementsView(container) {
+      const wrap = document.createElement("div");
+      wrap.className = "step-transition-in";
+
+      wrap.innerHTML = `
+        <div class="glass-card">
+          <div style="display:flex; gap:12px; margin-bottom:20px;">
+            <input type="text" id="proc-search-input" class="app-input" style="flex:1.5; height:40px; background:rgba(0,0,0,0.01); border:1px solid var(--border-color); border-radius:8px; padding:0 16px; color:var(--text-primary);" placeholder="Search by template or ID..." />
+            <select id="proc-stage-select" style="flex:1; height:40px; background:rgba(0,0,0,0.01); border:1px solid var(--border-color); border-radius:8px; padding:0 16px; color:var(--text-primary);">
+              <option value="all">All Stages</option>
+              <option value="PENDING SUPPLIER">Pending Supplier</option>
+              <option value="EVALUATING">Evaluating Bids</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+          </div>
+
+          <div style="width:100%; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color);">
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Request ID</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Template Reference</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Stage</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Distribution</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Invited Vendors</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Submitted Bids</th>
+                </tr>
+              </thead>
+              <tbody id="admin-proc-list-body">
+                <!-- Filled dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrap);
+
+      const searchInput = document.getElementById("proc-search-input");
+      const stageSelect = document.getElementById("proc-stage-select");
+
+      searchInput.value = adminProcFilters.search;
+      stageSelect.value = adminProcFilters.stage;
+
+      const renderList = () => {
+        const tbody = document.getElementById("admin-proc-list-body");
+        tbody.innerHTML = "";
+
+        const query = adminProcFilters.search.toLowerCase();
+        const stageVal = adminProcFilters.stage;
+
+        const rfqs = state.submittedResponses.filter(r => r.hasProcurement) || [];
+
+        const filtered = rfqs.filter(r => {
+          if (query && !r.responseID.toLowerCase().includes(query) && !r.templateName.toLowerCase().includes(query)) return false;
+          if (stageVal !== "all" && r.procurementStatus !== stageVal) return false;
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-secondary); padding:20px;">No procurements found.</td></tr>`;
+          return;
+        }
+
+        filtered.forEach(r => {
+          const vendorCount = r.supplierIds ? r.supplierIds.length : 0;
+          const bidCount = state.applications.filter(a => a.rfqId === r.id).length;
+          
+          let statusStyle = "background:rgba(245, 158, 11, 0.08); color:var(--accent-yellow);";
+          let statusText = "Pending Supplier";
+          if (r.procurementStatus === "EVALUATING") {
+            statusStyle = "background:rgba(118, 0, 230, 0.08); color:#9066ff;";
+            statusText = "Evaluating Bids";
+          } else if (r.procurementStatus === "COMPLETED") {
+            statusStyle = "background:rgba(0, 201, 139, 0.08); color:#00A370;";
+            statusText = "Completed";
+          }
+
+          const tr = document.createElement("tr");
+          tr.style.borderBottom = "1px solid rgba(0,0,0,0.04)";
+          tr.innerHTML = `
+            <td style="font-size:14px; padding:16px; color:var(--text-primary);"><strong>${escapeHTML(r.responseID)}</strong></td>
+            <td style="font-size:14px; padding:16px; color:var(--text-primary);">${escapeHTML(r.templateName)}</td>
+            <td style="font-size:14px; padding:16px;"><span class="status-badge" style="font-size:11px; padding:3px 8px; border-radius:4px; text-transform:uppercase; font-weight:700; ${statusStyle}">${statusText}</span></td>
+            <td style="font-size:14px; padding:16px;"><span class="status-badge" style="font-size:11px; padding:3px 8px; border-radius:4px; text-transform:uppercase; font-weight:700; background:rgba(0,0,0,0.03); color:var(--text-primary); border:1px solid var(--border-color);">${escapeHTML(r.distribution || 'private')}</span></td>
+            <td style="font-size:14px; padding:16px; color:var(--text-primary);">${vendorCount} vendors</td>
+            <td style="font-size:14px; padding:16px; color:var(--text-primary);">${bidCount} proposals</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      };
+
+      searchInput.oninput = (e) => {
+        adminProcFilters.search = e.target.value.trim();
+        renderList();
+      };
+
+      stageSelect.onchange = (e) => {
+        adminProcFilters.stage = e.target.value;
+        renderList();
+      };
+
+      renderList();
+    }
+
+    function renderAdminLogsView(container) {
+      const wrap = document.createElement("div");
+      wrap.className = "step-transition-in";
+
+      wrap.innerHTML = `
+        <div class="glass-card">
+          <div style="font-weight:700; font-size:16px; margin-bottom:16px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Live System Events</div>
+          <div id="admin-logs-wrap">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrap);
+
+      const logsWrap = document.getElementById("admin-logs-wrap");
+      logsWrap.innerHTML = "";
+
+      const events = [
+        { time: "2026-08-03 23:15:20", event: "Vendor profile onboarded successfully" },
+        { time: "2026-08-03 21:10:44", event: "RFQ Response Submitted by buyer@nexpro.com" },
+        { time: "2026-08-03 19:40:12", event: "Buyer signed up successfully: buyer@nexpro.com" },
+        { time: "2026-08-03 16:30:00", event: "Template created: Falcon 9 Propellant Sourcing" }
+      ];
+
+      const rfqs = state.submittedResponses.filter(r => r.hasProcurement) || [];
+      rfqs.forEach(rfq => {
+        events.unshift({
+          time: new Date(rfq.submittedAt).toISOString().replace('T', ' ').substring(0, 19),
+          event: `Procurement Sourcing initiated: ${rfq.responseID}`
+        });
+      });
+
+      const apps = state.applications || [];
+      apps.forEach(app => {
+        events.unshift({
+          time: new Date().toISOString().replace('T', ' ').substring(0, 19), // mock time
+          event: `Bid proposal submitted on RFQ ${app.rfqTitle} for value $${app.price.toLocaleString()}`
+        });
+      });
+
+      events.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+      logsWrap.innerHTML = events.map(e => `
+        <div class="log-item" style="padding:12px 16px; border-bottom:1px solid rgba(0,0,0,0.04); font-size:13.5px; display:flex; gap:16px; align-items:flex-start;">
+          <div class="log-time" style="color:var(--text-secondary); width:140px; flex-shrink:0; font-weight:600;">${e.time}</div>
+          <div style="color:var(--text-primary);">${escapeHTML(e.event)}</div>
+        </div>
+      `).join("");
     }
 
     // VIEW: RFQ Form View
@@ -5118,13 +5796,26 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       initDatalist();
       
       const handleHashRoute = () => {
-        if (window.location.hash === "#new-procurement") {
+        const hash = window.location.hash;
+        if (hash === "#cumulative-dashboard") {
+          currentView = "cumulative-dashboard";
+          selectedTemplateId = null;
+        } else if (hash === "#users-directory") {
+          currentView = "users-directory";
+          selectedTemplateId = null;
+        } else if (hash === "#admin-procurements") {
+          currentView = "admin-procurements";
+          selectedTemplateId = null;
+        } else if (hash === "#admin-logs") {
+          currentView = "admin-logs";
+          selectedTemplateId = null;
+        } else if (hash === "#new-procurement") {
           currentView = "new-procurement";
           selectedTemplateId = null;
-        } else if (window.location.hash === "#suppliers") {
+        } else if (hash === "#suppliers") {
           currentView = "suppliers";
           selectedTemplateId = null;
-        } else if (window.location.hash === "#submitted-responses") {
+        } else if (hash === "#submitted-responses") {
           currentView = "submitted-responses";
           selectedTemplateId = null;
         } else {
@@ -5149,6 +5840,20 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         closeNavbarDropdowns();
         render();
       });
+
+      // Check for welcome toast from signup
+      try {
+        const welcomeData = localStorage.getItem("show_welcome_toast");
+        if (welcomeData) {
+          const parsed = JSON.parse(welcomeData);
+          localStorage.removeItem("show_welcome_toast");
+          setTimeout(() => {
+            showToast(`Welcome, ${parsed.name}! Welcome to nexPro!`, "success");
+          }, 350);
+        }
+      } catch (e) {
+        console.warn("Welcome toast check failed", e);
+      }
 
       render();
     });
@@ -5345,5 +6050,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+<script src="state.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>
