@@ -17,7 +17,6 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="Webflow" name="generator"/>
 <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" integrity="sha384-TByxXMZf+uZZRAIfZj9nOeX9SKd5BDGTfAYh9q1R4UForGhOO2feGbocAsqhBZ3U" crossorigin="anonymous"/>
-<link rel="stylesheet" href="assets/style.css" />
 <style>
   /* Fix: Features dropdown was clipping the second nav item (Supplier Chain)
      behind a fixed-height overflow container inherited from the base stylesheet. */
@@ -2282,6 +2281,173 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
   footer, .section.is-footer, .footer-cta-link {
     display: none !important;
   }
+
+  /* AI Scanner styles */
+  .ai-scanner-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ai-scanner-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid rgba(118, 0, 230, 0.1);
+    border-top: 4px solid var(--accent-purple);
+    border-radius: 50%;
+    animation: ai-scan-rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+  .ai-scanner-core {
+    font-size: 32px;
+    animation: ai-scan-pulse 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes ai-scan-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes ai-scan-pulse {
+    0% { transform: scale(0.85); opacity: 0.7; }
+    100% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* Premium Modal Tabs & Tab Buttons styling */
+  .modal-tabs {
+    display: flex;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 6px;
+    border-radius: 12px;
+    width: fit-content;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  .tab-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+  }
+  .tab-btn:hover {
+    color: var(--accent-purple);
+    background: rgba(118, 0, 230, 0.04);
+  }
+  .tab-btn.active {
+    color: #FFFFFF !important;
+    background: var(--accent-purple) !important;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(118, 0, 230, 0.25);
+  }
+
+  /* Toast Notification Styling (F7/F8/F13 Success Popups) */
+  .toast-notif {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #1e1e24;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    z-index: 99999;
+    font-size: 13px;
+    font-weight: 600;
+    pointer-events: none;
+    transform: translateY(50px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    border-left: 4px solid var(--accent-purple);
+  }
+  .toast-notif.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .toast-notif.success {
+    border-left-color: #00c98b;
+    background: #112a20;
+    color: #00c98b;
+  }
+  .toast-notif.error {
+    border-left-color: #ff0e56;
+    background: #33121b;
+    color: #ff0e56;
+  }
+  .toast-notif.info {
+    border-left-color: #7600e6;
+    background: #1f1430;
+    color: #a862ff;
+  }
+
+  /* Speech-to-text mic control */
+  .stt-field-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .stt-field-wrap > .app-input {
+    padding-right: 42px !important;
+  }
+  .stt-mic-btn {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+    z-index: 2;
+  }
+  .stt-field-wrap textarea + .stt-mic-btn { top: 6px; }
+  .stt-mic-btn:hover {
+    border-color: var(--accent-purple);
+    background: #FFFFFF;
+  }
+  .stt-mic-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--accent-purple);
+    pointer-events: none;
+  }
+  .stt-mic-btn.stt-listening {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    animation: sttPulse 1.4s ease-in-out infinite;
+  }
+  .stt-mic-btn.stt-listening svg { fill: #ffffff; }
+  .stt-mic-btn.stt-unsupported {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  @keyframes sttPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 14, 86, 0.45); }
+    70% { box-shadow: 0 0 0 8px rgba(255, 14, 86, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 14, 86, 0); }
+  }
+  .stt-interim-hint {
+    position: absolute;
+    left: 0;
+    right: 40px;
+    bottom: -18px;
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 </style>
 
 </head>
@@ -2534,12 +2700,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
   </main>
 
   <!-- Modals -->
-  <div id="modal-overlay" class="modal-overlay">
+  <div id="modal-overlay" class="modal-overlay" style="display: none;">
     <div class="modal-container">
       <h3 id="modal-title" class="modal-title">Modal Title</h3>
       <p id="modal-desc" class="modal-desc">Modal description text goes here.</p>
-      <div id="modal-body" style="margin-bottom: 24px;"></div>
-      <div class="modal-actions">
+      <div id="modal-body-container" style="margin-bottom: 24px;"></div>
+      <div id="modal-footer-container" class="modal-actions">
         <button id="modal-cancel-btn" class="secondary-btn">Cancel</button>
         <button id="modal-confirm-btn" class="primary-btn">Confirm</button>
       </div>
@@ -2586,6 +2752,18 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     </div>
   </div>
 
+  <!-- AI Scanning Overlay -->
+  <div id="ai-scanning-overlay" class="modal-overlay" style="display: none;">
+    <div class="modal-card" style="max-width: 420px; text-align: center; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; border-radius: 20px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.45); box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);">
+      <div class="ai-scanner-spinner">
+        <div class="ai-scanner-ring"></div>
+        <div class="ai-scanner-core">🤖</div>
+      </div>
+      <h3 style="margin: 0; font-size: 20px; font-weight: 800; color: #111;" id="ai-scanning-title">AI Sourcing Agent</h3>
+      <p style="margin: 0; font-size: 14px; color: #666;" id="ai-scanning-desc">Analyzing uploaded attachments for structured field extraction...</p>
+    </div>
+  </div>
+
   <!-- Add / Edit Supplier Side Panel -->
   <div id="supplier-panel-overlay" class="modal-overlay supplier-panel-overlay">
     <div class="supplier-panel-card">
@@ -2594,9 +2772,23 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         <button class="modal-close" onclick="closeSupplierPanel()">&times;</button>
       </div>
       <div id="supplier-panel-body" class="supplier-panel-body"></div>
-      <div class="modal-footer" style="justify-content: flex-end; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+      <div id="supplier-panel-footer" class="modal-footer" style="justify-content: flex-end; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 16px;">
         <button class="secondary-btn" onclick="closeSupplierPanel()">Cancel</button>
         <button class="primary-btn" onclick="submitSupplierForm()">Save Supplier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- F1: Version History Modal -->
+  <div id="version-history-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-container" style="max-width: 620px; width: 90%; border-radius: 16px; position: relative;">
+      <button onclick="closeVersionHistoryModal()" style="position: absolute; top: 20px; right: 24px; background: none; border: none; font-size: 32px; font-weight: 300; color: var(--text-secondary); cursor: pointer; padding: 4px; line-height: 1;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">&times;</button>
+      <div class="modal-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 16px;">
+        <h3 id="version-history-title" class="modal-title" style="margin:0;">Version History</h3>
+      </div>
+      <div id="version-history-body" style="max-height: 60vh; overflow-y: auto; padding-right: 6px;"></div>
+      <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 14px; margin-top: 16px; display: flex; justify-content: flex-end;">
+        <button class="secondary-btn" onclick="closeVersionHistoryModal()">Close</button>
       </div>
     </div>
   </div>
@@ -2896,6 +3088,17 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     let supplierFilters = { search: "", category: "all", status: "all", minRating: "0", sort: "rating-desc" };
     let activeProcurementTab = "active"; // "active" | "start-new"
     let procurementFilters = { status: "all", category: "all", search: "" };
+    // F5: Kanban Pipeline View
+    let procurementViewMode = "grid"; // "grid" | "kanban"
+    // F7: Bulk Actions
+    let bulkActionMode = false;
+    let selectedProcurementIds = [];
+    // F10: Response Scoring / Weighting - sort mode for Submitted Responses grid
+    let responsesSortMode = "default";
+    function setResponsesSort(val) {
+      responsesSortMode = val;
+      render();
+    }
 
     // Load data from localStorage or use defaults
     function loadState() {
@@ -3059,6 +3262,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         renderEditorView(viewContainer);
       } else if (currentView === "suppliers") {
         renderSuppliersView(viewContainer);
+      } else if (currentView === "email-dispatch") {
+        renderEmailDispatchView(viewContainer);
       } else if (currentView === "form") {
         renderFormView(viewContainer);
       } else if (currentView === "submitted-responses") {
@@ -3073,6 +3278,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         renderAdminProcurementsView(viewContainer);
       } else if (currentView === "admin-logs") {
         renderAdminLogsView(viewContainer);
+      } else if (currentView === "data-requests") {
+        renderDataRequestsView(viewContainer);
       }
     }
 
@@ -3102,6 +3309,14 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         } else {
           breadcrumb.innerHTML = "<span>Supplier Chain</span>";
         }
+      } else if (currentView === "email-dispatch") {
+        breadcrumb.innerHTML = `
+          <a onclick="navigateTo('companies')">RFQ Templates</a>
+          <span class="breadcrumb-separator">/</span>
+          <a onclick="navigateTo('suppliers', '${selectedTemplateId}')">Supplier List</a>
+          <span class="breadcrumb-separator">/</span>
+          <span>Sourcing Dispatch</span>
+        `;
       } else if (currentView === "new-procurement") {
         breadcrumb.innerHTML = "<span>New Procurement Dashboard</span>";
       } else if (currentView === "submitted-responses") {
@@ -3135,6 +3350,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         breadcrumb.innerHTML = "<span>Admin Oversight / Procurements Oversight</span>";
       } else if (currentView === "admin-logs") {
         breadcrumb.innerHTML = "<span>Admin Oversight / Activity Logs & Info</span>";
+      } else if (currentView === "data-requests") {
+        breadcrumb.innerHTML = "<span>Admin Oversight / Data Deletion Requests</span>";
       }
     }
 
@@ -3207,6 +3424,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       } else if (currentView === "admin-logs") {
         titleEl.innerText = "System Activity Log";
         actionsEl.innerHTML = "";
+      } else if (currentView === "data-requests") {
+        titleEl.innerText = "Data Deletion Requests";
+        actionsEl.innerHTML = "";
       }
     }
 
@@ -3226,6 +3446,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const grid = document.createElement("div");
       grid.className = "company-grid";
       
+      const _currentUserForCards = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+      const _canViewVersions = !_currentUserForCards || _currentUserForCards.role !== 'vendor';
+
       state.templates.forEach((template, index) => {
         const card = document.createElement("div");
         card.className = `app-card color-${(index + 1) % 4}`;
@@ -3239,10 +3462,17 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         };
         
         const fieldCount = template.fields ? template.fields.length : 0;
+        // F4: Supplier Count on Template Card - suppliers whose category matches this template's category
+        const supplierCountForCategory = template.category
+          ? (state.suppliers || []).filter(s => (s.category || '') === template.category).length
+          : (state.suppliers || []).length;
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
             <h3 class="card-title">${escapeHTML(template.name)}</h3>
             <div style="display:flex; gap: 4px;">
+              <div class="card-delete-icon" title="Duplicate Template" style="color:var(--accent-lightblue);" onclick="duplicateTemplate('${template.id}', event)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </div>
               <div class="card-delete-icon" title="Rename Template" style="color:var(--accent-purple);" onclick="promptRenameTemplate('${template.id}')">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
               </div>
@@ -3251,8 +3481,20 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
               </div>
             </div>
           </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:6px; flex-wrap:wrap;">
+            <span class="card-meta" style="margin-bottom:0;">${escapeHTML(template.category || 'Uncategorized')}</span>
+            <span class="supplier-status status-active" style="font-size: 10.5px; padding: 2px 8px;" title="Suppliers registered in this category">${supplierCountForCategory} supplier${supplierCountForCategory === 1 ? '' : 's'} in category</span>
+            <span class="supplier-status" style="font-size: 10.5px; padding: 2px 8px; background: rgba(108, 92, 231, 0.08); color: var(--accent-purple); border: 1px solid rgba(108, 92, 231, 0.2);" title="Suppliers invited to this RFQ template">
+              👥 ${template.supplierIds ? template.supplierIds.length : 0} Invited
+            </span>
+          </div>
           <div class="card-footer" style="margin-top: 16px;">
             <span class="card-meta" style="margin-bottom:0;">${fieldCount} field${fieldCount === 1 ? '' : 's'}</span>
+            ${_canViewVersions ? `
+            <span class="card-link-btn" onclick="event.stopPropagation(); openVersionHistoryModal('${template.id}')" title="View template versions">
+              Versions${(template.versions && template.versions.length > 0) ? ` (${template.versions.length})` : ''}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </span>` : ""}
             <span class="card-link-btn">
               Edit Layout
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
@@ -3289,13 +3531,22 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           <div class="tab-btn ${activeProcurementTab === "start-new" ? "active" : ""}" onclick="switchProcurementTab('start-new')">Start New Procurement</div>
         </div>
 
-        <div class="supplier-filter-bar" style="margin-bottom: 24px;">
+        <div class="supplier-filter-bar" style="margin-bottom: 24px; align-items:center;">
           <input id="proc-search" class="supplier-filter-input" type="text" placeholder="Search by template, response, or ID..." value="${escapeHTML(procurementFilters.search)}" oninput="applyProcurementFilters()" />
           <select id="proc-category" class="supplier-filter-select" onchange="applyProcurementFilters()">
             <option value="all">All Categories</option>
             ${catOptionsHTML}
           </select>
           ${statusSelectHTML}
+          ${isStartNewActive ? "" : `
+            <div style="display:flex; gap:6px; margin-left:auto;">
+              <button class="secondary-btn" style="padding:6px 12px; font-size:12px; ${procurementViewMode === 'grid' ? 'background:var(--accent-purple); color:#fff; border-color:var(--accent-purple);' : ''}" onclick="setProcurementViewMode('grid')">Grid View</button>
+              <button class="secondary-btn" style="padding:6px 12px; font-size:12px; ${procurementViewMode === 'kanban' ? 'background:var(--accent-purple); color:#fff; border-color:var(--accent-purple);' : ''}" onclick="setProcurementViewMode('kanban')">Kanban Board</button>
+              ${procurementViewMode === 'grid' ? `
+                <button class="secondary-btn" style="padding:6px 12px; font-size:12px; ${bulkActionMode ? 'background:var(--accent-orange); color:#fff; border-color:var(--accent-orange);' : ''}" onclick="toggleBulkActionMode()">${bulkActionMode ? 'Exit Bulk Action' : 'Bulk Action'}</button>
+              ` : ''}
+            </div>
+          `}
         </div>
 
         <div id="procurement-grid-wrap"></div>
@@ -3304,7 +3555,32 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       container.appendChild(wrap);
 
       const gridContainer = wrap.querySelector("#procurement-grid-wrap");
-      renderProcurementGrid(gridContainer);
+      if (!isStartNewActive && procurementViewMode === "kanban") {
+        renderProcurementKanban(gridContainer);
+      } else {
+        renderProcurementGrid(gridContainer);
+      }
+    }
+
+    // F5: Kanban Pipeline View
+    function setProcurementViewMode(mode) {
+      procurementViewMode = mode;
+      // Bulk selection only applies to the grid view - clear it when switching to Kanban
+      // so a stale floating action bar can't reference a view that has no checkboxes.
+      if (mode === "kanban") {
+        bulkActionMode = false;
+        selectedProcurementIds = [];
+        const bar = document.getElementById("bulk-actions-bar");
+        if (bar) bar.remove();
+      }
+      render();
+    }
+
+    // F7: Bulk Actions
+    function toggleBulkActionMode() {
+      bulkActionMode = !bulkActionMode;
+      selectedProcurementIds = [];
+      render();
     }
 
     function switchProcurementTab(tab) {
@@ -3325,7 +3601,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       
       const gridContainer = document.getElementById("procurement-grid-wrap");
       if (gridContainer) {
-        renderProcurementGrid(gridContainer);
+        // Bug fix: respect the active Kanban/Grid toggle instead of always rendering the grid
+        if (procurementViewMode === "kanban") {
+          renderProcurementKanban(gridContainer);
+        } else {
+          renderProcurementGrid(gridContainer);
+        }
       }
     }
 
@@ -3367,6 +3648,20 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const grid = document.createElement("div");
       grid.className = "company-grid";
 
+      // F7: Select All - only meaningful when bulk mode is active and there's something to select
+      if (bulkActionMode && activeProcurementTab === "active" && filtered.length > 0) {
+        const filteredIds = filtered.map(f => f.id);
+        const allSelected = filteredIds.every(id => selectedProcurementIds.includes(id));
+        const selectAllBar = document.createElement("div");
+        selectAllBar.style.cssText = "display:flex; align-items:center; gap:8px; margin-bottom:12px; padding: 8px 12px; background: rgba(118,0,230,0.04); border: 1px solid rgba(118,0,230,0.12); border-radius: 8px;";
+        selectAllBar.innerHTML = `
+          <input type="checkbox" id="proc-select-all" ${allSelected ? 'checked' : ''} style="width:16px; height:16px; cursor:pointer;">
+          <label for="proc-select-all" style="font-size:12.5px; font-weight:600; color: var(--text-primary); cursor:pointer;">Select all ${filteredIds.length} visible item${filteredIds.length === 1 ? '' : 's'}</label>
+        `;
+        selectAllBar.querySelector("#proc-select-all").onchange = (e) => toggleSelectAllProcurement(filteredIds, e.target.checked);
+        container.appendChild(selectAllBar);
+      }
+
       // Prepend "+ Create New Response" tile under start-new tab
       if (activeProcurementTab === "start-new") {
         const createCard = document.createElement("div");
@@ -3398,12 +3693,38 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const category = template ? template.category : "Other";
         const submittedDate = new Date(response.submittedAt).toLocaleDateString() + " " + new Date(response.submittedAt).toLocaleTimeString();
 
+        // F6: Due Date / SLA Aging
+        const SLA_WARNING_DAYS = 5;
+        let slaBadgeHTML = "";
+        if (response.hasProcurement && response.procurementStatus && response.procurementStatus !== "COMPLETED") {
+          const anchor = response.statusChangedAt || response.submittedAt;
+          const daysInStage = anchor ? Math.max(0, Math.floor((Date.now() - new Date(anchor).getTime()) / (1000 * 60 * 60 * 24))) : 0;
+          const isWarning = daysInStage > SLA_WARNING_DAYS;
+          const isCaution = !isWarning && daysInStage > 2;
+          slaBadgeHTML = `
+            <span class="card-badge" style="font-size: 10.5px; padding: 2px 8px; border-radius: 4px; font-weight:700; display:inline-block; ${isWarning ? 'background: rgba(255, 14, 86, 0.12); color: var(--accent-red);' : 'background: rgba(255, 100, 0, 0.08); color: var(--accent-orange);'}" title="Days since last stage change">
+              ${daysInStage} day${daysInStage === 1 ? '' : 's'} in stage
+            </span>
+          `;
+          // Same at-a-glance urgency cue used on the Kanban board, for visual consistency
+          if (isWarning) card.style.borderLeft = "3px solid var(--accent-red)";
+          else if (isCaution) card.style.borderLeft = "3px solid var(--accent-orange)";
+        }
+
+        // F7: Bulk Actions - checkbox shown in bulk action mode
+        const isChecked = selectedProcurementIds.includes(response.id);
+        const bulkCheckboxHTML = bulkActionMode ? `
+          <input type="checkbox" class="proc-bulk-checkbox" ${isChecked ? 'checked' : ''} style="width:18px; height:18px; cursor:pointer; margin-right:4px;" onclick="event.stopPropagation(); toggleProcurementCardSelection('${response.id}', this.checked)">
+        ` : "";
+
         const headerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items:center;">
+              ${bulkCheckboxHTML}
               <span class="card-badge" style="background: rgba(0, 198, 255, 0.08); color: #0088cc; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight:600; text-transform:uppercase; display:inline-block;">
                 ${escapeHTML(category)}
               </span>
+              ${slaBadgeHTML}
             </div>
             <div class="card-delete-icon" title="Delete Response" onclick="promptDeleteResponseFromProcurement('${response.id}', event)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
@@ -3466,12 +3787,23 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             `;
           }
 
+          // F8: Clone Last Procurement - available once a procurement is underway
+          const cloneBtn = `
+            <button class="secondary-btn" title="Clone Sourcing" style="padding: 6px 10px; font-size: 12px;" onclick="cloneProcurement('${response.id}', event)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Clone Sourcing
+            </button>
+          `;
+
           footerHTML = `
-            <div class="card-footer" style="margin-top: 14px; display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--border-color); padding-top: 12px;">
+            <div class="card-footer" style="margin-top: 14px; display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--border-color); padding-top: 12px; gap:8px;">
               <span class="card-link-btn" style="font-size:12.5px;" onclick="navigateTo('form', '${response.templateId}', '${response.id}')">
                 View Details
               </span>
-              ${actionBtn}
+              <div style="display:flex; gap:8px; align-items:center;">
+                ${cloneBtn}
+                ${actionBtn}
+              </div>
             </div>
           `;
         } else {
@@ -3519,6 +3851,277 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       });
 
       container.appendChild(grid);
+
+      // F7: Bulk Actions floating bar
+      renderBulkActionsBar(container);
+    }
+
+    // F5: Kanban Pipeline View - columns match the DB enum strings exactly
+    const KANBAN_COLUMNS = [
+      { status: "PENDING SUPPLIER", label: "Pending Supplier Selection" },
+      { status: "EVALUATING", label: "Evaluating Bids" },
+      { status: "COMPLETED", label: "Completed Sourcing" }
+    ];
+
+    function renderProcurementKanban(container) {
+      container.innerHTML = "";
+
+      const search = procurementFilters.search.toLowerCase();
+      const cat = procurementFilters.category;
+
+      const items = state.submittedResponses.filter(item => {
+        if (!item.hasProcurement) return false;
+        if (search) {
+          const matchTemplate = item.templateName.toLowerCase().includes(search);
+          const matchID = item.responseID.toLowerCase().includes(search);
+          if (!matchTemplate && !matchID) return false;
+        }
+        if (cat !== "all") {
+          const template = state.templates.find(t => t.id === item.templateId);
+          const templateCategory = template ? template.category : "Other";
+          if (templateCategory !== cat) return false;
+        }
+        return true;
+      });
+
+      const board = document.createElement("div");
+      board.className = "kanban-board";
+      board.style.display = "grid";
+      board.style.gridTemplateColumns = "repeat(3, 1fr)";
+      board.style.gap = "16px";
+      board.style.alignItems = "start";
+
+      KANBAN_COLUMNS.forEach(col => {
+        const colItems = items.filter(i => i.procurementStatus === col.status);
+        const colEl = document.createElement("div");
+        colEl.className = "kanban-column";
+        colEl.style.background = "var(--bg-card)";
+        colEl.style.border = "1px solid var(--border-color)";
+        colEl.style.borderRadius = "12px";
+        colEl.style.padding = "12px";
+        colEl.style.minHeight = "200px";
+        colEl.ondragover = (e) => { e.preventDefault(); colEl.style.background = "rgba(118, 0, 230, 0.04)"; };
+        colEl.ondragleave = () => { colEl.style.background = "var(--bg-card)"; };
+        colEl.ondrop = (e) => { e.preventDefault(); colEl.style.background = "var(--bg-card)"; handleKanbanDrop(e, col.status); };
+
+        colEl.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--accent-purple);">
+            <span style="font-weight:700; font-size:13px; color:var(--text-primary);">${col.label}</span>
+            <span class="card-badge" style="background: rgba(118,0,230,0.08); color: var(--accent-purple); font-size:11px; padding:2px 8px; border-radius:10px; font-weight:700;">${colItems.length}</span>
+          </div>
+          <div class="kanban-column-body" style="display:flex; flex-direction:column; gap:10px;"></div>
+        `;
+
+        const colBody = colEl.querySelector(".kanban-column-body");
+        if (colItems.length === 0) {
+          colBody.innerHTML = `<div style="text-align:center; padding: 20px 8px; color: var(--text-secondary); font-size:12px; font-style:italic;">No items in this stage</div>`;
+        }
+
+        // Small-but-high-value: surface the longest-waiting items first within each column
+        // so buyers see what needs attention without having to scan the whole board.
+        const sortedColItems = colItems.slice().sort((a, b) => {
+          const anchorA = new Date(a.statusChangedAt || a.submittedAt).getTime();
+          const anchorB = new Date(b.statusChangedAt || b.submittedAt).getTime();
+          return anchorA - anchorB; // oldest (longest waiting) first
+        });
+
+        sortedColItems.forEach(item => {
+          const anchor = item.statusChangedAt || item.submittedAt;
+          const daysInStage = anchor ? Math.max(0, Math.floor((Date.now() - new Date(anchor).getTime()) / (1000 * 60 * 60 * 24))) : 0;
+          const isWarning = daysInStage > 5;
+          const isCaution = !isWarning && daysInStage > 2;
+
+          const kCard = document.createElement("div");
+          kCard.className = "kanban-card";
+          kCard.setAttribute("draggable", "true");
+          kCard.style.background = "var(--bg-main)";
+          kCard.style.border = "1px solid var(--border-color)";
+          kCard.style.borderLeft = isWarning ? "3px solid var(--accent-red)" : (isCaution ? "3px solid var(--accent-orange)" : "3px solid transparent");
+          kCard.style.borderRadius = "8px";
+          kCard.style.padding = "10px 12px";
+          kCard.style.cursor = "grab";
+          kCard.ondragstart = (e) => { e.dataTransfer.setData("text/plain", item.id); };
+          kCard.onclick = () => navigateTo('form', item.templateId, item.id);
+
+          kCard.innerHTML = `
+            <div style="font-weight:700; font-size:12.5px; color:var(--text-primary); margin-bottom:4px;">${escapeHTML(item.responseID)}</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">${escapeHTML(item.templateName)}</div>
+            <span class="card-badge" style="font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700; ${isWarning ? 'background: rgba(255,14,86,0.12); color: var(--accent-red);' : 'background: rgba(255,100,0,0.08); color: var(--accent-orange);'}">${daysInStage}d in stage</span>
+          `;
+          colBody.appendChild(kCard);
+        });
+
+        board.appendChild(colEl);
+      });
+
+      container.appendChild(board);
+    }
+
+    // F5: Dropping a card into a new column updates status and syncs via /api/responses/bulk
+    function handleKanbanDrop(e, newStatus) {
+      const responseId = e.dataTransfer.getData("text/plain");
+      const response = state.submittedResponses.find(r => r.id === responseId);
+      if (!response || response.procurementStatus === newStatus) return;
+
+      response.procurementStatus = newStatus;
+      response.procurementProgress = newStatus === "PENDING SUPPLIER" ? 33 : (newStatus === "EVALUATING" ? 66 : 100);
+      saveState(); // triggers /api/responses/bulk sync, which also stamps statusChangedAt server-side
+      showToast(`Moved "${response.responseID}" to ${newStatus === 'PENDING SUPPLIER' ? 'Pending Supplier Selection' : (newStatus === 'EVALUATING' ? 'Evaluating Bids' : 'Completed Sourcing')}`, "success");
+      render();
+    }
+
+    // F7: Bulk Actions
+    function toggleProcurementCardSelection(responseId, checked) {
+      if (checked) {
+        if (!selectedProcurementIds.includes(responseId)) selectedProcurementIds.push(responseId);
+      } else {
+        selectedProcurementIds = selectedProcurementIds.filter(id => id !== responseId);
+      }
+      renderBulkActionsBar(document.getElementById("procurement-grid-wrap") || document.body);
+    }
+
+    // F7: Select All - toggle every currently-visible (filtered) card at once
+    function toggleSelectAllProcurement(ids, checked) {
+      if (checked) {
+        ids.forEach(id => {
+          if (!selectedProcurementIds.includes(id)) selectedProcurementIds.push(id);
+        });
+      } else {
+        selectedProcurementIds = selectedProcurementIds.filter(id => !ids.includes(id));
+      }
+      const gridContainer = document.getElementById("procurement-grid-wrap");
+      if (gridContainer) renderProcurementGrid(gridContainer);
+    }
+
+    function renderBulkActionsBar(container) {
+      let bar = document.getElementById("bulk-actions-bar");
+      if (bar) bar.remove();
+
+      if (!bulkActionMode || selectedProcurementIds.length === 0) return;
+
+      bar = document.createElement("div");
+      bar.id = "bulk-actions-bar";
+      bar.style.position = "fixed";
+      bar.style.bottom = "24px";
+      bar.style.left = "50%";
+      bar.style.transform = "translateX(-50%)";
+      bar.style.background = "var(--text-primary)";
+      bar.style.color = "#fff";
+      bar.style.borderRadius = "12px";
+      bar.style.padding = "12px 20px";
+      bar.style.display = "flex";
+      bar.style.alignItems = "center";
+      bar.style.gap = "16px";
+      bar.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)";
+      bar.style.zIndex = "500";
+
+      bar.innerHTML = `
+        <span style="font-size:13px; font-weight:600;">${selectedProcurementIds.length} selected</span>
+        <button class="primary-btn" style="padding:6px 14px; font-size:12.5px; background:#00c98b; border-color:#00c98b;" onclick="bulkCloseSelected()">Close Selected</button>
+        <button class="primary-btn" style="padding:6px 14px; font-size:12.5px;" onclick="bulkReassignCategory()">Reassign Category</button>
+        <button class="secondary-btn" style="padding:6px 14px; font-size:12.5px;" onclick="bulkExportCSV()">Export CSV</button>
+      `;
+      document.body.appendChild(bar);
+    }
+
+    function bulkCloseSelected() {
+      if (selectedProcurementIds.length === 0) return;
+      openModal({
+        title: "Close Selected Procurements?",
+        desc: `Mark ${selectedProcurementIds.length} selected procurement(s) as Completed?`,
+        confirmText: "Close Selected",
+        onConfirm: () => {
+          selectedProcurementIds.forEach(id => {
+            const resp = state.submittedResponses.find(r => r.id === id);
+            if (resp) {
+              resp.procurementStatus = "COMPLETED";
+              resp.procurementProgress = 100;
+            }
+          });
+          saveState();
+          closeModal();
+          showToast(`Closed ${selectedProcurementIds.length} procurement(s) as Completed`, "success");
+          selectedProcurementIds = [];
+          render();
+        }
+      });
+    }
+
+    function bulkReassignCategory() {
+      if (selectedProcurementIds.length === 0) return;
+      const catOptionsHTML = SUPPLIER_CATEGORIES.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+      const bodyHTML = `
+        <div class="field-input-group">
+          <span class="field-label-span">New Category</span>
+          <select id="modal-input" class="app-input w-select">${catOptionsHTML}</select>
+        </div>
+      `;
+      openModal({
+        title: "Reassign Category",
+        desc: `Re-categorize the ${selectedProcurementIds.length} selected item(s) by updating their template's category.`,
+        bodyHTML,
+        confirmText: "Reassign",
+        onConfirm: (val) => {
+          selectedProcurementIds.forEach(id => {
+            const resp = state.submittedResponses.find(r => r.id === id);
+            if (!resp) return;
+            const template = state.templates.find(t => t.id === resp.templateId);
+            if (template) template.category = val;
+          });
+          saveState();
+          closeModal();
+          showToast(`Reassigned ${selectedProcurementIds.length} item(s) to category "${val}"`, "success");
+          selectedProcurementIds = [];
+          render();
+        }
+      });
+    }
+
+    function bulkExportCSV() {
+      if (selectedProcurementIds.length === 0) return;
+      const rows = [["Response ID", "Template", "Status", "Submitted At", "Progress %"]];
+      selectedProcurementIds.forEach(id => {
+        const resp = state.submittedResponses.find(r => r.id === id);
+        if (!resp) return;
+        rows.push([resp.responseID, resp.templateName, resp.procurementStatus, resp.submittedAt, resp.procurementProgress]);
+      });
+      const csvContent = rows.map(r => r.map(cell => `"${String(cell === undefined ? '' : cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `procurement-export-${Date.now()}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${selectedProcurementIds.length} item(s) to CSV`, "success");
+    }
+
+    // F8: Clone Last Procurement
+    function cloneProcurement(responseId, event) {
+      if (event) event.stopPropagation();
+      const response = state.submittedResponses.find(r => r.id === responseId);
+      if (!response) return;
+
+      // Pre-fill cloned suppliers
+      pendingSupplierSelection = (response.supplierIds || []).slice();
+
+      openModal({
+        title: "Clone Sourcing Event?",
+        desc: `You are cloning the sourcing configuration from event "${response.responseID}". Since requirements (like target delivery dates, quantities, and compliance details) are dynamic and may have changed for this new run, would you like to edit the fields/info first, or proceed straight to supplier selection?`,
+        confirmText: "Proceed to Suppliers",
+        cancelText: "Edit Fields First",
+        onConfirm: () => {
+          closeModal();
+          showToast(`Cloned supplier selection. Choose suppliers to proceed.`, "success");
+          navigateTo('suppliers', response.templateId);
+        },
+        onCancel: () => {
+          showToast(`Cloned supplier selection saved. Redirecting to template editor to customize fields...`, "info");
+          navigateTo('editor', response.templateId);
+        }
+      });
     }
 
     function startSourcingForResponse(responseId) {
@@ -3548,14 +4151,13 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
       openModal({
         title: "Delete Sourcing Record?",
-        desc: `Are you sure you want to permanently delete procurement request "${response.responseID}"? This will delete the response record and any active procurement tracking.`,
-        confirmText: "Delete Permanently",
+        desc: `Are you sure you want to delete procurement request "${response.responseID}"? It will be moved to Archived Bids and can be restored later.`,
+        confirmText: "Delete",
         confirmClass: "primary-btn danger-btn",
         onConfirm: () => {
-          state.submittedResponses = state.submittedResponses.filter(r => r.id !== responseId);
-          saveState();
+          archiveResponse(responseId);
           closeModal();
-          showToast(`Deleted response record: ${response.responseID}`);
+          showToast(`Archived response record: ${response.responseID}`);
           render();
         }
       });
@@ -3988,18 +4590,189 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       `).join("");
     }
 
+    function renderDataRequestsView(container) {
+      const wrap = document.createElement("div");
+      wrap.className = "step-transition-in";
+
+      wrap.innerHTML = `
+        <div class="glass-card">
+          <div style="display:flex; gap:12px; margin-bottom:20px;">
+            <input type="text" id="dr-search-input" class="app-input" style="flex:1; height:40px; background:rgba(0,0,0,0.01); border:1px solid var(--border-color); border-radius:8px; padding:0 16px; color:var(--text-primary);" placeholder="Search requests by email..." />
+          </div>
+
+          <div style="width:100%; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color);">
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">User Email</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Role</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px;">Requested At</th>
+                  <th style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; padding:12px 16px; text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="data-requests-list-body">
+                <tr><td colspan="4" style="text-align:center; padding:20px; color:var(--text-secondary);">Loading requests...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(wrap);
+
+      const searchInput = document.getElementById("dr-search-input");
+      let searchVal = "";
+
+      const fetchAndRenderList = async () => {
+        const tbody = document.getElementById("data-requests-list-body");
+        try {
+          const adminUser = getCurrentUser();
+          const response = await fetch(`${API_URL}/admin/data-requests?email=${encodeURIComponent(adminUser.email)}`);
+          if (!response.ok) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--accent-red); padding:20px;">Failed to load data requests.</td></tr>`;
+            return;
+          }
+          const data = await response.json();
+          
+          const filtered = data.filter(u => {
+            if (searchVal && !u.email.toLowerCase().includes(searchVal.toLowerCase())) return false;
+            return true;
+          });
+
+          if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary); padding:20px;">No pending deactivation or deletion requests.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = "";
+          filtered.forEach(u => {
+            const tr = document.createElement("tr");
+            tr.style.borderBottom = "1px solid rgba(0,0,0,0.04)";
+            
+            const reqDate = u.deletionRequestedAt ? new Date(u.deletionRequestedAt).toLocaleString() : "—";
+
+            tr.innerHTML = `
+              <td style="font-size:14px; padding:16px; color:var(--text-primary);"><strong>${escapeHTML(u.email)}</strong></td>
+              <td style="font-size:14px; padding:16px; color:var(--text-primary); text-transform:uppercase; font-size:11px; font-weight:600;"><span class="status-badge" style="padding:3px 8px; border-radius:4px; background:rgba(0,0,0,0.03);">${escapeHTML(u.role)}</span></td>
+              <td style="font-size:14px; padding:16px; color:var(--text-secondary);">${reqDate}</td>
+              <td style="font-size:14px; padding:16px; text-align:right;">
+                <button class="primary-btn" onclick="approveDataRequest('${u._id}', '${escapeJSString(u.email)}')" style="padding:6px 12px; font-size:12.5px; margin-right:8px; background-color:var(--accent-red); border-color:var(--accent-red);">Approve</button>
+                <button class="secondary-btn" onclick="rejectDataRequest('${u._id}', '${escapeJSString(u.email)}')" style="padding:6px 12px; font-size:12.5px;">Reject</button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--accent-red); padding:20px;">Error: ${escapeHTML(err.message)}</td></tr>`;
+        }
+      };
+
+      searchInput.oninput = (e) => {
+        searchVal = e.target.value.trim();
+        fetchAndRenderList();
+      };
+
+      fetchAndRenderList();
+    }
+
+    async function approveDataRequest(id, email) {
+      const confirmApprove = confirm(`Are you sure you want to APPROVE the deletion request for "${email}"?\n\nThis will scrub/anonymize all personal profile information in the User and Supplier databases, while preserving historical bids in the system.`);
+      if (!confirmApprove) return;
+
+      try {
+        const adminUser = getCurrentUser();
+        const response = await fetch(`${API_URL}/admin/data-requests/${id}/approve`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminEmail: adminUser.email })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          showToast(data.message || "Deletion approved and data anonymized.");
+          navigateTo('companies');
+          setTimeout(() => { navigateTo('data-requests'); }, 100);
+        } else {
+          showToast(data.message || "Failed to approve request.", "error");
+        }
+      } catch (err) {
+        showToast("Error approving deletion: " + err.message, "error");
+      }
+    }
+
+    async function rejectDataRequest(id, email) {
+      const confirmReject = confirm(`Are you sure you want to REJECT the deletion request for "${email}"?`);
+      if (!confirmReject) return;
+
+      try {
+        const adminUser = getCurrentUser();
+        const response = await fetch(`${API_URL}/admin/data-requests/${id}/reject`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminEmail: adminUser.email })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          showToast(data.message || "Deletion request rejected.");
+          navigateTo('companies');
+          setTimeout(() => { navigateTo('data-requests'); }, 100);
+        } else {
+          showToast(data.message || "Failed to reject request.", "error");
+        }
+      } catch (err) {
+        showToast("Error rejecting deletion: " + err.message, "error");
+      }
+    }
+
+    function escapeJSString(str) {
+      if (!str) return "";
+      return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+    }
+
     // VIEW: RFQ Form View
     function renderFormView(container) {
-      const template = state.templates.find(t => t.id === selectedTemplateId);
+      let activeTemplateId = selectedTemplateId;
+      if (!activeTemplateId && selectedResponseId) {
+        const responseObj = state.submittedResponses.find(r => r.id === selectedResponseId);
+        if (responseObj) {
+          activeTemplateId = responseObj.templateId;
+        }
+      }
+
+      selectedTemplateId = activeTemplateId; // Ensure global templateId is synced
+
+      const template = state.templates.find(t => t.id === activeTemplateId);
       
       if (!template) {
-        container.innerHTML = "<p>Template not found.</p>";
+        container.innerHTML = "<p>Template not found. Please verify the template exists in the directory.</p>";
         return;
       }
       
       let response = null;
       if (selectedResponseId) {
         response = state.submittedResponses.find(r => r.id === selectedResponseId);
+      }
+      
+      // Assemble AI Assistant Card for new response filling
+      let aiCardHTML = "";
+      if (!response) {
+        aiCardHTML = `
+          <div class="ai-assistant-card" style="margin-bottom: 32px; background: linear-gradient(135deg, rgba(118, 0, 230, 0.04) 0%, rgba(71, 0, 224, 0.04) 100%); border: 1px dashed var(--accent-purple); border-radius: 12px; padding: 24px; display: flex; align-items: center; gap: 20px; transition: all 0.3s ease;">
+            <div style="font-size: 32px; filter: drop-shadow(0 4px 8px rgba(118,0,230,0.255));">✨</div>
+            <div style="flex: 1;">
+              <h4 style="margin: 0 0 6px 0; font-size: 15px; font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 6px;">
+                AI Sourcing Assistant
+              </h4>
+              <p style="margin: 0; font-size: 12.5px; color: var(--text-secondary); line-height: 1.45;">Upload multiple supplier offer documents, technical specifications, or compliance files. The AI agent will automatically parse, extract the details, and autofill this response form.</p>
+            </div>
+            <div style="flex-shrink: 0; text-align: center;">
+              <button class="primary-btn" onclick="document.getElementById('ai-global-file-input').click()" style="padding: 10px 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <span>📤</span> Upload Offers
+              </button>
+              <input type="file" id="ai-global-file-input" style="display:none;" multiple onchange="handleFileSelected('global', this)" />
+              <div id="file-label-global" style="font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 6px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;">No files selected</div>
+            </div>
+          </div>
+        `;
       }
       
       const formCard = document.createElement("div");
@@ -4087,8 +4860,10 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           // Fillable Interactive Form
           if (field.type === "short-text") {
             group.innerHTML += `<input type="text" class="app-input" data-field-id="${field.id}" placeholder="Enter response...">`;
+            SpeechToText.attach(group.querySelector(`input[data-field-id="${field.id}"]`));
           } else if (field.type === "long-text") {
             group.innerHTML += `<textarea class="app-input" data-field-id="${field.id}" style="min-height: 100px; resize: vertical; padding: 12px;" placeholder="Provide detailed comments..."></textarea>`;
+            SpeechToText.attach(group.querySelector(`textarea[data-field-id="${field.id}"]`));
           } else if (field.type === "number") {
             group.innerHTML += `<input type="number" class="app-input" data-field-id="${field.id}" placeholder="0.00">`;
           } else if (field.type === "date") {
@@ -4127,10 +4902,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
                 <div style="font-size:20px; margin-bottom:4px;">📤</div>
                 <div style="font-weight:600; font-size:13px; color:var(--text-primary);" id="file-label-${field.id}">Click to upload document</div>
                 <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">PDF, DOCX, XLSX up to 10MB</div>
-                <input type="file" style="display:none;" data-field-id="${field.id}" onchange="handleFileSelected('${field.id}', this)" />
+                <input type="file" style="display:none;" data-field-id="${field.id}" multiple onchange="handleFileSelected('${field.id}', this)" />
               </div>
             `;
           }
+          // F3: placeholder for inline validation warnings
+          group.innerHTML += `<div class="field-validation-error" id="field-error-${field.id}" style="display:none; color: var(--accent-red); font-size: 11.5px; font-weight: 600; margin-top: 2px;"></div>`;
         }
         
         formFieldsContainer.appendChild(group);
@@ -4163,7 +4940,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         `;
       }
       
-      formCard.innerHTML = formHeaderHTML;
+      formCard.innerHTML = formHeaderHTML + aiCardHTML;
       formCard.appendChild(formFieldsContainer);
       formCard.innerHTML += actionButtons;
       
@@ -4181,9 +4958,26 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       document.querySelectorAll('.app-input').forEach(el => {
         el.style.borderColor = "var(--border-color)";
       });
+      document.querySelectorAll('.field-validation-error').forEach(el => {
+        el.style.display = "none";
+        el.innerText = "";
+      });
+
+      // F3: helper to surface an inline red validation warning under a field
+      function flagFieldError(field, message) {
+        isValid = false;
+        const inputEl = document.querySelector('[data-field-id="' + field.id + '"]');
+        if (inputEl) inputEl.style.borderColor = "var(--accent-red)";
+        const errEl = document.getElementById('field-error-' + field.id);
+        if (errEl) {
+          errEl.innerText = message;
+          errEl.style.display = "block";
+        }
+      }
       
       template.fields.forEach(field => {
         let answered = false;
+        let rawValue = null;
         
         if (field.type === 'checkbox') {
           const inputEl = document.querySelector('input[type="checkbox"][data-field-id="' + field.id + '"]');
@@ -4200,20 +4994,46 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           }
         } else {
           const inputEl = document.querySelector('[data-field-id="' + field.id + '"]');
-          if (inputEl && inputEl.value.trim() !== "") answered = true;
+          rawValue = inputEl ? inputEl.value.trim() : "";
+          if (rawValue !== "") answered = true;
           if (!answered && inputEl) {
             inputEl.style.borderColor = "var(--accent-red)";
           }
         }
         
-        if (!answered) {
+        if (field.required && !answered) {
           isValid = false;
           missingLabels.push(field.label);
+          return;
+        }
+
+        // F3: Field Validation Rules - enforced before submission for answered fields
+        if (answered && rawValue !== null && rawValue !== "") {
+          if (field.type === 'number') {
+            const numVal = parseFloat(rawValue);
+            if (field.min !== undefined && field.min !== null && numVal < field.min) {
+              flagFieldError(field, `${field.label} must be at least ${field.min}.`);
+            }
+            if (field.max !== undefined && field.max !== null && numVal > field.max) {
+              flagFieldError(field, `${field.label} must not exceed ${field.max}.`);
+            }
+          }
+          if ((field.type === 'short-text' || field.type === 'long-text') && field.maxLength !== undefined && field.maxLength !== null) {
+            if (rawValue.length > field.maxLength) {
+              flagFieldError(field, `${field.label} must be ${field.maxLength} characters or fewer.`);
+            }
+          }
+          if (field.allowedValues && field.allowedValues.length > 0 && !field.allowedValues.includes(rawValue)) {
+            flagFieldError(field, `${field.label} must be one of: ${field.allowedValues.join(', ')}.`);
+          }
         }
       });
       
       if (!isValid) {
-        showToast("Please fill in every field: " + missingLabels.join(", "), "error");
+        const message = missingLabels.length > 0
+          ? "Please fill in every required field: " + missingLabels.join(", ")
+          : "Please correct the highlighted validation errors before submitting.";
+        showToast(message, "error");
         return;
       }
       
@@ -4252,11 +5072,15 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const template = state.templates.find(t => t.id === selectedTemplateId);
       if (!template) return;
 
+      const currentUser = getCurrentUser();
+      const vendorEmail = currentUser ? currentUser.email : "vendor@nexpro.com";
+
       const newResponse = {
         id: "response-" + Date.now(),
         templateId: template.id,
         templateName: template.name,
         responseID: responseName,
+        vendorEmail: vendorEmail,
         submittedAt: new Date().toISOString(),
         status: "SUBMITTED",
         fields: template.fields.map(field => {
@@ -4315,6 +5139,27 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       wrap.style.gap = "20px";
       wrap.style.width = "100%";
 
+      // F11: Active Bids / Archived Bids tabs
+      if (showAll) {
+        const tabsBar = document.createElement("div");
+        tabsBar.className = "modal-tabs";
+        tabsBar.innerHTML = `
+          <div class="tab-btn ${activeResponsesTab === "active" ? "active" : ""}" onclick="switchResponsesTab('active')">Active Bids</div>
+          <div class="tab-btn ${activeResponsesTab === "archived" ? "active" : ""}" onclick="switchResponsesTab('archived')">Archived Bids</div>
+        `;
+        wrap.appendChild(tabsBar);
+      }
+
+      if (activeResponsesTab === "archived" && showAll) {
+        const archivedWrap = document.createElement("div");
+        archivedWrap.id = "archived-responses-wrap";
+        archivedWrap.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-secondary);">Loading archived bids...</div>`;
+        wrap.appendChild(archivedWrap);
+        container.appendChild(wrap);
+        loadArchivedResponses();
+        return;
+      }
+
       if (showAll) {
         const controlBar = document.createElement("div");
         controlBar.className = "response-control-bar";
@@ -4322,6 +5167,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const templateOptionsHTML = state.templates.map(t => `
           <option value="${t.id}">${escapeHTML(t.name)}</option>
         `).join("");
+
+        const _scoreSortAvailable = state.templates.some(t => t.evaluationWeights && t.evaluationWeights.length > 0);
 
         controlBar.innerHTML = `
           <div class="response-control-info">
@@ -4332,6 +5179,13 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             </div>
           </div>
           <div class="response-control-actions">
+            ${_scoreSortAvailable ? `
+              <select id="response-sort-select" class="response-select" onchange="setResponsesSort(this.value)">
+                <option value="default" ${responsesSortMode === 'default' ? 'selected' : ''}>Sort: Newest First</option>
+                <option value="score-desc" ${responsesSortMode === 'score-desc' ? 'selected' : ''}>Sort: Highest Score</option>
+                <option value="score-asc" ${responsesSortMode === 'score-asc' ? 'selected' : ''}>Sort: Lowest Score</option>
+              </select>
+            ` : ''}
             <select id="response-template-select" class="response-select">
               ${templateOptionsHTML || '<option value="">No templates available</option>'}
             </select>
@@ -4341,6 +5195,18 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           </div>
         `;
         wrap.appendChild(controlBar);
+      }
+
+      // F10: sort by weighted score when requested (Buyer/Admin only)
+      const _sortUser = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+      if (_sortUser && _sortUser.role !== 'vendor' && (responsesSortMode === 'score-desc' || responsesSortMode === 'score-asc')) {
+        responses.sort((a, b) => {
+          const templateA = state.templates.find(t => t.id === a.templateId);
+          const templateB = state.templates.find(t => t.id === b.templateId);
+          const scoreA = templateA ? (computeResponseScore(a, templateA, responses) ?? -1) : -1;
+          const scoreB = templateB ? (computeResponseScore(b, templateB, responses) ?? -1) : -1;
+          return responsesSortMode === 'score-desc' ? (scoreB - scoreA) : (scoreA - scoreB);
+        });
       }
 
       if (responses.length === 0) {
@@ -4375,6 +5241,45 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const submittedDate = new Date(response.submittedAt).toLocaleDateString() + " " + new Date(response.submittedAt).toLocaleTimeString();
         const fieldCount = response.fields ? response.fields.length : (response.values ? Object.keys(response.values).length : 0);
 
+        // F9: Completeness Indicator - answered vs total fields, missing required fields
+        const totalFields = template && template.fields ? template.fields.length : fieldCount;
+        const answeredCount = (response.fields || []).filter(f => {
+          if (Array.isArray(f.value)) return f.value.length > 0;
+          return f.value !== undefined && f.value !== null && f.value !== "" && f.value !== false;
+        }).length;
+        const completenessPct = totalFields > 0 ? Math.round((answeredCount / totalFields) * 100) : 100;
+        const missingRequired = template ? (template.fields || []).filter(tf => {
+          if (!tf.required) return false;
+          const rf = (response.fields || []).find(f => f.id === tf.id);
+          if (!rf) return true;
+          if (Array.isArray(rf.value)) return rf.value.length === 0;
+          return rf.value === undefined || rf.value === null || rf.value === "" || rf.value === false;
+        }).length : 0;
+
+        const completenessHTML = `
+          <div style="margin-top: 10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:11px; font-weight:600; color:var(--text-secondary);">Completeness</span>
+              <span style="font-size:11px; font-weight:700; color:var(--text-primary);">${completenessPct}%</span>
+            </div>
+            <div style="width:100%; height:6px; background:#e0e0e0; border-radius:4px; overflow:hidden;">
+              <div style="width:${completenessPct}%; height:100%; background:${completenessPct === 100 ? '#00c98b' : 'var(--accent-orange)'}; border-radius:4px;"></div>
+            </div>
+            ${missingRequired > 0 ? `<div style="font-size:11px; color:var(--accent-red); font-weight:700; margin-top:4px;">${missingRequired} required missing</div>` : ''}
+          </div>
+        `;
+
+        // F10: Response Scoring / Weighting - Buyer/Admin only, computed client-side
+        const _scoreUser = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+        const _canSeeScore = !_scoreUser || _scoreUser.role !== 'vendor';
+        let scoreBadgeHTML = "";
+        if (_canSeeScore && template && template.evaluationWeights && template.evaluationWeights.length > 0) {
+          const score = computeResponseScore(response, template, responses);
+          if (score !== null) {
+            scoreBadgeHTML = `<span class="card-badge" style="background: rgba(118,0,230,0.08); color: var(--accent-purple); font-size:11px; padding:2px 8px; border-radius:10px; font-weight:700; margin-left:6px;" title="Weighted evaluation score">Score: ${score}</span>`;
+          }
+        }
+
         const statusHTML = response.hasProcurement
           ? `<span class="supplier-status status-active" style="font-size:11px; padding:2px 8px;">Under Process</span>`
           : `<span class="supplier-status status-pending-verification" style="font-size:11px; padding:2px 8px;">Sourcing Ready</span>`;
@@ -4382,7 +5287,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
             <div>
-              <h3 class="card-title" style="margin: 0 0 4px 0; font-size:17px; font-weight:700;">${escapeHTML(response.responseID)}</h3>
+              <h3 class="card-title" style="margin: 0 0 4px 0; font-size:17px; font-weight:700;">${escapeHTML(response.responseID)} ${scoreBadgeHTML}</h3>
               <div style="font-size: 11px; color: var(--accent-purple); font-weight: 700; background: rgba(118, 0, 230, 0.05); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">
                 Template: ${escapeHTML(templateName)}
               </div>
@@ -4393,6 +5298,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           </div>
           <div class="card-meta" style="margin-top: 10px; font-size: 12.5px; color: var(--text-secondary);">Submitted: <strong>${escapeHTML(submittedDate)}</strong></div>
           <div class="card-meta" style="font-size: 12.5px; color: var(--text-secondary);">Fields Answered: <strong>${fieldCount}</strong></div>
+          ${completenessHTML}
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-secondary);">
             Status: ${statusHTML}
           </div>
@@ -4415,6 +5321,52 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       container.appendChild(wrap);
     }
 
+    // F10: Client-side scoring algorithm - normalizes each numeric answer against the
+    // range of answers submitted for that RFQ, multiplies by weight, returns 0-100.
+    function computeResponseScore(response, template, allResponsesForTemplate) {
+      const weights = (template.evaluationWeights || []).filter(w => w.weight > 0);
+      if (weights.length === 0) return null;
+
+      const peers = (allResponsesForTemplate || []).filter(r => r.templateId === template.id && !r.archived);
+      if (peers.length === 0) return null;
+
+      let totalWeight = 0;
+      let weightedSum = 0;
+
+      weights.forEach(w => {
+        totalWeight += Number(w.weight) || 0;
+        const templateField = (template.fields || []).find(f => f.label === w.fieldName || f.id === w.fieldName);
+        if (!templateField) return;
+
+        if (templateField.type === 'checkbox') {
+          const rf = (response.fields || []).find(f => f.id === templateField.id);
+          const val = rf ? (rf.value ? 1 : 0) : 0;
+          weightedSum += val * 100 * (Number(w.weight) || 0);
+          return;
+        }
+
+        if (templateField.type === 'number') {
+          const values = peers.map(p => {
+            const pf = (p.fields || []).find(f => f.id === templateField.id);
+            return pf ? parseFloat(pf.value) : NaN;
+          }).filter(v => !isNaN(v));
+          if (values.length === 0) return;
+          const min = Math.min(...values);
+          const max = Math.max(...values);
+
+          const rf = (response.fields || []).find(f => f.id === templateField.id);
+          const rawVal = rf ? parseFloat(rf.value) : NaN;
+          if (isNaN(rawVal)) return;
+
+          const normalized = (max === min) ? 100 : ((rawVal - min) / (max - min)) * 100;
+          weightedSum += normalized * (Number(w.weight) || 0);
+        }
+      });
+
+      if (totalWeight === 0) return null;
+      return Math.round(weightedSum / totalWeight);
+    }
+
     function createNewResponseFromSelect() {
       const templateId = document.getElementById("response-template-select").value;
       if (!templateId) return;
@@ -4428,17 +5380,112 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
       openModal({
         title: "Delete Response Record?",
-        desc: `Are you sure you want to permanently delete submitted response "${response.responseID}"? This will delete the response record and any active procurement tracking.`,
-        confirmText: "Delete Permanently",
+        desc: `Are you sure you want to delete submitted response "${response.responseID}"? It will be moved to Archived Bids and can be restored later.`,
+        confirmText: "Delete",
         confirmClass: "primary-btn danger-btn",
         onConfirm: () => {
-          state.submittedResponses = state.submittedResponses.filter(r => r.id !== responseId);
-          saveState();
+          archiveResponse(responseId);
           closeModal();
-          showToast(`Deleted response record: ${response.responseID}`);
+          showToast(`Archived response record: ${response.responseID}`);
           render();
         }
       });
+    }
+
+    // F11: Audit Trail before Deletion - soft delete, response moves to Archived Bids
+    function archiveResponse(responseId) {
+      const response = state.submittedResponses.find(r => r.id === responseId);
+      if (!response) return;
+      const currentUser = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+      response.archived = true;
+      response.archivedAt = new Date().toISOString();
+      response.archivedBy = currentUser ? currentUser.email : '';
+      saveState(); // syncs the archived flag to the server, which logs a DELETE_RESPONSE audit entry
+      // Remove from the active local list immediately; it now lives only in Archived Bids
+      state.submittedResponses = state.submittedResponses.filter(r => r.id !== responseId);
+    }
+
+    // F11: Archived Bids tab
+    let activeResponsesTab = "active";
+    let archivedResponsesCache = [];
+
+    function switchResponsesTab(tab) {
+      activeResponsesTab = tab;
+      render();
+    }
+
+    async function loadArchivedResponses() {
+      try {
+        const currentUser = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+        let url = `${API_URL}/responses/archived`;
+        if (currentUser && currentUser.role === 'vendor') {
+          url += `?vendorEmail=${encodeURIComponent(currentUser.email)}`;
+        }
+        const res = await fetch(url);
+        if (res.ok) {
+          archivedResponsesCache = await res.json();
+        }
+      } catch (e) {
+        console.warn("Failed to load archived responses", e);
+      }
+      renderArchivedResponsesGrid();
+    }
+
+    function renderArchivedResponsesGrid() {
+      const wrap = document.getElementById("archived-responses-wrap");
+      if (!wrap) return;
+
+      if (archivedResponsesCache.length === 0) {
+        wrap.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🗄️</div>
+            <div class="empty-state-title">No Archived Bids</div>
+            <div class="empty-state-desc">Deleted responses will appear here and can be restored.</div>
+          </div>
+        `;
+        return;
+      }
+
+      const grid = document.createElement("div");
+      grid.className = "company-grid";
+
+      archivedResponsesCache.forEach((response, index) => {
+        const card = document.createElement("div");
+        card.className = `app-card response-card color-${(index + 2) % 4}`;
+        card.style.opacity = "0.85";
+
+        const archivedDate = response.archivedAt ? new Date(response.archivedAt).toLocaleString() : "Unknown";
+        card.innerHTML = `
+          <h3 class="card-title" style="margin: 0 0 4px 0; font-size:17px; font-weight:700;">${escapeHTML(response.responseID)}</h3>
+          <div class="card-meta" style="font-size: 12.5px;">Template: <strong>${escapeHTML(response.templateName)}</strong></div>
+          <div class="card-meta" style="font-size: 12.5px;">Archived: <strong>${escapeHTML(archivedDate)}</strong></div>
+          ${response.archivedBy ? `<div class="card-meta" style="font-size: 12.5px;">By: <strong>${escapeHTML(response.archivedBy)}</strong></div>` : ''}
+          <div class="card-footer" style="margin-top: 16px; display:flex; justify-content:flex-end; border-top: 1px solid var(--border-color); padding-top: 12px;">
+            <button class="primary-btn" style="padding: 6px 14px; font-size:12.5px;" onclick="restoreArchivedResponse('${response.id}')">Restore</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      wrap.innerHTML = "";
+      wrap.appendChild(grid);
+    }
+
+    async function restoreArchivedResponse(responseId) {
+      const response = archivedResponsesCache.find(r => r.id === responseId);
+      if (!response) return;
+
+      response.archived = false;
+      response.archivedAt = '';
+      response.archivedBy = '';
+
+      state.submittedResponses = state.submittedResponses || [];
+      state.submittedResponses.push(response);
+      saveState();
+
+      archivedResponsesCache = archivedResponsesCache.filter(r => r.id !== responseId);
+      showToast(`Restored response: ${response.responseID}`, "success");
+      render();
     }
 
     // VIEW: Supplier Chain View (Simplified Flat Structure)
@@ -4459,7 +5506,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       }
 
       // Reset filters each time we land fresh on this view
-      supplierFilters = { search: "", category: "all", status: "all", minRating: "0", sort: "rating-desc" };
+      supplierFilters = { search: "", category: "all", status: "all", minRating: "0", sort: "rating-desc", expiry: "all" };
 
       const wrap = document.createElement("div");
       wrap.className = "suppliers-step-wrap step-transition-in";
@@ -4511,6 +5558,15 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             <option value="years-desc">Sort: Most Experienced</option>
             <option value="name-asc">Sort: Name (A\u2013Z)</option>
           </select>
+          ${!template ? `
+            <select id="sfl-expiry" class="supplier-filter-select" onchange="applySupplierFilters()">
+              <option value="all">All Certifications</option>
+              <option value="expired">Expired</option>
+              <option value="expiring-soon">Expiring Soon</option>
+            </select>
+            <button class="secondary-btn" style="padding:6px 12px; font-size:12.5px;" onclick="document.getElementById('csv-import-input').click()">Import CSV</button>
+            <input type="file" id="csv-import-input" accept=".csv" style="display:none;" onchange="handleSupplierCSVImport(event)">
+          ` : ''}
         </div>
         <div class="supplier-grid" id="supplier-grid"></div>
       `;
@@ -4533,12 +5589,14 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const statusEl = document.getElementById("sfl-status");
       const ratingEl = document.getElementById("sfl-rating");
       const sortEl = document.getElementById("sfl-sort");
+      const expiryEl = document.getElementById("sfl-expiry");
       supplierFilters = {
         search: searchEl ? searchEl.value.trim().toLowerCase() : "",
         category: catEl ? catEl.value : "all",
         status: statusEl ? statusEl.value : "all",
         minRating: ratingEl ? ratingEl.value : "0",
-        sort: sortEl ? sortEl.value : "rating-desc"
+        sort: sortEl ? sortEl.value : "rating-desc",
+        expiry: expiryEl ? expiryEl.value : "all"
       };
       renderSupplierGrid();
     }
@@ -4564,6 +5622,22 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const minRating = parseFloat(supplierFilters.minRating || "0");
       if (minRating > 0) {
         list = list.filter(s => (s.rating || 0) >= minRating);
+      }
+
+      // F15: filter by certification expiry status
+      if (supplierFilters.expiry && supplierFilters.expiry !== "all") {
+        const now = new Date();
+        const soon = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+        list = list.filter(s => {
+          const certs = (s.certifications || []).map(c => (typeof c === 'string') ? { name: c, expiryDate: '' } : c);
+          if (supplierFilters.expiry === "expired") {
+            return certs.some(c => c.expiryDate && new Date(c.expiryDate) < now);
+          }
+          if (supplierFilters.expiry === "expiring-soon") {
+            return certs.some(c => c.expiryDate && new Date(c.expiryDate) >= now && new Date(c.expiryDate) <= soon);
+          }
+          return true;
+        });
       }
 
       switch (supplierFilters.sort) {
@@ -4607,6 +5681,23 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         card.className = "supplier-card-3d" + (isRfqFlow && picked ? " is-picked" : "");
         card.setAttribute("data-supplier-id", sup.id);
 
+        const isRegistered = (sup.isRegistered !== undefined) 
+          ? sup.isRegistered 
+          : state.users.some(u => u.email.toLowerCase() === sup.email.toLowerCase() && u.role === 'vendor');
+
+        // F15: Certification Expiry Tracking - red/orange badges for expired / expiring soon certs
+        const certObjs = (sup.certifications || []).map(c => (typeof c === 'string') ? { name: c, expiryDate: '' } : c);
+        const now = new Date();
+        const soonThreshold = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+        let expiryBadgeHTML = "";
+        const hasExpired = certObjs.some(c => c.expiryDate && new Date(c.expiryDate) < now);
+        const hasExpiringSoon = !hasExpired && certObjs.some(c => c.expiryDate && new Date(c.expiryDate) >= now && new Date(c.expiryDate) <= soonThreshold);
+        if (hasExpired) {
+          expiryBadgeHTML = `<span class="card-badge" style="background: rgba(255,14,86,0.12); color: var(--accent-red); font-size: 10.5px; padding: 2px 8px; border-radius: 4px; font-weight:700; display:inline-block; margin-top:2px;">⏰ Certification Expired</span>`;
+        } else if (hasExpiringSoon) {
+          expiryBadgeHTML = `<span class="card-badge" style="background: rgba(255,100,0,0.1); color: var(--accent-orange); font-size: 10.5px; padding: 2px 8px; border-radius: 4px; font-weight:700; display:inline-block; margin-top:2px;">⏰ Certification Expiring Soon</span>`;
+        }
+
         if (isRfqFlow) {
           card.onclick = () => toggleSupplierSelection(sup.id);
           card.style.cursor = "pointer";
@@ -4636,8 +5727,26 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
               <span class="supplier-status status-${sup.status.replace(/\s+/g, '-').toLowerCase()}">${escapeHTML(sup.status)}</span>
               <div class="supplier-stars">★ ${sup.rating.toFixed(1)}</div>
             </div>
-            <h3 class="supplier-name-title">${escapeHTML(sup.name)}</h3>
-            <div class="supplier-category-pill">${escapeHTML(sup.category)}</div>
+            <h3 class="supplier-name-title" style="margin-bottom: 2px;">${escapeHTML(sup.name)}</h3>
+            
+            <!-- Registration status badge -->
+            ${isRegistered 
+              ? `<div style="font-size: 11px; color: #00c98b; display: flex; align-items: center; gap: 4px; font-weight: 600; margin-top: -2px; margin-bottom: 2px;">
+                   <span style="font-size:12px;">✓</span> Registered Vendor
+                 </div>`
+              : `<div style="display:flex; align-items:center; gap:6px; margin-top: -2px; margin-bottom: 2px;">
+                   <div title="This current supplier is not registered in nexpro platform" style="font-size: 11.5px; color: #C10046; background: rgba(255, 14, 86, 0.06); border: 1px solid rgba(255, 14, 86, 0.15); padding: 2px 8px; border-radius: 4px; display: inline-block; width: fit-content; font-weight: 600; cursor: help;">
+                     ⚠️ Not Registered
+                   </div>
+                   ${sup.inviteSentAt
+                     ? `<span style="font-size:10.5px; color:var(--text-secondary); font-style:italic;">Invited ${new Date(sup.inviteSentAt).toLocaleDateString()}</span>`
+                     : `<button class="secondary-btn" style="padding:2px 8px; font-size:10.5px;" onclick="event.stopPropagation(); inviteSupplierToRegister('${sup.id}')">Invite to Register</button>`
+                   }
+                 </div>`
+            }
+
+            <div class="supplier-category-pill" style="margin-top: 2px;">${escapeHTML(sup.category)}</div>
+            ${expiryBadgeHTML}
             
             <div class="supplier-contact-info" style="margin-top: 4px;">
               <div class="contact-item">👤 ${escapeHTML(sup.contactPerson)}</div>
@@ -4701,7 +5810,425 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       openSupplierConfirmModal(template);
     }
 
+    // ---- AI Sourcing Dispatch & Email Agent View ----
+    window.activeDispatchSuppliers = null;
+
+    window.renderEmailDispatchView = function(container) {
+      const template = state.templates.find(t => t.id === selectedTemplateId);
+      if (!template) {
+        navigateTo("companies");
+        return;
+      }
+
+      // Initialize active list of suppliers if not set
+      if (!window.activeDispatchSuppliers) {
+        window.activeDispatchSuppliers = state.suppliers.filter(s => pendingSupplierSelection.includes(s.id));
+      }
+
+      // Page wrapper
+      const wrap = document.createElement("div");
+      wrap.className = "email-dispatch-wrap step-transition-in";
+      wrap.style.display = "flex";
+      wrap.style.flexDirection = "column";
+      wrap.style.gap = "24px";
+      wrap.style.width = "100%";
+
+      const introHTML = `
+        <div class="procurement-header-card" style="margin-bottom: 0;">
+          <h2 style="font-size: 24px; font-weight: 800; color: var(--text-primary); margin: 0 0 6px 0;">📧 Sourcing Email Dispatch & AI Agent</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+            Evaluate your invitees, customize email copy using AI, attach specs, and execute final invitation sending.
+          </p>
+        </div>
+      `;
+      wrap.innerHTML = introHTML;
+
+      // Render double-column layout
+      const grid = document.createElement("div");
+      grid.style.display = "grid";
+      grid.style.gridTemplateColumns = "1fr 1.3fr";
+      grid.style.gap = "24px";
+      grid.className = "email-dispatch-grid";
+
+      // Left Column: Selected Suppliers
+      const leftCol = document.createElement("div");
+      leftCol.className = "glass-card";
+      leftCol.style.padding = "24px";
+      leftCol.style.display = "flex";
+      leftCol.style.flexDirection = "column";
+      leftCol.style.gap = "18px";
+
+      // Right Column: Email Generation Form
+      const rightCol = document.createElement("div");
+      rightCol.className = "glass-card";
+      rightCol.style.padding = "24px";
+      rightCol.style.display = "flex";
+      rightCol.style.flexDirection = "column";
+      rightCol.style.gap = "20px";
+
+      wrap.appendChild(grid);
+      grid.appendChild(leftCol);
+      grid.appendChild(rightCol);
+
+      container.appendChild(wrap);
+      
+      // We will define inner rendering functions to allow local state refreshes (e.g. when dropping a vendor)
+      function renderLeftColumn() {
+        if (window.activeDispatchSuppliers.length === 0) {
+          leftCol.innerHTML = `
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">Selected Suppliers</h3>
+            <div style="text-align: center; padding: 40px 20px; color: var(--accent-red); font-weight: 600; font-size: 13px; border: 1.5px dashed rgba(255, 14, 86, 0.15); border-radius: 12px; background: rgba(255, 14, 86, 0.02); margin-top: 14px;">
+              ⚠️ All suppliers have been dropped. You must select at least one supplier to send the RFQ.
+            </div>
+            <button class="secondary-btn" onclick="navigateTo('suppliers', '${template.id}')" style="margin-top: 14px;">← Back to Supplier List</button>
+          `;
+          return;
+        }
+
+        const suppliersListHTML = window.activeDispatchSuppliers.map((sup, idx) => {
+          const isReg = state.users.some(u => u.email.toLowerCase() === sup.email.toLowerCase() && u.role === 'vendor');
+          return `
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 10px; transition: all 0.2s ease;">
+              <div>
+                <div style="font-weight: 700; color: var(--text-primary); font-size: 14px;">${escapeHTML(sup.name)}</div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">✉️ ${escapeHTML(sup.email)}</div>
+                <div style="margin-top: 4px;">
+                  ${isReg 
+                    ? `<span style="font-size:10px; color:#00c98b; font-weight:600;">✓ Registered Vendor</span>`
+                    : `<span style="font-size:10px; color:#C10046; font-weight:600;" title="This supplier is not registered on nexpro">⚠️ Unregistered</span>`
+                  }
+                </div>
+              </div>
+              <button class="danger-btn" onclick="dropSupplierFromDispatch(${idx})" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; font-weight: 600;">✕ Drop</button>
+            </div>
+          `;
+        }).join("");
+
+        leftCol.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">Invitees (${window.activeDispatchSuppliers.length})</h3>
+            <span style="font-size: 12px; color: var(--text-secondary);">Recipients list</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
+            ${suppliersListHTML}
+          </div>
+          <button class="secondary-btn" onclick="navigateTo('suppliers', '${template.id}')" style="margin-top: 10px; align-self: flex-start;">← Add / Modify Suppliers</button>
+        `;
+      }
+
+      window.dropSupplierFromDispatch = function(idx) {
+        window.activeDispatchSuppliers.splice(idx, 1);
+        renderLeftColumn();
+        updateSendButtonState();
+      }
+
+      // Render Right Column (Config & Preview)
+      let aiDraftingEnabled = true;
+      let draftedSubject = "";
+      let draftedBody = "";
+      const savedAttachments = window.lastEmailAttachments || [];
+
+      function renderRightColumn() {
+        const rfqPdfName = `${template.name.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+        let listHTML = `
+          <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; background: rgba(0, 201, 139, 0.08); color: #00c98b; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 201, 139, 0.15); font-weight: 700; margin-bottom: 4px;">
+            📄 ${escapeHTML(rfqPdfName)} (System Auto-Generated RFQ PDF)
+          </span>
+        `;
+        if (savedAttachments.length > 0) {
+          listHTML += savedAttachments.map(a => `
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; background: rgba(118, 0, 230, 0.05); color: var(--accent-purple); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(118, 0, 230, 0.1); font-weight: 600; margin-bottom: 4px;">
+              📎 ${escapeHTML(a.name || a)}
+            </span>
+          `).join(" ");
+        }
+        const attachmentsListHTML = listHTML;
+
+        rightCol.innerHTML = `
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">Sourcing Dispatch Settings</h3>
+          
+          <div style="display: flex; flex-direction: column; gap: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <label style="font-weight: 700; color: var(--text-primary); font-size: 13.5px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="ai-draft-toggle" checked style="width:16px; height:16px; accent-color: var(--accent-purple);" onchange="toggleAIDrafting(this.checked)" />
+                  Draft Invitation Email using Sourcing AI?
+                </label>
+              </div>
+              <span style="font-size: 11px; background: rgba(118, 0, 230, 0.1); color: var(--accent-purple); padding: 2px 8px; border-radius: 4px; font-weight: 700; letter-spacing: 0.5px;">RECOMMENDED</span>
+            </div>
+
+            <div id="ai-directives-wrap" style="display: flex; flex-direction: column; gap: 6px;">
+              <span class="field-label-span">AI Tone Directives / Special Instructions</span>
+              <input type="text" id="ai-directives" class="app-input" placeholder="e.g. Professional, state delivery deadline of Sept 30, emphasize drawing review..." value="Professional sourcing invitation to bid" />
+              <button class="primary-btn" id="ai-draft-btn" onclick="generateAIDraft()" style="margin-top: 8px; background: linear-gradient(135deg, var(--accent-purple) 0%, #a832ff 100%); border: none; box-shadow: 0 4px 12px rgba(118, 0, 230, 0.25);">
+                🪄 Draft Sourcing Email with AI
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <h4 style="font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin: 0;">Email Preview</h4>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="field-label-span">Subject Line</span>
+              <input type="text" id="email-subject" class="app-input" style="font-weight: 600;" value="" placeholder="Drafting subject..." />
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="field-label-span">Email Body</span>
+              <textarea id="email-body" class="app-input" style="min-height: 200px; font-family: inherit; line-height: 1.5; font-size: 13px;" placeholder="Drafting email content..."></textarea>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-label-span" style="margin-bottom: 6px;">Dispatch Attachments (${savedAttachments.length + 1})</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              ${attachmentsListHTML}
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+            <button class="secondary-btn" onclick="navigateTo('suppliers', '${template.id}')">Cancel</button>
+            <button class="primary-btn" id="send-dispatch-btn" onclick="sendSourcingInvitations()" style="background: var(--accent-purple); box-shadow: 0 4px 14px rgba(118,0,230,0.3);">
+              Send Invites to All Suppliers
+            </button>
+          </div>
+        `;
+
+        // Initialize Draft Copy
+        if (!draftedSubject) {
+          generateAIDraft();
+        } else {
+          document.getElementById("email-subject").value = draftedSubject;
+          document.getElementById("email-body").value = draftedBody;
+        }
+      }
+
+      window.toggleAIDrafting = function(enabled) {
+        aiDraftingEnabled = enabled;
+        const directivesWrap = document.getElementById("ai-directives-wrap");
+        if (directivesWrap) {
+          directivesWrap.style.display = enabled ? "flex" : "none";
+        }
+        if (!enabled) {
+          const fallbackSubject = `Invitation to Bid: S-RFQ - ${template.name}`;
+          const fallbackBody = `Dear Sourcing Team,\n\nYou are invited to participate in the sourcing run for: ${template.name}.\n\nPlease access your portal to submit details.`;
+          document.getElementById("email-subject").value = fallbackSubject;
+          document.getElementById("email-body").value = fallbackBody;
+        }
+      }
+
+      window.generateAIDraft = async function() {
+        const directiveInput = document.getElementById("ai-directives");
+        const directives = directiveInput ? directiveInput.value.trim() : "";
+        
+        const subjInput = document.getElementById("email-subject");
+        const bodyInput = document.getElementById("email-body");
+        const draftBtn = document.getElementById("ai-draft-btn");
+
+        if (subjInput) subjInput.value = "Generating subject line...";
+        if (bodyInput) bodyInput.value = "AI Sourcing Agent is drafting the email contents based on RFQ context, selected suppliers, and attachments...";
+        if (draftBtn) {
+          draftBtn.disabled = true;
+          draftBtn.innerText = "⚡ Drafting via Sourcing AI...";
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/email/draft`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              rfqName: template.name,
+              category: template.category,
+              suppliers: window.activeDispatchSuppliers,
+              attachments: savedAttachments,
+              toneDirectives: directives
+            })
+          });
+
+          if (!response.ok) throw new Error("Drafting failed.");
+          const data = await response.json();
+          draftedSubject = data.subject;
+          draftedBody = data.body;
+
+          if (subjInput) subjInput.value = draftedSubject;
+          if (bodyInput) bodyInput.value = draftedBody;
+          showToast(`Sourcing AI generated email draft (${data.source === 'ai' ? 'Live Gemini Model' : 'Rule-Based Fallback'})`, "success");
+        } catch (err) {
+          console.error(err);
+          showToast("Failed to draft email via AI. Used offline format instead.", "warning");
+          draftedSubject = `Invitation to Bid: ${template.name}`;
+          draftedBody = `Dear Partner,\n\nYou are invited to participate in: ${template.name}.\n\nCategory: ${template.category}`;
+          if (subjInput) subjInput.value = draftedSubject;
+          if (bodyInput) bodyInput.value = draftedBody;
+        } finally {
+          if (draftBtn) {
+            draftBtn.disabled = false;
+            draftBtn.innerText = "🪄 Draft Sourcing Email with AI";
+          }
+        }
+      }
+
+      window.sendSourcingInvitations = async function() {
+        if (window.activeDispatchSuppliers.length === 0) {
+          showToast("Please include at least one supplier to send.", "error");
+          return;
+        }
+
+        const subject = document.getElementById("email-subject").value.trim();
+        const body = document.getElementById("email-body").value.trim();
+
+        if (!subject || !body) {
+          showToast("Subject and body cannot be empty.", "error");
+          return;
+        }
+
+        const savedAttachments = window.lastEmailAttachments || [];
+
+        const overlay = document.getElementById("ai-scanning-overlay");
+        const oTitle = document.getElementById("ai-scanning-title");
+        const oDesc = document.getElementById("ai-scanning-desc");
+        if (overlay) {
+          if (oTitle) oTitle.innerText = "Dispatching RFQ";
+          if (oDesc) oDesc.innerText = `Sending email invitations to ${window.activeDispatchSuppliers.length} vendors...`;
+          overlay.style.display = "flex";
+          overlay.offsetHeight;
+          overlay.classList.add("is-active");
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/email/send`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              suppliers: window.activeDispatchSuppliers,
+              subject: subject,
+              body: body,
+              attachments: savedAttachments,
+              templateName: template.name,
+              templateFields: template.fields,
+              category: template.category
+            })
+          });
+
+          if (!response.ok) throw new Error("Dispatch failed.");
+          const data = await response.json();
+
+          // Create/update responses in appState
+          // Mark all selected suppliers as invited on this RFQ template
+          template.supplierIds = window.activeDispatchSuppliers.map(s => s.id);
+          
+          // Also set the response status for this run if selectedResponseId is set
+          const responseObj = state.submittedResponses.find(r => r.id === selectedResponseId);
+          if (responseObj) {
+            responseObj.hasProcurement = true;
+            responseObj.procurementStatus = "EVALUATING";
+            responseObj.procurementProgress = 66;
+            responseObj.supplierIds = window.activeDispatchSuppliers.map(s => s.id);
+          }
+          saveState();
+
+          showToast(data.message, "success");
+
+          // Clear cache variables
+          window.activeDispatchSuppliers = null;
+          window.lastEmailAttachments = null;
+
+          // Render green checkmark success animation
+          if (overlay) {
+            overlay.classList.remove("is-active");
+            setTimeout(() => { overlay.style.display = "none"; }, 300);
+          }
+
+          const successOver = document.getElementById("success-overlay");
+          if (successOver) {
+            successOver.classList.add("active");
+          }
+        } catch (err) {
+          console.error(err);
+          showToast("Failed to dispatch emails. Please verify credentials.", "error");
+          if (overlay) {
+            overlay.classList.remove("is-active");
+            overlay.style.display = "none";
+          }
+        }
+      }
+
+      function updateSendButtonState() {
+        const btn = document.getElementById("send-dispatch-btn");
+        if (btn) {
+          btn.disabled = (window.activeDispatchSuppliers.length === 0);
+          btn.style.opacity = (window.activeDispatchSuppliers.length === 0) ? "0.5" : "1";
+        }
+      }
+
+      // Initial columns draw
+      renderLeftColumn();
+      renderRightColumn();
+      updateSendButtonState();
+
+      // Let buyers dictate email tone instructions and edit the AI draft by voice
+      SpeechToText.attach(document.getElementById("ai-directives"));
+      SpeechToText.attach(document.getElementById("email-subject"));
+      SpeechToText.attach(document.getElementById("email-body"));
+    }
+
+    let emailAttachments = [];
+
+    window.handleEmailAttachmentsSelected = function(input) {
+      const listWrap = document.getElementById("email-attachments-list");
+      if (!listWrap || !input.files || input.files.length === 0) return;
+      
+      let pendingFiles = input.files.length;
+      for (const file of input.files) {
+        if (emailAttachments.some(f => f.name === file.name)) {
+          pendingFiles--;
+          if (pendingFiles === 0) renderEmailAttachmentsList(listWrap);
+          continue;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64Data = e.target.result.split(',')[1];
+          emailAttachments.push({
+            name: file.name,
+            size: (file.size / 1024).toFixed(1) + " KB",
+            content: base64Data
+          });
+          pendingFiles--;
+          if (pendingFiles === 0) renderEmailAttachmentsList(listWrap);
+        };
+        reader.onerror = function() {
+          pendingFiles--;
+          if (pendingFiles === 0) renderEmailAttachmentsList(listWrap);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    window.removeEmailAttachment = function(idx) {
+      emailAttachments.splice(idx, 1);
+      const listWrap = document.getElementById("email-attachments-list");
+      if (listWrap) renderEmailAttachmentsList(listWrap);
+    }
+
+    function renderEmailAttachmentsList(container) {
+      if (emailAttachments.length === 0) {
+        container.innerHTML = `<div style="font-size:12px; color:var(--text-secondary); font-style:italic;">No files attached to invitation email.</div>`;
+        return;
+      }
+      container.innerHTML = emailAttachments.map((file, i) => `
+        <div class="attachment-item" style="display:flex; justify-content:space-between; align-items:center; background:rgba(118,0,230,0.03); border:1px solid rgba(118,0,230,0.08); padding:8px 12px; border-radius:6px; font-size:12.5px;">
+          <span style="font-weight:600; color:var(--text-primary);">📎 ${escapeHTML(file.name)} (${file.size})</span>
+          <button onclick="removeEmailAttachment(${i})" style="background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:16px; font-weight:700; line-height:1; padding:0 4px;">&times;</button>
+        </div>
+      `).join("");
+    }
+
     function openSupplierConfirmModal(template) {
+      emailAttachments = []; // reset attachments
+      
       const chosen = state.suppliers.filter(s => pendingSupplierSelection.includes(s.id));
       const rowsHTML = chosen.map(s => `
         <div class="confirm-supplier-row">
@@ -4713,34 +6240,46 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         </div>
       `).join("");
 
+      const bodyHTML = `
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div>
+            <div class="field-label-span" style="margin-bottom:8px;">Suppliers Included in Sourcing Run</div>
+            <div class="confirm-supplier-list" style="max-height: 180px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; padding: 4px;">${rowsHTML}</div>
+          </div>
+          
+          <div style="border-top:1px solid var(--border-color); padding-top:16px;">
+            <div class="field-label-span" style="margin-bottom:6px; display:flex; align-items:center; justify-content:space-between;">
+              <span>✉️ Sourcing Email Attachments</span>
+              <button class="secondary-btn" onclick="document.getElementById('email-attachments-input').click()" style="padding: 4px 10px; font-size: 11.5px; font-weight:600; border-radius: 6px;">
+                📎 Attach Documents
+              </button>
+            </div>
+            <p style="margin:0 0 10px 0; font-size:12px; color:var(--text-secondary); line-height:1.4;">Add technical drawings, checklists, or commercial specs to include as attachments in the automated invitation email sent to these suppliers.</p>
+            <input type="file" id="email-attachments-input" style="display:none;" multiple onchange="handleEmailAttachmentsSelected(this)" />
+            <div id="email-attachments-list" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+              <div style="font-size:12px; color:var(--text-secondary); font-style:italic;">No files attached to invitation email.</div>
+            </div>
+          </div>
+        </div>
+      `;
+
       openModal({
-        title: "Confirm Suppliers for this RFQ?",
-        desc: `You're about to send "${template.name}" to ${chosen.length} supplier${chosen.length === 1 ? '' : 's'}. Double-check the list below \u2014 you can still go back and edit your selection.`,
-        bodyHTML: `<div class="confirm-supplier-list">${rowsHTML}</div>`,
-        confirmText: "Confirm & Continue",
+        title: "Confirm Suppliers & Attachments",
+        desc: `Review the sourcing scope for "${template.name}" before sending invitations to the ${chosen.length} selected vendors.`,
+        bodyHTML: bodyHTML,
+        confirmText: "Proceed Further",
         cancelText: "Edit Selection",
         onConfirm: () => {
           closeModal();
           template.supplierIds = pendingSupplierSelection.slice();
-          
-          const response = state.submittedResponses.find(r => r.id === selectedResponseId);
-          if (response) {
-            response.hasProcurement = true;
-            response.procurementStatus = "EVALUATING";
-            response.procurementProgress = 66;
-            response.supplierIds = pendingSupplierSelection.slice();
-          }
+          window.lastEmailAttachments = emailAttachments.slice();
           saveState();
-          
-          triggerSuccessAnimation(() => {
-            navigateTo("new-procurement");
-          });
+          navigateTo("email-dispatch", template.id);
         },
         onCancel: () => {}
       });
     }
 
-    // ---- Add / Edit Supplier side panel ----
     function openSupplierPanel(supplierId) {
       editingSupplierId = supplierId;
       const sup = supplierId ? state.suppliers.find(s => s.id === supplierId) : null;
@@ -4767,6 +6306,25 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const first = document.getElementById("sf-name");
         if (first) first.focus();
       }, 150);
+    }
+
+    // F14: Self-Service Supplier Invite
+    async function inviteSupplierToRegister(supplierId) {
+      const sup = state.suppliers.find(s => s.id === supplierId);
+      if (!sup) return;
+
+      try {
+        const res = await fetch(`${API_URL}/suppliers/${supplierId}/invite`, { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to send invite');
+
+        sup.inviteSentAt = data.inviteSentAt;
+        saveState();
+        showToast(data.message || `Invite sent to ${sup.email}`, "success");
+        render();
+      } catch (e) {
+        showToast(e.message || "Failed to send invite. Please try again.", "error");
+      }
     }
 
     function closeSupplierPanel() {
@@ -4797,9 +6355,28 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const facilityText = sup.manufacturingFacility || facilityFallback[sup.category] || facilityFallback["Other"];
       const productsText = sup.productsSupplied || productsFallback[sup.category] || productsFallback["Other"];
       
-      const certificationsHTML = (sup.certifications || ["ISO 9001", "RoHS Compliant"]).map(c => `
-        <span class="cert-chip" style="font-size: 11px; padding: 4px 10px; margin-right: 6px; margin-bottom: 6px; display: inline-block;">${escapeHTML(c)}</span>
-      `).join("");
+      // F15: certifications are {name, expiryDate} objects; show expiry status per cert
+      const rawCerts = (sup.certifications && sup.certifications.length > 0) ? sup.certifications : [{ name: "ISO 9001", expiryDate: "" }, { name: "RoHS Compliant", expiryDate: "" }];
+      const certObjsForModal = rawCerts.map(c => (typeof c === 'string') ? { name: c, expiryDate: '' } : c);
+      const _now = new Date();
+      const _soon = new Date(_now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      const certificationsHTML = certObjsForModal.map(c => {
+        let statusHTML = "";
+        let chipStyle = "";
+        if (c.expiryDate) {
+          const expDate = new Date(c.expiryDate);
+          if (expDate < _now) {
+            statusHTML = ` — <strong style="color:var(--accent-red);">Expired</strong>`;
+            chipStyle = "border-color: var(--accent-red); color: var(--accent-red);";
+          } else if (expDate <= _soon) {
+            statusHTML = ` — <strong style="color:var(--accent-orange);">Expiring Soon</strong>`;
+            chipStyle = "border-color: var(--accent-orange); color: var(--accent-orange);";
+          } else {
+            statusHTML = ` — valid until ${expDate.toLocaleDateString()}`;
+          }
+        }
+        return `<span class="cert-chip" style="font-size: 11px; padding: 4px 10px; margin-right: 6px; margin-bottom: 6px; display: inline-block; ${chipStyle}">${escapeHTML(c.name)}${statusHTML}</span>`;
+      }).join("");
 
       const bodyContainer = document.getElementById("supplier-details-body");
       if (!bodyContainer) return;
@@ -4868,6 +6445,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             </div>
           </div>
           
+          <!-- F12: Supplier Performance History -->
+          <div id="supplier-performance-panel" style="border-top: 1px dashed var(--border-color); padding-top: 12px; margin-top: 8px;">
+            <h4 style="font-size:13px; font-weight:800; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin:0 0 8px 0;">📊 Performance History</h4>
+            <div style="font-size:12.5px; color:var(--text-secondary); font-style:italic;">Loading performance metrics...</div>
+          </div>
+
           <div style="font-size:12px; color:var(--text-secondary); font-style:italic; border-top: 1px dashed var(--border-color); padding-top: 12px; margin-top: 8px;">
             📝 <strong>Audit Notes:</strong> "${escapeHTML(sup.notes || 'No special audit annotations logged.')}"
           </div>
@@ -4875,6 +6458,51 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       `;
 
       document.getElementById("supplier-details-modal").classList.add("is-active");
+      loadSupplierPerformance(supplierId);
+    }
+
+    // F12: fetch and render supplier performance metrics
+    async function loadSupplierPerformance(supplierId) {
+      const panel = document.getElementById("supplier-performance-panel");
+      if (!panel) return;
+      try {
+        const res = await fetch(`${API_URL}/suppliers/${supplierId}/performance`);
+        if (!res.ok) throw new Error("Unable to load performance data");
+        const data = await res.json();
+
+        panel.innerHTML = `
+          <h4 style="font-size:13px; font-weight:800; text-transform:uppercase; color:var(--accent-purple); letter-spacing:0.5px; margin:0 0 8px 0;">📊 Performance History</h4>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div class="metric-box" style="text-align:center; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+              <div class="metric-val" style="font-size:18px; font-weight:800;">${data.winRate}%</div>
+              <div class="metric-label" style="font-size:11px; color:var(--text-secondary);">Win Rate</div>
+            </div>
+            <div class="metric-box" style="text-align:center; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+              <div class="metric-val" style="font-size:18px; font-weight:800;">${data.avgResponseTimeHours}h</div>
+              <div class="metric-label" style="font-size:11px; color:var(--text-secondary);">Avg Response Time</div>
+            </div>
+            <div class="metric-box" style="text-align:center; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+              <div class="metric-val" style="font-size:18px; font-weight:800;">${data.totalBids}</div>
+              <div class="metric-label" style="font-size:11px; color:var(--text-secondary);">Total Bids</div>
+            </div>
+          </div>
+          ${data.pricingHistory && data.pricingHistory.length > 0 ? `
+            <div style="margin-top:12px;">
+              <span style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase;">Completed Deals</span>
+              <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                ${data.pricingHistory.slice(0, 5).map(p => `
+                  <div style="font-size:12px; color:var(--text-primary); display:flex; justify-content:space-between; border-bottom: 1px dashed var(--border-color); padding-bottom:4px;">
+                    <span>${escapeHTML(p.templateName || '')}</span>
+                    <span style="color:var(--text-secondary);">${p.completedAt ? new Date(p.completedAt).toLocaleDateString() : ''}</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          ` : ''}
+        `;
+      } catch (e) {
+        panel.innerHTML = `<div style="font-size:12.5px; color:var(--text-secondary); font-style:italic;">Performance metrics unavailable right now.</div>`;
+      }
     }
 
     function closeSupplierDetails() {
@@ -4946,8 +6574,56 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           </label>
           <label class="sf-field"><span>Manufacturing Facility</span><input id="sf-facility" type="text" placeholder="e.g. Unit A, Peenya Tech Hub..." value="${escapeHTML(sup ? sup.manufacturingFacility || '' : '')}" /></label>
           <label class="sf-field"><span>Products Supplied</span><input id="sf-products" type="text" placeholder="e.g. Precision bolts, copper connectors..." value="${escapeHTML(sup ? sup.productsSupplied || '' : '')}" /></label>
+
+          <div class="sf-section-title" style="margin-top:20px;">Privacy Consent (DPDP Compliance)</div>
+          <label class="sf-field" style="display:flex; gap:10px; align-items:center; cursor:pointer;">
+            <input id="sf-consent" type="checkbox" style="width:18px; height:18px; cursor:pointer;" ${(sup && sup.consentGivenAt) ? 'checked disabled' : ''} />
+            <span style="font-weight:500; font-size:13px; text-transform:none; letter-spacing:0; line-height:1.4;">Supplier contact has consented to nexPro storing &amp; processing their details. See <a href="privacy-notice.html" target="_blank" style="color:var(--accent-purple); text-decoration:underline;">Privacy Notice</a>.</span>
+          </label>
+
+          <div class="sf-section-title" style="margin-top:20px;">Certifications &amp; Expiry (F15)</div>
+          <div id="sf-cert-rows" style="display:flex; flex-direction:column; gap:8px;">
+            ${((sup && sup.certifications && sup.certifications.length > 0) ? sup.certifications : []).map((c, i) => {
+              const cert = (typeof c === 'string') ? { name: c, expiryDate: '' } : c;
+              return `
+                <div class="sf-cert-row" style="display:flex; gap:8px; align-items:center;">
+                  <input type="text" class="app-input sf-cert-name" placeholder="Certification name" value="${escapeHTML(cert.name)}" style="flex:1.4;">
+                  <input type="date" class="app-input sf-cert-expiry" value="${escapeHTML(cert.expiryDate || '')}" style="flex:1;">
+                  <span class="field-action-btn delete" title="Remove" onclick="this.closest('.sf-cert-row').remove()">🗑</span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <button type="button" class="secondary-btn" style="margin-top:8px; padding:6px 12px; font-size:12.5px; width:fit-content;" onclick="addSupplierCertRow()">+ Add Certification</button>
         </div>
       `;
+    }
+
+    // F15: add a blank certification row to the supplier edit form
+    function addSupplierCertRow() {
+      const container = document.getElementById("sf-cert-rows");
+      if (!container) return;
+      const row = document.createElement("div");
+      row.className = "sf-cert-row";
+      row.style.cssText = "display:flex; gap:8px; align-items:center;";
+      row.innerHTML = `
+        <input type="text" class="app-input sf-cert-name" placeholder="Certification name" style="flex:1.4;">
+        <input type="date" class="app-input sf-cert-expiry" style="flex:1;">
+        <span class="field-action-btn delete" title="Remove" onclick="this.closest('.sf-cert-row').remove()">🗑</span>
+      `;
+      container.appendChild(row);
+    }
+
+    // F15: collect certification rows from the supplier edit form
+    function collectSupplierCertsFromForm() {
+      const rows = document.querySelectorAll("#sf-cert-rows .sf-cert-row");
+      const certs = [];
+      rows.forEach(row => {
+        const name = row.querySelector(".sf-cert-name").value.trim();
+        const expiryDate = row.querySelector(".sf-cert-expiry").value;
+        if (name) certs.push({ name, expiryDate: expiryDate || '' });
+      });
+      return certs;
     }
 
     function submitSupplierForm() {
@@ -4955,6 +6631,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const contact = document.getElementById("sf-contact").value.trim();
       const email = document.getElementById("sf-email").value.trim();
       const phone = document.getElementById("sf-phone").value.trim();
+
+      const consentChecked = document.getElementById("sf-consent").checked;
+      if (!consentChecked) {
+        showToast("Privacy consent is required to save supplier information.", "error");
+        return;
+      }
 
       if (!name || !contact || !email || !phone) {
         showToast("Please fill in Name, Contact Person, Email and Phone.", "error");
@@ -4972,6 +6654,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const payment = document.getElementById("sf-payment").value;
       const facility = document.getElementById("sf-facility").value.trim();
       const products = document.getElementById("sf-products").value.trim();
+      const certifications = collectSupplierCertsFromForm();
 
       if (editingSupplierId) {
         // Edit existing
@@ -4992,6 +6675,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           sup.paymentTerms = payment;
           sup.manufacturingFacility = facility;
           sup.productsSupplied = products;
+          sup.certifications = certifications;
+          sup.consentGivenAt = sup.consentGivenAt || new Date().toISOString();
+          sup.consentVersion = sup.consentVersion || "1.0";
           showToast(`Saved details for: ${name}`);
         }
       } else {
@@ -5019,8 +6705,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           paymentTerms: payment,
           manufacturingFacility: facility,
           productsSupplied: products,
+          certifications,
           rating: 4.0,
-          pastDealsCount: 0
+          pastDealsCount: 0,
+          consentGivenAt: new Date().toISOString(),
+          consentVersion: "1.0"
         };
         state.suppliers.push(newSup);
         
@@ -5034,64 +6723,460 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
       saveState();
       closeSupplierPanel();
+    }
+
+    // F13: Bulk Supplier Import (CSV)
+    let csvImportRows = [];
+
+    function handleSupplierCSVImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const seenEmails = new Set();
+          csvImportRows = results.data.map(row => {
+            const name = (row.name || row.Name || "").trim();
+            const email = (row.email || row.Email || "").trim();
+            const category = (row.category || row.Category || "").trim();
+            const phone = (row.phone || row.Phone || "").trim();
+            const contactPerson = (row.contactPerson || row.contact || row.Contact || name).trim();
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            const emailLower = email.toLowerCase();
+
+            let reason = "";
+            if (!name) reason = "Missing name";
+            else if (!emailValid) reason = "Missing/invalid email";
+            else if (seenEmails.has(emailLower)) reason = "Duplicate email in file";
+            else if (state.suppliers.some(s => s.email.toLowerCase() === emailLower)) reason = "Already exists in registry";
+
+            if (name && emailValid && !reason) seenEmails.add(emailLower);
+
+            return { name, email, category, phone, contactPerson, valid: !reason, reason };
+          }).filter(r => r.name || r.email);
+
+          openCSVPreviewModal();
+        },
+        error: function(err) {
+          showToast("Failed to parse CSV file: " + err.message, "error");
+        }
+      });
+
+      event.target.value = "";
+    }
+
+    function openCSVPreviewModal() {
+      if (csvImportRows.length === 0) {
+        showToast("No rows found in the CSV file.", "error");
+        return;
+      }
+
+      const validCount = csvImportRows.filter(r => r.valid).length;
+      const invalidCount = csvImportRows.length - validCount;
+
+      const bodyHTML = `
+        <div style="max-height: 340px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+          <table style="width:100%; border-collapse: collapse; font-size: 12.5px;">
+            <thead style="position: sticky; top:0; background: var(--bg-card);">
+              <tr>
+                <th style="text-align:left; padding:8px; border-bottom: 1px solid var(--border-color);">Name</th>
+                <th style="text-align:left; padding:8px; border-bottom: 1px solid var(--border-color);">Email</th>
+                <th style="text-align:left; padding:8px; border-bottom: 1px solid var(--border-color);">Category</th>
+                <th style="text-align:left; padding:8px; border-bottom: 1px solid var(--border-color);">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${csvImportRows.map(r => `
+                <tr style="${r.valid ? '' : 'background: rgba(255,14,86,0.06);'}">
+                  <td style="padding:8px; border-bottom: 1px solid var(--border-color); ${r.valid ? '' : 'color: var(--accent-red);'}">${escapeHTML(r.name || '(missing)')}</td>
+                  <td style="padding:8px; border-bottom: 1px solid var(--border-color); ${r.valid ? '' : 'color: var(--accent-red); font-weight:600;'}">${escapeHTML(r.email || '(missing/invalid)')}</td>
+                  <td style="padding:8px; border-bottom: 1px solid var(--border-color);">${escapeHTML(r.category || 'Other')}</td>
+                  <td style="padding:8px; border-bottom: 1px solid var(--border-color);">${r.valid ? '<span style="color:#00c98b; font-weight:700;">Valid</span>' : `<span style="color:var(--accent-red); font-weight:700;">${escapeHTML(r.reason || 'Invalid')}</span>`}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:10px; font-size:12.5px; color:var(--text-secondary);">${validCount} valid row(s), ${invalidCount} invalid row(s) will be skipped.</div>
+      `;
+
+      openModal({
+        title: "Preview CSV Import",
+        desc: "Review the rows below before confirming import. Rows with missing or malformed emails are highlighted in red and will be skipped.",
+        bodyHTML,
+        confirmText: `Import ${validCount} Supplier${validCount === 1 ? '' : 's'}`,
+        onConfirm: () => {
+          confirmSupplierCSVImport();
+        }
+      });
+    }
+
+    function confirmSupplierCSVImport() {
+      const validRows = csvImportRows.filter(r => r.valid);
+      let importedCount = 0;
+
+      validRows.forEach(r => {
+        const exists = state.suppliers.some(s => s.email.toLowerCase() === r.email.toLowerCase());
+        if (exists) return;
+
+        state.suppliers.push({
+          id: "sup-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 6),
+          name: r.name,
+          category: SUPPLIER_CATEGORIES.includes(r.category) ? r.category : "Other",
+          status: "Pending Verification",
+          contactPerson: r.contactPerson || r.name,
+          designation: "",
+          email: r.email,
+          phone: r.phone || "",
+          altPhone: "",
+          website: "",
+          yearsInBusiness: 1,
+          minOrderQty: "",
+          leadTimeDays: 7,
+          paymentTerms: "Net 30",
+          manufacturingFacility: "",
+          productsSupplied: "",
+          certifications: [],
+          rating: 4.0,
+          pastDealsCount: 0
+        });
+        importedCount++;
+      });
+
+      saveState();
+      closeModal();
+      csvImportRows = [];
+      showToast(`Imported ${importedCount} supplier(s) from CSV.`, "success");
       render();
     }
 
     // STATE EVENTS: Templates
-    function promptAddTemplate() {
+    let modalCreateMode = 'manual';
+    let modalUploadedFile = null;
+
+    window.switchModalCreateTab = function(mode) {
+      modalCreateMode = mode;
+      const tabManual = document.getElementById("tab-manual");
+      const tabAI = document.getElementById("tab-ai");
+      const tabChat = document.getElementById("tab-chat");
+      
+      const sectManual = document.getElementById("modal-manual-section");
+      const sectAI = document.getElementById("modal-ai-section");
+      const sectChat = document.getElementById("modal-chat-section");
+      
+      const confirmBtn = document.getElementById("modal-confirm-btn");
+      
+      if (!tabManual || !tabAI || !tabChat || !sectManual || !sectAI || !sectChat || !confirmBtn) return;
+
+      tabManual.classList.remove("active");
+      tabAI.classList.remove("active");
+      tabChat.classList.remove("active");
+      
+      sectManual.style.display = "none";
+      sectAI.style.display = "none";
+      sectChat.style.display = "none";
+
+      if (mode === 'manual') {
+        tabManual.classList.add("active");
+        sectManual.style.display = "block";
+        confirmBtn.innerText = "Create Template";
+      } else if (mode === 'ai') {
+        tabAI.classList.add("active");
+        sectAI.style.display = "block";
+        confirmBtn.innerText = "Import & Parse RFQ";
+      } else {
+        tabChat.classList.add("active");
+        sectChat.style.display = "block";
+        confirmBtn.innerText = "Draft Template with AI";
+      }
+    }
+
+    window.handleModalFileSelected = function(input) {
+      const label = document.getElementById("modal-file-label");
+      if (!label) return;
+      if (!input.files || input.files.length === 0) {
+        modalUploadedFile = null;
+        label.innerText = "Click to select RFQ file";
+        return;
+      }
+      const file = input.files[0];
+      modalUploadedFile = file;
+      label.innerText = "Selected: " + file.name;
+    }
+
+    window.promptAddTemplate = function() {
+      modalCreateMode = 'manual';
+      modalUploadedFile = null;
+
       const bodyHTML = `
-        <div class="field-input-group">
-          <span class="field-label-span">Template Name</span>
-          <input type="text" id="modal-input" class="app-input" placeholder="e.g. Structural Steel Sourcing">
-        </div>
-        <div class="field-input-group" style="margin-top:16px;">
-          <span class="field-label-span">Product Category</span>
-          <select id="modal-select" class="app-input w-select">
-            <option value="Mechanical Parts">Mechanical Parts</option>
-            <option value="Electrical Parts">Electrical Parts</option>
-            <option value="Chemical Raw Materials">Chemical Raw Materials</option>
-            <option value="Packaging Materials">Packaging Materials</option>
-            <option value="Other">Other</option>
-          </select>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <!-- Custom tabs to select manual vs AI -->
+          <div class="modal-tabs" style="align-self: center; margin-bottom: 8px;">
+            <div class="tab-btn active" id="tab-manual" onclick="switchModalCreateTab('manual')">Manual Form</div>
+            <div class="tab-btn" id="tab-ai" onclick="switchModalCreateTab('ai')">AI Import File</div>
+            <div class="tab-btn" id="tab-chat" onclick="switchModalCreateTab('chat')">AI Sourcing Chat</div>
+          </div>
+
+          <!-- Manual Form Mode -->
+          <div id="modal-manual-section">
+            <div class="field-input-group">
+              <span class="field-label-span">Template Name</span>
+              <input type="text" id="modal-input" class="app-input" placeholder="e.g. Structural Steel Sourcing">
+            </div>
+            <div class="field-input-group" style="margin-top:16px;">
+              <span class="field-label-span">Product Category</span>
+              <select id="modal-select" class="app-input w-select">
+                <option value="Mechanical Parts">Mechanical Parts</option>
+                <option value="Electrical Parts">Electrical Parts</option>
+                <option value="Chemical Raw Materials">Chemical Raw Materials</option>
+                <option value="Packaging Materials">Packaging Materials</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- AI RFQ Document Import Mode -->
+          <div id="modal-ai-section" style="display:none;">
+            <div class="field-input-group">
+              <span class="field-label-span">RFQ Name (Auto-detects if left blank)</span>
+              <input type="text" id="modal-ai-input" class="app-input" placeholder="e.g. Custom MRO Sourcing RFQ">
+            </div>
+            <div class="field-input-group" style="margin-top:16px;">
+              <span class="field-label-span">Product Category</span>
+              <select id="modal-ai-select" class="app-input w-select">
+                <option value="Mechanical Parts">Mechanical Parts</option>
+                <option value="Electrical Parts">Electrical Parts</option>
+                <option value="Chemical Raw Materials">Chemical Raw Materials</option>
+                <option value="Packaging Materials">Packaging Materials</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field-input-group" style="margin-top:16px;">
+              <span class="field-label-span">Upload RFQ Document (Text, CSV, or PDFs)</span>
+              <div class="file-uploader" onclick="document.getElementById('modal-ai-file').click()" style="padding: 24px; text-align: center; border: 1.5px dashed var(--accent-purple); border-radius: 8px; cursor: pointer; background: rgba(118, 0, 230, 0.02); transition: all 0.25s ease;">
+                <div style="font-size:24px; margin-bottom:6px;">📥</div>
+                <div style="font-weight:600; font-size:13px; color:var(--text-primary);" id="modal-file-label">Click to select RFQ file</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">PDF, TXT, CSV up to 10MB</div>
+                <input type="file" id="modal-ai-file" style="display:none;" onchange="handleModalFileSelected(this)" />
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Sourcing Chat Mode -->
+          <div id="modal-chat-section" style="display:none;">
+            <div class="field-input-group">
+              <span class="field-label-span">RFQ Sourcing Event Name</span>
+              <input type="text" id="modal-chat-input" class="app-input" placeholder="e.g. Titanium Bolts Procurement">
+            </div>
+            <div class="field-input-group" style="margin-top:16px;">
+              <span class="field-label-span">Product Category</span>
+              <select id="modal-chat-select" class="app-input w-select">
+                <option value="Mechanical Parts">Mechanical Parts</option>
+                <option value="Electrical Parts">Electrical Parts</option>
+                <option value="Chemical Raw Materials">Chemical Raw Materials</option>
+                <option value="Packaging Materials">Packaging Materials</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field-input-group" style="margin-top:16px;">
+              <span class="field-label-span">Describe Sourcing Requirements (AI Sourcing Prompt)</span>
+              <textarea id="modal-chat-prompt" class="app-input" style="min-height: 90px; font-family:inherit; font-size:12.5px; line-height:1.4;" placeholder="e.g. We need to source aerospace-grade titanium bolts. We require safety composition standards compliance, material test reports, Net 30 payment terms, and delivery lead time of 10 days..."></textarea>
+            </div>
+          </div>
         </div>
       `;
+
       openModal({
-        title: "Create RFQ Template",
-        desc: "Enter a unique name for your new RFQ template.",
+        title: "Create RFQ / Sourcing Pipeline",
+        desc: "Build your template manually or use the Sourcing AI to draft fields from a document or chat prompt.",
         bodyHTML,
         confirmText: "Create Template",
-        onConfirm: (val) => {
-          if (!val || val.trim() === "") {
-            showToast("Template name cannot be empty", "error");
-            return;
+        onConfirm: () => {
+          if (modalCreateMode === 'manual') {
+            const nameEl = document.getElementById("modal-input");
+            const val = nameEl ? nameEl.value.trim() : "";
+            if (!val) {
+              showToast("Template name cannot be empty", "error");
+              return;
+            }
+            const catEl = document.getElementById("modal-select");
+            const category = catEl ? catEl.value : "Other";
+            
+            const duplicate = state.templates.some(t => t.name.toLowerCase() === val.toLowerCase());
+            if (duplicate) {
+              showToast("A template with this name already exists", "error");
+              return;
+            }
+            
+            const newTemplate = {
+              id: "template-" + Date.now(),
+              name: val,
+              category: category,
+              fields: [
+                { id: "field-supplier", label: "Supplier Name", type: "short-text", required: true, options: [], order: 0 },
+                { id: "field-spec", label: "Product Specifications", type: "long-text", required: true, options: [], order: 1 }
+              ]
+            };
+            
+            state.templates.push(newTemplate);
+            saveState();
+            closeModal();
+            showToast(`Created template: ${val}`);
+            navigateTo("editor", newTemplate.id);
+          } else if (modalCreateMode === 'ai') {
+            // AI Sourcing Import Mode
+            if (!modalUploadedFile) {
+              showToast("Please select an RFQ file to import", "error");
+              return;
+            }
+            
+            // Show scanning overlay
+            const overlay = document.getElementById("ai-scanning-overlay");
+            const overlayTitle = document.getElementById("ai-scanning-title");
+            const overlayDesc = document.getElementById("ai-scanning-desc");
+            if (overlay) {
+              if (overlayTitle) overlayTitle.innerText = "AI Sourcing Agent";
+              if (overlayDesc) overlayDesc.innerText = "Importing RFQ and auto-generating fields...";
+              overlay.style.display = "flex";
+              overlay.offsetHeight;
+              overlay.classList.add("is-active");
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+              const text = e.target.result;
+              try {
+                const nameInput = document.getElementById("modal-ai-input");
+                const customName = nameInput ? nameInput.value.trim() : "";
+                const rfqName = customName || "Imported RFQ - " + modalUploadedFile.name.replace(/\.[^/.]+$/, "");
+                
+                const catInput = document.getElementById("modal-ai-select");
+                const category = catInput ? catInput.value : "Other";
+                
+                const response = await fetch(`${API_URL}/rfqs/parse-fields`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    rfqText: text,
+                    rfqName: rfqName,
+                    category: category
+                  })
+                });
+                
+                if (!response.ok) throw new Error("Failed to parse RFQ document.");
+                const data = await response.json();
+                
+                const duplicate = state.templates.some(t => t.name.toLowerCase() === data.name.toLowerCase());
+                const finalName = duplicate ? data.name + " (" + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ")" : data.name;
+                
+                const newTemplate = {
+                  id: "template-" + Date.now(),
+                  name: finalName,
+                  category: data.category,
+                  fields: data.fields
+                };
+                
+                state.templates.push(newTemplate);
+                saveState();
+                closeModal();
+                showToast(`AI successfully parsed RFQ & generated ${data.fields.length} criteria fields!`, "success");
+                
+                // Skip manual creation and jump straight to the fill response/bid form!
+                navigateTo("form", newTemplate.id);
+              } catch (err) {
+                console.error(err);
+                showToast("Failed to extract RFQ fields. Please upload a valid text file.", "error");
+              } finally {
+                if (overlay) {
+                  overlay.classList.remove("is-active");
+                  setTimeout(() => { overlay.style.display = "none"; }, 300);
+                }
+              }
+            };
+            reader.onerror = () => {
+              showToast("Failed to read the uploaded document.", "error");
+              if (overlay) {
+                overlay.classList.remove("is-active");
+                overlay.style.display = "none";
+              }
+            };
+            reader.readAsText(modalUploadedFile);
+          } else {
+            // AI Sourcing Chat Mode
+            const promptText = document.getElementById("modal-chat-prompt") ? document.getElementById("modal-chat-prompt").value.trim() : "";
+            if (!promptText) {
+              showToast("Please describe your sourcing requirements.", "error");
+              return;
+            }
+            
+            const rfqName = document.getElementById("modal-chat-input") ? document.getElementById("modal-chat-input").value.trim() : "";
+            const category = document.getElementById("modal-chat-select") ? document.getElementById("modal-chat-select").value : "Other";
+            
+            // Show scanning overlay
+            const overlay = document.getElementById("ai-scanning-overlay");
+            const overlayTitle = document.getElementById("ai-scanning-title");
+            const overlayDesc = document.getElementById("ai-scanning-desc");
+            if (overlay) {
+              if (overlayTitle) overlayTitle.innerText = "Sourcing AI Agent";
+              if (overlayDesc) overlayDesc.innerText = "Drafting sourcing template from requirements prompt...";
+              overlay.style.display = "flex";
+              overlay.offsetHeight;
+              overlay.classList.add("is-active");
+            }
+            
+            (async () => {
+              try {
+                const response = await fetch(`${API_URL}/rfqs/draft-prompt`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    promptText,
+                    rfqName: rfqName || "Sourcing Event - " + new Date().toLocaleDateString(),
+                    category
+                  })
+                });
+                
+                if (!response.ok) throw new Error("Failed to compile prompt draft.");
+                const data = await response.json();
+                
+                const duplicate = state.templates.some(t => t.name.toLowerCase() === data.name.toLowerCase());
+                const finalName = duplicate ? data.name + " (" + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ")" : data.name;
+                
+                const newTemplate = {
+                  id: "template-" + Date.now(),
+                  name: finalName,
+                  category: data.category,
+                  fields: data.fields
+                };
+                
+                state.templates.push(newTemplate);
+                saveState();
+                closeModal();
+                showToast(`Sourcing AI generated template: ${finalName} with ${data.fields.length} criteria fields!`, "success");
+                
+                // Skip manual creation and jump straight to the fill response/bid form!
+                navigateTo("form", newTemplate.id);
+              } catch (err) {
+                console.error(err);
+                showToast("Failed to compile prompt draft. Please describe with clear keywords.", "error");
+              } finally {
+                if (overlay) {
+                  overlay.classList.remove("is-active");
+                  setTimeout(() => { overlay.style.display = "none"; }, 300);
+                }
+              }
+            })();
           }
-          const catEl = document.getElementById("modal-select");
-          const category = catEl ? catEl.value : "Other";
-          
-          // Duplicate check
-          const duplicate = state.templates.some(t => t.name.toLowerCase() === val.trim().toLowerCase());
-          if (duplicate) {
-            showToast("A template with this name already exists", "error");
-            return;
-          }
-          
-          const newTemplate = {
-            id: "template-" + Date.now(),
-            name: val.trim(),
-            category: category,
-            fields: [
-              { id: "field-supplier", label: "Supplier Name", type: "short-text", required: true, options: [], order: 0 },
-              { id: "field-spec", label: "Product Specifications", type: "long-text", required: true, options: [], order: 1 }
-            ]
-          };
-          
-          state.templates.push(newTemplate);
-          saveState();
-          closeModal();
-          showToast(`Created template: ${val}`);
-          navigateTo("editor", newTemplate.id);
         }
       });
+
+      // Let buyers dictate their sourcing requirements/names instead of typing
+      SpeechToText.attach(document.getElementById("modal-input"));
+      SpeechToText.attach(document.getElementById("modal-ai-input"));
+      SpeechToText.attach(document.getElementById("modal-chat-input"));
+      SpeechToText.attach(document.getElementById("modal-chat-prompt"));
     }
 
     function promptRenameTemplate(templateId) {
@@ -5128,6 +7213,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           render();
         }
       });
+
+      SpeechToText.attach(document.getElementById("modal-input"));
     }
 
     function promptDeleteTemplate(templateId) {
@@ -5151,8 +7238,144 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       });
     }
 
+    // F2: Save As / Duplicate Template
+    function duplicateTemplate(templateId, event) {
+      if (event) event.stopPropagation();
+      const template = state.templates.find(t => t.id === templateId);
+      if (!template) return;
+
+      const defaultName = `${template.name} (Copy)`;
+      const bodyHTML = `
+        <div class="field-input-group">
+          <span class="field-label-span">New Template Name</span>
+          <input type="text" id="modal-input" class="app-input" value="${escapeHTML(defaultName)}">
+        </div>
+      `;
+      openModal({
+        title: "Duplicate RFQ Template",
+        desc: "Create an independent copy of this template with its own fields and version history.",
+        bodyHTML,
+        confirmText: "Duplicate",
+        onConfirm: (val) => {
+          const newName = (val && val.trim() !== "") ? val.trim() : defaultName;
+          const duplicateExists = state.templates.some(t => t.name.toLowerCase() === newName.toLowerCase());
+          if (duplicateExists) {
+            showToast("A template with this name already exists", "error");
+            return;
+          }
+
+          const copy = JSON.parse(JSON.stringify(template));
+          copy.id = "template-" + Date.now();
+          copy.name = newName;
+          copy.createdDate = new Date().toISOString();
+          copy.versions = []; // fresh history for the new independent template
+          copy.fields = (copy.fields || []).map(f => ({ ...f }));
+
+          state.templates.push(copy);
+          saveState();
+          closeModal();
+          showToast(`Duplicated template as "${newName}"`, "success");
+          render();
+        }
+      });
+    }
+
+    // F1: Template Versioning - fetch and render version history for a template
+    async function openVersionHistoryModal(templateId) {
+      const template = state.templates.find(t => t.id === templateId);
+      if (!template) return;
+
+      const modal = document.getElementById("version-history-modal");
+      const body = document.getElementById("version-history-body");
+      const titleEl = document.getElementById("version-history-title");
+      if (!modal || !body) return;
+
+      titleEl.innerText = `Version History — ${template.name}`;
+      body.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-secondary);">Loading version history...</div>`;
+      modal.classList.add("is-active");
+      modal.style.display = "flex";
+
+      const currentUser = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+      const role = currentUser ? currentUser.role : 'buyer';
+
+      // Access Control: versions are stripped for Vendors
+      if (role === 'vendor') {
+        body.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-secondary);">Version history is only available to Buyers and Admins.</div>`;
+        return;
+      }
+
+      let versions = (template.versions || []).slice();
+      try {
+        // Security: the server looks up this email's actual role from the User collection
+        // rather than trusting a client-supplied role string - see /api/rfqs/:id/versions
+        const emailParam = currentUser ? encodeURIComponent(currentUser.email) : '';
+        const res = await fetch(`${API_URL}/rfqs/${templateId}/versions?email=${emailParam}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.versions) versions = data.versions;
+        }
+      } catch (e) {
+        console.warn("Falling back to locally cached version history", e);
+        versions = versions.slice().sort((a, b) => (b.versionNum || 0) - (a.versionNum || 0));
+      }
+
+      if (versions.length === 0) {
+        body.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-secondary);">No previous versions yet. Versions are recorded automatically every time this template is saved with changes.</div>`;
+        return;
+      }
+
+      body.innerHTML = versions.map(v => `
+        <div style="border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <div>
+            <div style="font-weight:700; font-size:13.5px; color:var(--text-primary);">Version ${v.versionNum} &mdash; ${escapeHTML(v.name || '')}</div>
+            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;">${(v.fields || []).length} field(s) &middot; Updated ${v.updatedAt ? new Date(v.updatedAt).toLocaleString() : 'unknown date'}${v.updatedBy ? ' &middot; by ' + escapeHTML(v.updatedBy) : ''}</div>
+          </div>
+          <button class="secondary-btn" style="flex-shrink:0;" onclick='restoreTemplateVersion("${templateId}", ${v.versionNum})'>Restore</button>
+        </div>
+      `).join("");
+
+      // Cache versions fetched from server on the local template so restore can find them offline
+      template.versions = versions;
+    }
+
+    function closeVersionHistoryModal() {
+      const modal = document.getElementById("version-history-modal");
+      if (modal) {
+        modal.classList.remove("is-active");
+        modal.style.display = "none";
+      }
+    }
+
+    // F1: Restoring a version flows through the standard save pipeline (saveState -> bulk sync),
+    // which snapshots the pre-restore state into versions before overwriting - non-destructive.
+    function restoreTemplateVersion(templateId, versionNum) {
+      const template = state.templates.find(t => t.id === templateId);
+      if (!template) return;
+      const version = (template.versions || []).find(v => v.versionNum === versionNum);
+      if (!version) return;
+
+      openModal({
+        title: "Restore This Version?",
+        desc: `Restoring Version ${versionNum} will replace the current template fields and name. The current configuration will itself be saved as a new version first, so nothing is lost.`,
+        confirmText: "Restore Version",
+        onConfirm: () => {
+          template.name = version.name;
+          template.fields = JSON.parse(JSON.stringify(version.fields || []));
+          saveState();
+          closeModal();
+          closeVersionHistoryModal();
+          showToast(`Restored Version ${versionNum} of "${template.name}"`, "success");
+          localFields = []; // force editor to reload fields from template next time it's opened
+          render();
+        }
+      });
+    }
+
     // VIEW: Template Editor (Layout builder copy)
     let localFields = [];
+    // F10: Response Scoring / Weighting - fieldName (label) -> weight %, Buyer/Admin only
+    let localWeights = {};
+    let localWeightsTemplateId = null;
 
     function renderEditorView(container) {
       const template = state.templates.find(t => t.id === selectedTemplateId);
@@ -5166,6 +7389,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         localFields = (template.fields || [])
           .map(f => ({ ...f, templateId: template.id }))
           .sort((a, b) => a.order - b.order);
+      }
+      if (!localWeightsTemplateId || localWeightsTemplateId !== template.id) {
+        localWeights = {};
+        (template.evaluationWeights || []).forEach(w => { localWeights[w.fieldName] = w.weight; });
+        localWeightsTemplateId = template.id;
       }
       
       const layout = document.createElement("div");
@@ -5241,6 +7469,39 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             <input type="text" class="app-input" style="height:32px; font-size:12px; padding:0 8px;" value="${escapeHTML((field.options || []).join(', '))}" placeholder="e.g. Option A, Option B, Option C" onchange="updateFieldOptions(${index}, this.value)">
           </div>
         ` : "";
+
+        // F3: Field Validation Rules
+        const showNumberRange = field.type === "number";
+        const showMaxLength = ["short-text", "long-text"].includes(field.type);
+        const showAllowedValues = ["short-text", "number"].includes(field.type);
+        const validationHTML = (showNumberRange || showMaxLength || showAllowedValues) ? `
+          <div class="field-validation-config" style="margin-top: 10px; border-top: 1px dashed var(--border-color); padding-top: 8px;">
+            <span style="font-size: 11px; font-weight:600; text-transform:uppercase; color:var(--text-secondary); display:block; margin-bottom:6px;">Validation Rules</span>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              ${showNumberRange ? `
+                <input type="number" class="app-input" style="height:30px; font-size:12px; padding:0 8px; flex:1; min-width:70px;" placeholder="Min" value="${field.min !== undefined && field.min !== null ? field.min : ''}" onchange="updateFieldValidation(${index}, 'min', this.value)">
+                <input type="number" class="app-input" style="height:30px; font-size:12px; padding:0 8px; flex:1; min-width:70px;" placeholder="Max" value="${field.max !== undefined && field.max !== null ? field.max : ''}" onchange="updateFieldValidation(${index}, 'max', this.value)">
+              ` : ""}
+              ${showMaxLength ? `
+                <input type="number" class="app-input" style="height:30px; font-size:12px; padding:0 8px; flex:1; min-width:70px;" placeholder="Max Length" value="${field.maxLength !== undefined && field.maxLength !== null ? field.maxLength : ''}" onchange="updateFieldValidation(${index}, 'maxLength', this.value)">
+              ` : ""}
+            </div>
+            ${showAllowedValues ? `
+              <input type="text" class="app-input" style="height:30px; font-size:12px; padding:0 8px; margin-top:8px;" placeholder="Allowed Values (comma separated, optional)" value="${escapeHTML((field.allowedValues || []).join(', '))}" onchange="updateFieldValidation(${index}, 'allowedValues', this.value)">
+            ` : ""}
+          </div>
+        ` : "";
+
+        // F10: Response Scoring / Weighting - Buyer/Admin only, numeric & checkbox fields only
+        const _weightUser = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+        const _canSetWeights = !_weightUser || _weightUser.role !== 'vendor';
+        const scoreEligible = ["number", "checkbox"].includes(field.type);
+        const weightHTML = _canSetWeights ? `
+          <div class="field-weight-config" style="margin-top: 10px; border-top: 1px dashed var(--border-color); padding-top: 8px;">
+            <span style="font-size: 11px; font-weight:600; text-transform:uppercase; color:var(--text-secondary); display:block; margin-bottom:6px;">Evaluation Weight %${scoreEligible ? '' : ' (numeric/checkbox fields only)'}</span>
+            <input type="number" class="app-input" style="height:30px; font-size:12px; padding:0 8px; max-width:120px;" min="0" max="100" placeholder="e.g. 25" value="${localWeights[field.label] !== undefined ? localWeights[field.label] : ''}" ${scoreEligible ? '' : 'disabled title="Only numeric or checkbox fields can be weighted"'} onchange="updateFieldWeight('${escapeHTML(field.label).replace(/'/g, "\\'")}', this.value)">
+          </div>
+        ` : "";
         
         item.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
@@ -5252,7 +7513,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             </div>
           </div>
           <div style="display:flex; flex-direction:column; gap:8px;">
-            <input type="text" class="app-input" style="height:36px; font-size:13px; font-weight:600;" value="${escapeHTML(field.label)}" placeholder="Field Label (e.g. Quantity)" oninput="updateFieldLabel(${index}, this.value)">
+            <input type="text" class="app-input field-label-editor" style="height:36px; font-size:13px; font-weight:600;" value="${escapeHTML(field.label)}" placeholder="Field Label (e.g. Quantity)" oninput="updateFieldLabel(${index}, this.value)">
             <div style="display:flex; gap:12px; align-items:center;">
               <select class="app-input w-select" style="height:36px; font-size:13px; flex:1;" onchange="updateFieldType(${index}, this.value)">
                 ${optionsHTML}
@@ -5264,8 +7525,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             </div>
           </div>
           ${configOptionsHTML}
+          ${validationHTML}
+          ${weightHTML}
         `;
         listContainer.appendChild(item);
+        SpeechToText.attach(item.querySelector(".field-label-editor"));
       });
     }
 
@@ -5363,15 +7627,55 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     }
 
     // FIELD BUILDER STATE EVENTS
+    window.handlePresetSelection = function(val) {
+      const labelInput = document.getElementById("field-label-input");
+      const typeSelect = document.getElementById("field-type-select");
+      if (!labelInput || !typeSelect) return;
+      
+      if (val === "custom") {
+        labelInput.value = "";
+        labelInput.placeholder = "Enter custom field name...";
+        typeSelect.disabled = false;
+      } else {
+        const index = parseInt(val);
+        const libField = fieldLibrary[index];
+        if (libField) {
+          labelInput.value = libField.label;
+          typeSelect.value = libField.type === "dropdown" ? "dropdown" : libField.type;
+          typeSelect.disabled = false;
+        }
+      }
+    };
+
     function addNewField() {
       // Add a library field or a custom skeleton field
       const bodyHTML = `
-        <div class="field-input-group">
-          <span class="field-label-span">Choose Field Preset</span>
-          <select id="field-preset-select" class="app-input w-select" style="margin-bottom:16px;">
-            <option value="custom">-- Custom Field --</option>
-            ${fieldLibrary.map((f, idx) => `<option value="${idx}">${escapeHTML(f.label)} [${escapeHTML(f.type)}]</option>`).join("")}
-          </select>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="field-input-group">
+            <span class="field-label-span" style="font-weight:600; margin-bottom:6px; display:block;">Choose Field Preset</span>
+            <select id="field-preset-select" class="app-input w-select" onchange="window.handlePresetSelection(this.value)">
+              <option value="custom">-- Custom Field --</option>
+              ${fieldLibrary.map((f, idx) => `<option value="${idx}">${escapeHTML(f.label)} [${escapeHTML(f.type)}]</option>`).join("")}
+            </select>
+          </div>
+          
+          <div class="field-input-group">
+            <span class="field-label-span" style="font-weight:600; margin-bottom:6px; display:block;">Field Name / Label</span>
+            <input type="text" id="field-label-input" class="app-input w-input" placeholder="Enter custom field name..." style="width:100%; box-sizing:border-box;">
+          </div>
+
+          <div class="field-input-group">
+            <span class="field-label-span" style="font-weight:600; margin-bottom:6px; display:block;">Field Type</span>
+            <select id="field-type-select" class="app-input w-select" style="width:100%;">
+              <option value="short-text">Short Text (e.g. Names, IDs)</option>
+              <option value="long-text">Long Text (e.g. Descriptions, Notes)</option>
+              <option value="number">Number (e.g. Price, Quantity)</option>
+              <option value="date">Date</option>
+              <option value="checkbox">Checkbox (Yes/No)</option>
+              <option value="dropdown">Dropdown Selection</option>
+              <option value="file">File Upload</option>
+            </select>
+          </div>
         </div>
       `;
       openModal({
@@ -5381,20 +7685,20 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         confirmText: "Add Field",
         onConfirm: () => {
           const selectEl = document.getElementById("field-preset-select");
-          if (!selectEl) return;
+          const labelInput = document.getElementById("field-label-input");
+          const typeSelect = document.getElementById("field-type-select");
+          if (!selectEl || !labelInput || !typeSelect) return;
+          
           const val = selectEl.value;
+          const label = labelInput.value.trim() || (val === "custom" ? "Custom Field" : fieldLibrary[parseInt(val)].label);
+          const type = typeSelect.value;
           
-          let label = "Custom Field";
-          let type = "short-text";
           let options = [];
-          
           if (val !== "custom") {
             const index = parseInt(val);
             const libField = fieldLibrary[index];
-            if (libField) {
-              label = libField.label;
-              type = libField.type === "dropdown" ? "dropdown" : libField.type;
-              options = libField.options ? libField.options.slice() : [];
+            if (libField && libField.options) {
+              options = libField.options.slice();
             }
           }
           
@@ -5410,11 +7714,13 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           
           localFields.push(newField);
           closeModal();
-          showToast(`Added field preset: ${label}`);
+          showToast(`Added field: ${label}`);
           renderFieldItems();
           renderFormPreview();
         }
       });
+
+      SpeechToText.attach(document.getElementById("field-label-input"));
     }
 
     function updateFieldLabel(index, val) {
@@ -5446,6 +7752,27 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       if (localFields[index]) {
         localFields[index].options = val.split(",").map(s => s.trim()).filter(s => s !== "");
         renderFormPreview();
+      }
+    }
+
+    // F10: Response Scoring / Weighting - update the weight % for a field, keyed by label
+    function updateFieldWeight(fieldLabel, val) {
+      const num = val === "" ? undefined : Math.max(0, Math.min(100, Number(val)));
+      if (num === undefined) {
+        delete localWeights[fieldLabel];
+      } else {
+        localWeights[fieldLabel] = num;
+      }
+    }
+
+    // F3: Field Validation Rules - update min/max/maxLength/allowedValues on a field
+    function updateFieldValidation(index, key, val) {
+      const field = localFields[index];
+      if (!field) return;
+      if (key === "allowedValues") {
+        field.allowedValues = val.split(",").map(s => s.trim()).filter(s => s !== "");
+      } else {
+        field[key] = val === "" ? undefined : Number(val);
       }
     }
 
@@ -5486,6 +7813,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const { templateId, ...cleanField } = f;
         return cleanField;
       });
+
+      // F10: persist evaluation weights (numeric/checkbox fields only), Buyer/Admin only
+      const eligibleLabels = template.fields.filter(f => ["number", "checkbox"].includes(f.type)).map(f => f.label);
+      template.evaluationWeights = Object.keys(localWeights)
+        .filter(label => eligibleLabels.includes(label) && localWeights[label] > 0)
+        .map(label => ({ fieldName: label, weight: localWeights[label] }));
       
       saveState();
       showToast("Template layout successfully saved!", "success");
@@ -5514,6 +7847,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       `;
       
       overlay.style.display = "flex";
+      overlay.offsetHeight; // Force reflow
+      overlay.classList.add("is-active");
       
       document.getElementById("modal-cancel-btn").onclick = () => {
         if (options.onCancel) options.onCancel();
@@ -5536,7 +7871,10 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     function closeModal() {
       const overlay = document.getElementById("modal-overlay");
       if (overlay) {
-        overlay.style.display = "none";
+        overlay.classList.remove("is-active");
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 300);
       }
     }
 
@@ -5554,15 +7892,275 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         .replace(/'/g, "&#039;");
     }
 
-    function handleFileSelected(fieldId, input) {
+    // ---------------------------------------------------------------
+    // Speech-to-Text (voice dictation) helper
+    // Uses the browser's built-in Web Speech API (SpeechRecognition).
+    // Works in Chrome/Edge; gracefully disables the mic button on
+    // unsupported browsers (e.g. Firefox, older Safari) instead of
+    // throwing errors.
+    // ---------------------------------------------------------------
+    const SpeechToText = (function () {
+      const RecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+      let activeSession = null; // only one mic active at a time
+
+      function isSupported() {
+        return !!RecognitionCtor;
+      }
+
+      function stopActive() {
+        if (activeSession) {
+          activeSession.forceStop();
+          activeSession = null;
+        }
+      }
+
+      const micIconSVG = `<svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>`;
+
+      /**
+       * Attaches a mic button to a text input/textarea that transcribes
+       * speech and inserts it into the field as the user talks.
+       * @param {HTMLInputElement|HTMLTextAreaElement} fieldEl
+       * @param {Object} [opts]
+       * @param {Function} [opts.onResult] - called with the full field value after each update
+       * @param {string} [opts.lang] - BCP-47 language tag, defaults to browser language
+       */
+      function attach(fieldEl, opts) {
+        if (!fieldEl || fieldEl.dataset.sttAttached) return;
+        fieldEl.dataset.sttAttached = "1";
+        opts = opts || {};
+
+        // Wrap the field so we can absolutely-position the mic button
+        const wrap = document.createElement("div");
+        wrap.className = "stt-field-wrap";
+        fieldEl.parentNode.insertBefore(wrap, fieldEl);
+        wrap.appendChild(fieldEl);
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "stt-mic-btn";
+        btn.innerHTML = micIconSVG;
+        btn.title = "Click and speak to fill this field";
+        wrap.appendChild(btn);
+
+        const hint = document.createElement("div");
+        hint.className = "stt-interim-hint";
+        wrap.appendChild(hint);
+
+        if (!isSupported()) {
+          btn.classList.add("stt-unsupported");
+          btn.title = "Voice input isn't supported in this browser. Try Chrome or Edge.";
+          btn.addEventListener("click", () => {
+            showToast("Voice input isn't supported in this browser. Try Chrome or Edge.", "error");
+          });
+          return;
+        }
+
+        let recognition = null;
+        let listening = false;
+        // Text already in the field before this recording session started
+        let baseValue = "";
+
+        function forceStop() {
+          if (recognition) {
+            try { recognition.stop(); } catch (e) {}
+          }
+        }
+
+        function setListening(state) {
+          listening = state;
+          btn.classList.toggle("stt-listening", state);
+          if (!state) hint.textContent = "";
+        }
+
+        btn.addEventListener("click", () => {
+          if (listening) {
+            forceStop();
+            return;
+          }
+          // Ensure only one field is being dictated to at a time
+          stopActive();
+
+          recognition = new RecognitionCtor();
+          recognition.lang = opts.lang || document.documentElement.lang || "en-US";
+          recognition.continuous = true;
+          recognition.interimResults = true;
+
+          baseValue = fieldEl.value || "";
+          if (baseValue && !/\s$/.test(baseValue)) baseValue += " ";
+
+          activeSession = { forceStop };
+
+          recognition.onstart = () => setListening(true);
+
+          recognition.onresult = (event) => {
+            let finalTranscript = "";
+            let interimTranscript = "";
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+              const transcript = event.results[i][0].transcript;
+              if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+              } else {
+                interimTranscript += transcript;
+              }
+            }
+            if (finalTranscript) {
+              baseValue += finalTranscript.trim() + " ";
+            }
+            fieldEl.value = baseValue + interimTranscript;
+            hint.textContent = interimTranscript ? interimTranscript : "";
+            // Keep textarea height and any live-preview handlers in sync
+            fieldEl.dispatchEvent(new Event("input", { bubbles: true }));
+            if (typeof opts.onResult === "function") opts.onResult(fieldEl.value);
+          };
+
+          recognition.onerror = (event) => {
+            if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+              showToast("Microphone access was blocked. Allow mic permissions to use voice input.", "error");
+            } else if (event.error !== "no-speech" && event.error !== "aborted") {
+              showToast("Voice input error: " + event.error, "error");
+            }
+          };
+
+          recognition.onend = () => {
+            setListening(false);
+            activeSession = null;
+            fieldEl.focus();
+          };
+
+          try {
+            recognition.start();
+          } catch (e) {
+            showToast("Couldn't start voice input. Please try again.", "error");
+          }
+        });
+      }
+
+      return { attach, isSupported, stopActive };
+    })();
+
+    async function handleFileSelected(fieldId, input) {
       const label = document.getElementById("file-label-" + fieldId);
-      if (label && input.files && input.files[0]) {
+      if (!label || !input.files || input.files.length === 0) return;
+
+      // Update the label text to list chosen files
+      const fileNames = Array.from(input.files).map(f => f.name);
+      if (input.files.length === 1) {
         label.innerText = "Selected: " + input.files[0].name;
+      } else {
+        label.innerText = `Selected (${input.files.length}): ` + fileNames.slice(0, 2).join(", ") + (input.files.length > 2 ? "..." : "");
+      }
+
+      // Show AI Scanning Overlay
+      const overlay = document.getElementById("ai-scanning-overlay");
+      const overlayTitle = document.getElementById("ai-scanning-title");
+      const overlayDesc = document.getElementById("ai-scanning-desc");
+      if (overlay) {
+        if (overlayTitle) overlayTitle.innerText = "AI Sourcing Agent";
+        if (overlayDesc) overlayDesc.innerText = `Analyzing ${input.files.length} uploaded document${input.files.length > 1 ? 's' : ''}...`;
+        overlay.style.display = "flex";
+        overlay.offsetHeight; // Force reflow
+        overlay.classList.add("is-active");
+      }
+
+      // Read files text contents (for text files < 1.5MB)
+      const filesPayload = [];
+      for (const file of input.files) {
+        const fileData = {
+          name: file.name,
+          type: file.type,
+          size: file.size
+        };
+
+        const isTextLike = file.size < 1500000 && (
+          file.type.startsWith("text/") || 
+          file.name.endsWith(".txt") || 
+          file.name.endsWith(".csv") || 
+          file.name.endsWith(".json")
+        );
+
+        if (isTextLike) {
+          try {
+            fileData.content = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = (e) => resolve(e.target.result);
+              reader.onerror = (err) => reject(err);
+              reader.readAsText(file);
+            });
+          } catch (err) {
+            console.error("Failed to read text from file: " + file.name, err);
+          }
+        }
+        filesPayload.push(fileData);
+      }
+
+      // Post files payload to Express backend for extraction
+      try {
+        const response = await fetch(`${API_URL}/responses/extract`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            templateId: selectedTemplateId,
+            files: filesPayload
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Sourcing extraction failed.");
+        }
+
+        const data = await response.json();
+        
+        if (data && data.fields) {
+          // Autofill the form inputs dynamically
+          let autofilledCount = 0;
+          Object.keys(data.fields).forEach(fid => {
+            const val = data.fields[fid];
+            if (val === null || val === undefined || val === "") return;
+
+            // 1. Text, Textarea, Number, Date, Select elements
+            const inputEl = document.querySelector(`[data-field-id="${fid}"]`);
+            if (inputEl) {
+              if (inputEl.type === 'checkbox') {
+                inputEl.checked = (val === true || val === "Yes" || val === "true");
+              } else if (inputEl.tagName === 'SELECT') {
+                inputEl.value = val;
+              } else {
+                inputEl.value = val;
+              }
+              autofilledCount++;
+            }
+
+            // 2. Multi-select checkboxes
+            const checkboxes = document.querySelectorAll(`input[type="checkbox"][data-field-id="${fid}"]`);
+            if (checkboxes.length > 0 && Array.isArray(val)) {
+              checkboxes.forEach(cb => {
+                cb.checked = val.includes(cb.value);
+              });
+              autofilledCount++;
+            }
+          });
+
+          // Show Toast notification listing extracted count
+          showToast(`AI Sourcing Agent extracted & autofilled ${autofilledCount} fields!`, "success");
+        }
+      } catch (error) {
+        console.error("Document extraction failed:", error);
+        showToast("AI Extraction failed. Please fill form manually.", "error");
+      } finally {
+        // Hide AI Scanning Overlay
+        if (overlay) {
+          overlay.classList.remove("is-active");
+          setTimeout(() => {
+            if (!overlay.classList.contains("is-active")) {
+              overlay.style.display = "none";
+            }
+          }, 300);
+        }
       }
     }
 
     function triggerSuccessAnimation(callback) {
-      const overlay = document.getElementById("success-animation-overlay");
+      const overlay = document.getElementById("success-overlay");
       if (!overlay) {
         if (callback) callback();
         return;
@@ -5718,11 +8316,20 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         </div>
       `;
 
-      document.getElementById("print-preview-modal").style.display = "flex";
+      const modal = document.getElementById("print-preview-modal");
+      modal.style.display = "flex";
+      modal.offsetHeight; // Force reflow
+      modal.classList.add("is-active");
     }
 
     function closePrintPreview() {
-      document.getElementById("print-preview-modal").style.display = "none";
+      const modal = document.getElementById("print-preview-modal");
+      modal.classList.remove("is-active");
+      setTimeout(() => {
+        if (!modal.classList.contains("is-active")) {
+          modal.style.display = "none";
+        }
+      }, 300);
     }
 
     function triggerActualPrint() {
@@ -5730,8 +8337,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const response = state.submittedResponses.find(r => r.id === selectedResponseId);
       if (!template || !response) return;
 
-      const printWindow = window.open("", "_blank");
-      
+      const printContainer = document.getElementById("print-only-container");
+      if (!printContainer) return;
+
       let fieldsRowsHTML = template.fields.map(field => {
         const respField = response.fields.find(f => f.id === field.id);
         let val = respField ? respField.value : "—";
@@ -5741,50 +8349,64 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           val = Array.isArray(val) ? val.join(", ") : (val || "—");
         }
         return `
-          <div class="row">
-            <div class="label">${escapeHTML(field.label)}</div>
-            <div class="value">${escapeHTML(val)}</div>
+          <div class="print-field-group">
+            <div class="print-field-label">${escapeHTML(field.label)}</div>
+            <div class="print-field-value">${escapeHTML(val)}</div>
           </div>
         `;
       }).join("");
 
-      const statusLabel = "SUBMITTED";
+      printContainer.innerHTML = `
+        <div class="print-watermark">NEXPRO</div>
+        <div class="print-header">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+            <div>
+              <div class="print-company-name">nexPro Sourcing</div>
+              <div class="print-template-name">${escapeHTML(template.name)}</div>
+            </div>
+            <div style="text-align: right; font-family: system-ui, -apple-system, sans-serif;">
+              <div style="font-size: 11pt; font-weight: 800; color: #7600E6; letter-spacing: 0.5px; text-transform: uppercase;">RFQ Document Transcript</div>
+              <div style="font-size: 9pt; color: #555; margin-top: 4px;">Ref ID: <strong>${escapeHTML(response.responseID)}</strong></div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; padding: 16px; background: #fbfbfb; border: 1px solid #e9e9e9; border-radius: 6px; font-size: 10.5pt; font-family: system-ui, -apple-system, sans-serif;">
+            <div>
+              <span style="color: #777; font-size: 9pt; text-transform: uppercase; font-weight: 600;">Product Category:</span><br>
+              <strong style="color: #111;">${escapeHTML(template.category)}</strong>
+            </div>
+            <div>
+              <span style="color: #777; font-size: 9pt; text-transform: uppercase; font-weight: 600;">Sourcing Status:</span><br>
+              <strong style="color: #00c98b;">✓ COMPLETED &amp; AWARDED</strong>
+            </div>
+            <div>
+              <span style="color: #777; font-size: 9pt; text-transform: uppercase; font-weight: 600;">Submission Date:</span><br>
+              <strong style="color: #111;">${new Date(response.submittedAt).toLocaleString()}</strong>
+            </div>
+            <div>
+              <span style="color: #777; font-size: 9pt; text-transform: uppercase; font-weight: 600;">Vendor Email:</span><br>
+              <strong style="color: #111;">${escapeHTML(response.vendorEmail || "vendor@nexpro.com")}</strong>
+            </div>
+          </div>
+        </div>
+        <hr class="print-divider">
+        <div class="print-fields" style="margin-top: 24px;">
+          ${fieldsRowsHTML}
+        </div>
+        <div class="print-signature-stamp">
+          <div class="stamp-border">
+            <div class="stamp-text">AWARDED</div>
+            <div class="stamp-date">${new Date().toLocaleDateString()}</div>
+            <div class="stamp-id">${escapeHTML(response.responseID)}</div>
+          </div>
+        </div>
+        <div class="print-footer">
+          <div>Report Generated: ${new Date().toLocaleString()} | User: buyer@nexpro.com</div>
+          <div>Page 1 of 1</div>
+        </div>
+      `;
 
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Print Sourcing Response - ${escapeHTML(response.responseID)}</title>
-            <style>
-              body { font-family: 'Outfit', -apple-system, sans-serif; padding: 40px; color: #333; line-height: 1.5; }
-              h1 { font-size: 24px; border-bottom: 2px solid #7600E6; padding-bottom: 12px; margin-bottom: 20px; }
-              .meta { margin-bottom: 30px; font-size: 14px; background: #F9F9F9; padding: 15px; border-radius: 6px; border: 1px solid #EEE; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-              .row { margin-bottom: 20px; page-break-inside: avoid; }
-              .label { font-weight: bold; color: #1A1A1A; margin-bottom: 4px; text-transform: uppercase; font-size: 12px; }
-              .value { background: #F3F3F3; padding: 10px; border-radius: 4px; border: 1px solid #D9D9D9; white-space: pre-wrap; }
-            </style>
-          </head>
-          <body>
-            <h1>RFQ: ${template.name}</h1>
-            <div class="meta">
-               <strong>Workspace:</strong> ${escapeHTML(template.name)}<br>
-               <strong>Response ID:</strong> ${escapeHTML(response.responseID)}<br>
-               <strong>Status:</strong> ${statusLabel}<br>
-               <strong>Date Compiled:</strong> ${new Date().toLocaleString()}<br>
-             </div>
-             
-             <h3 style="border-bottom: 1px solid #EEE; padding-bottom: 6px;">Response Values</h3>
-             ${fieldsRowsHTML}
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-      printWindow.focus();
-      
-      // Delay slightly for render cycles
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 250);
+      // Trigger standard browser print window
+      window.print();
     }
 
     function initDatalist() {
@@ -5809,6 +8431,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           selectedTemplateId = null;
         } else if (hash === "#admin-logs") {
           currentView = "admin-logs";
+          selectedTemplateId = null;
+        } else if (hash === "#data-requests") {
+          currentView = "data-requests";
           selectedTemplateId = null;
         } else if (hash === "#new-procurement") {
           currentView = "new-procurement";
@@ -5951,7 +8576,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           <a href="#" class="footer-navlink is-copyright">Transparency in Coverage</a>
           <a href="#" class="footer-navlink is-copyright">Security Statement</a>
           <a href="#" class="footer-navlink is-copyright">Terms of Service</a>
-          <a href="#" class="footer-navlink is-copyright">Privacy Policy</a>
+          <a href="privacy-notice.html" target="_blank" class="footer-navlink is-copyright">Privacy Notice</a>
+          <a href="mailto:privacy@nexpro.com" class="footer-navlink is-copyright">Privacy Contact</a>
           <a href="#" class="footer-navlink is-copyright">Site Credit</a>
         </div>
         <div class="footer-social-div">
@@ -6051,6 +8677,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+<div id="print-only-container"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="state.js"></script>
 <script src="auth.js"></script>
 </body>
