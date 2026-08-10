@@ -5700,8 +5700,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         }
 
         if (isRfqFlow) {
-          card.onclick = () => toggleSupplierSelection(sup.id);
-          card.style.cursor = "pointer";
+          // Card-level click selection disabled per user request
+          // Selection is triggered only via the 'Select Supplier' button in footer
         }
 
         let actionButtonsHTML = "";
@@ -5735,15 +5735,38 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
               ? `<div style="font-size: 11px; color: #00c98b; display: flex; align-items: center; gap: 4px; font-weight: 600; margin-top: -2px; margin-bottom: 2px;">
                    <span style="font-size:12px;">✓</span> Registered Vendor
                  </div>`
-              : `<div style="display:flex; align-items:center; gap:6px; margin-top: -2px; margin-bottom: 2px;">
-                   <div title="This current supplier is not registered in nexpro platform" style="font-size: 11.5px; color: #C10046; background: rgba(255, 14, 86, 0.06); border: 1px solid rgba(255, 14, 86, 0.15); padding: 2px 8px; border-radius: 4px; display: inline-block; width: fit-content; font-weight: 600; cursor: help;">
-                     ⚠️ Not Registered
-                   </div>
-                   ${sup.inviteSentAt
-                     ? `<span style="font-size:10.5px; color:var(--text-secondary); font-style:italic;">Invited ${new Date(sup.inviteSentAt).toLocaleDateString()}</span>`
-                     : `<button class="secondary-btn" style="padding:2px 8px; font-size:10.5px;" onclick="event.stopPropagation(); inviteSupplierToRegister('${sup.id}')">Invite to Register</button>`
-                   }
-                 </div>`
+              : (() => {
+                  const invites = sup.inviteCount || 0;
+                  let statusText = "";
+                  if (invites > 0) {
+                    statusText = `<span style="font-size:10.5px; color:var(--text-secondary); font-style:italic;">Invited (${invites} time${invites > 1 ? 's' : ''})${sup.inviteSentAt ? ' - Last: ' + new Date(sup.inviteSentAt).toLocaleDateString() : ''}</span>`;
+                  }
+                  
+                  // Check cooldown locally (10 minutes = 10 * 60 * 1000 ms)
+                  const nowMs = Date.now();
+                  const lastSentMs = sup.inviteSentAt ? new Date(sup.inviteSentAt).getTime() : 0;
+                  const cooldownActive = lastSentMs && (nowMs - lastSentMs < 10 * 60 * 1000);
+                  
+                  let buttonHTML = "";
+                  if (cooldownActive) {
+                    const remainingMins = Math.ceil((10 * 60 * 1000 - (nowMs - lastSentMs)) / 60000);
+                    buttonHTML = `<button class="secondary-btn" style="padding:2px 8px; font-size:10.5px; opacity: 0.5; cursor: not-allowed;" disabled title="Cooldown active. Wait ${remainingMins}m">Invite (${remainingMins}m)</button>`;
+                  } else {
+                    buttonHTML = `<button class="secondary-btn" style="padding:2px 8px; font-size:10.5px;" onclick="event.stopPropagation(); inviteSupplierToRegister('${sup.id}')">${invites > 0 ? 'Re-invite' : 'Invite to Register'}</button>`;
+                  }
+                  
+                  return `
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top: -2px; margin-bottom: 2px; align-items:flex-start;">
+                      <div style="display:flex; align-items:center; gap:6px;">
+                        <div title="This current supplier is not registered in nexpro platform" style="font-size: 11.5px; color: #C10046; background: rgba(255, 14, 86, 0.06); border: 1px solid rgba(255, 14, 86, 0.15); padding: 2px 8px; border-radius: 4px; display: inline-block; width: fit-content; font-weight: 600; cursor: help;">
+                          ⚠️ Not Registered
+                        </div>
+                        ${buttonHTML}
+                      </div>
+                      ${statusText}
+                    </div>
+                  `;
+                })()
             }
 
             <div class="supplier-category-pill" style="margin-top: 2px;">${escapeHTML(sup.category)}</div>
@@ -6320,6 +6343,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         if (!res.ok) throw new Error(data.message || 'Failed to send invite');
 
         sup.inviteSentAt = data.inviteSentAt;
+        sup.inviteCount = (sup.inviteCount || 0) + 1;
         saveState();
         showToast(data.message || `Invite sent to ${sup.email}`, "success");
         render();
