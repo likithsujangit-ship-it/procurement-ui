@@ -4866,6 +4866,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             SpeechToText.attach(group.querySelector(`textarea[data-field-id="${field.id}"]`));
           } else if (field.type === "number") {
             group.innerHTML += `<input type="number" class="app-input" data-field-id="${field.id}" placeholder="0.00">`;
+            SpeechToText.attach(group.querySelector(`input[data-field-id="${field.id}"]`));
           } else if (field.type === "date") {
             group.innerHTML += `<input type="date" class="app-input" data-field-id="${field.id}">`;
           } else if (field.type === "checkbox") {
@@ -8006,7 +8007,25 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             if (finalTranscript) {
               baseValue += finalTranscript.trim() + " ";
             }
-            fieldEl.value = baseValue + interimTranscript;
+            if (fieldEl.type === 'number') {
+              let cleaned = (baseValue + interimTranscript).trim();
+              const numberMap = {
+                'zero': '0', 'one': '1', 'two': '2', 'three': '3', 'four': '4',
+                'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'ten': '10'
+              };
+              Object.keys(numberMap).forEach(word => {
+                const regex = new RegExp('\\b' + word + '\\b', 'gi');
+                cleaned = cleaned.replace(regex, numberMap[word]);
+              });
+              cleaned = cleaned.replace(/[^\d.-]/g, '');
+              const parts = cleaned.split('.');
+              if (parts.length > 2) {
+                cleaned = parts[0] + '.' + parts.slice(1).join('');
+              }
+              fieldEl.value = cleaned;
+            } else {
+              fieldEl.value = baseValue + interimTranscript;
+            }
             hint.textContent = interimTranscript ? interimTranscript : "";
             // Keep textarea height and any live-preview handlers in sync
             fieldEl.dispatchEvent(new Event("input", { bubbles: true }));
