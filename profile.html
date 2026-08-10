@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="assets/style.css" />
   <style>
     :root {
       --bg-main: #F3F3F3;
@@ -101,14 +102,6 @@
     }
 
     /* Fixed Top Navbar */
-    .navbar-div {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-
     .navbar {
       background-color: rgba(255, 255, 255, 0.85) !important;
       backdrop-filter: blur(12px);
@@ -147,10 +140,6 @@
       transition: color 0.2s ease;
     }
 
-    .navlink:hover {
-      color: var(--accent-purple) !important;
-    }
-
     /* Profile Container */
     .profile-container {
       max-width: 780px;
@@ -162,29 +151,16 @@
 
     .card-shell {
       position: relative;
-      background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
-                  conic-gradient(from 0deg, var(--accent-current), var(--accent-purple-light), var(--accent-current)) border-box;
-      border: 1px solid transparent;
+      border: 1px solid var(--border-color);
       border-radius: 24px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
-      animation: borderRotate 10s linear infinite, cardEntrance 0.75s var(--ease-premium) both;
+      animation: cardEntrance 0.75s var(--ease-premium) both;
       overflow: hidden;
-    }
-
-    @keyframes borderRotate {
-      100% { background-image: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
-                              conic-gradient(from 360deg, var(--accent-current), var(--accent-purple-light), var(--accent-current)) border-box; }
     }
 
     @keyframes cardEntrance {
       0% { opacity: 0; transform: translateY(40px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .profile-card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
     }
 
     /* Hero Banner Area */
@@ -260,89 +236,8 @@
       transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    /* Actions / Edit Button */
     .header-actions {
       padding-bottom: 8px;
-    }
-
-    /* Details Grid styling */
-    .details-section {
-      padding: 40px 48px;
-    }
-
-    .details-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-    }
-
-    .detail-item {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      animation: fadeInUp 0.4s var(--ease-premium) both;
-    }
-
-    .detail-item.full-width {
-      grid-column: span 2;
-    }
-
-    .detail-label {
-      font-size: 10.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-secondary);
-    }
-
-    .detail-value {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-primary);
-      min-height: 22px;
-      word-break: break-word;
-    }
-
-    .input-field {
-      height: 44px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0 14px;
-      font-family: inherit;
-      font-size: 14.5px;
-      background: rgba(255, 255, 255, 0.95);
-      color: var(--text-primary);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      width: 100%;
-    }
-
-    .input-field:focus {
-      outline: none;
-      border-color: var(--accent-current);
-      box-shadow: 0 0 0 4px var(--accent-current-soft);
-    }
-
-    /* Note for Admins */
-    .admin-note {
-      grid-column: span 2;
-      padding: 16px;
-      background: rgba(71, 0, 224, 0.04);
-      border: 1px solid rgba(71, 0, 224, 0.08);
-      border-radius: 10px;
-      color: var(--text-secondary);
-      font-size: 13.5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    /* Buttons block */
-    .button-group {
-      display: flex;
-      gap: 16px;
-      margin-top: 36px;
-      justify-content: flex-end;
     }
 
     .btn-sm {
@@ -363,135 +258,20 @@
       border-color: var(--text-primary);
     }
 
-    .btn-primary {
-      background: var(--accent-current);
-      color: #FFFFFF;
-      border: none;
-    }
-    .btn-primary:hover {
-      background: var(--accent-purple-dark);
-    }
-
-    /* Back Link styling */
-    .back-nav {
-      display: block;
-      text-align: center;
-      margin-top: 32px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
-
-    .back-nav:hover {
-      color: var(--text-primary);
-      transform: translateY(-1px);
-    }
-
-    /* Toast Notification */
-    .toast-notif {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translate(-50%, 40px);
-      background: #1A1A1A;
-      color: #FFFFFF;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      z-index: 2000;
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.35s var(--ease-premium), opacity 0.35s var(--ease-premium);
-    }
-
-    .toast-notif.active {
-      transform: translate(-50%, 0);
-      opacity: 1;
-    }
-
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(12px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 600px) {
-      .details-grid {
-        grid-template-columns: 1fr;
-      }
-      .detail-item.full-width, .admin-note {
-        grid-column: span 1;
-      }
-      .identity-section {
-        padding: 0 24px 20px 24px;
-        justify-content: center;
-        text-align: center;
-      }
-      .details-section {
-        padding: 30px 24px;
-      }
-      .avatar {
-        width: 90px; height: 90px;
-        font-size: 32px;
-      }
-    }
-    .tabs {
-      display: flex;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 99px;
-      padding: 4px;
-      margin-bottom: 16px;
-      position: relative;
-      border: 1px solid rgba(0, 0, 0, 0.03);
-    }
-
-    .tab-pill {
-      position: absolute;
-      top: 4px; bottom: 4px; left: 4px;
-      width: calc(50% - 4px);
-      background: var(--bg-card);
-      border-radius: 99px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      transition: transform 0.4s var(--ease-premium);
-      z-index: 1;
-    }
-
-    .tab-btn {
-      flex: 1;
-      text-align: center;
-      padding: 9px 0;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      cursor: pointer;
-      z-index: 2;
-      transition: color 0.3s ease;
-      user-select: none;
-    }
-
-    .tab-btn.active {
-      color: var(--text-primary);
-    }
-
     .settings-section {
       display: none;
       animation: fadeInUp 0.45s var(--ease-premium) both;
     }
 
     .settings-title {
-      font-size: 16px;
+      font-size: 11px;
       font-weight: 800;
       color: var(--text-primary);
       margin: 28px 0 16px 0;
-      letter-spacing: -0.3px;
+      letter-spacing: 0.8px;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 8px;
       text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.8px;
     }
 
     .settings-grid {
@@ -527,10 +307,28 @@
       cursor: pointer;
       accent-color: var(--accent-current);
     }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .identity-section {
+        padding: 0 24px 20px 24px;
+        justify-content: center;
+        text-align: center;
+      }
+      .avatar {
+        width: 90px; height: 90px;
+        font-size: 32px;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Premium Background -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
   <div class="aurora-layer" aria-hidden="true">
     <div class="aurora-blob b1"></div>
@@ -552,7 +350,6 @@
           </div>
         </a>
         <div class="nav-links-wrap" id="nav-links">
-          <!-- Will be dynamically populated by auth.js -->
           <a href="generate-rfq.html" class="navlink is-login">Workspace</a>
         </div>
       </div>
@@ -561,7 +358,7 @@
 
   <div class="profile-container">
     <div class="card-shell" id="card-shell">
-      <div class="profile-card">
+      <div class="np-profile-card">
         <!-- Colored Hero Banner -->
         <div class="hero-banner" id="hero-banner"></div>
 
@@ -576,51 +373,60 @@
             <span class="role-badge" id="role-badge">Buyer</span>
           </div>
           <div class="header-actions">
-            <button class="btn btn-secondary btn-sm" id="edit-btn" onclick="toggleEditMode()">Edit Profile</button>
+            <button class="np-btn np-btn-outline btn-sm" id="edit-btn" onclick="toggleEditMode()">Edit Profile</button>
+          </div>
         </div>
 
-        <!-- Tabs Switcher for Profile vs Settings -->
-        <div class="tabs" id="profile-tabs" style="margin: 28px 48px 0px 48px; max-width: 280px;">
-          <div class="tab-pill" id="profile-tab-pill"></div>
-          <div class="tab-btn active" data-tab="details" onclick="switchProfileTab('details')">My Details</div>
-          <div class="tab-btn" data-tab="settings" onclick="switchProfileTab('settings')">Settings</div>
+        <!-- Stats Chips Row -->
+        <div class="np-stat-chip-row" id="stats-row">
+          <!-- Loaded dynamically -->
         </div>
 
-        <!-- Info / Details Grid -->
-        <div class="details-section" id="details-section-wrapper">
+        <!-- Tabs Switcher (Tab 1, Tab 2, Tab 3) -->
+        <div class="np-ptab" id="profile-tabs">
+          <button class="np-ptab-btn active" data-tab="details" onclick="switchProfileTab('details')">My Details</button>
+          <button class="np-ptab-btn" id="second-tab-btn" data-tab="role-tab" onclick="switchProfileTab('role-tab')">Sourcing Preferences</button>
+          <button class="np-ptab-btn" data-tab="security" onclick="switchProfileTab('security')">Security & Preferences</button>
+        </div>
+
+        <!-- Details Grid wrapper -->
+        <div class="np-details-wrapper" id="details-section-wrapper">
           <form id="profile-form" onsubmit="saveProfileChanges(event)">
-            <div class="details-grid" id="details-grid">
-              <!-- Dynamically populated per user role -->
+            <div class="np-edit-grid" id="details-grid">
+              <!-- Dynamically populated per user role and tab -->
             </div>
 
             <!-- Action buttons visible in Edit mode -->
-            <div class="button-group" id="edit-actions" style="display: none;">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEditMode()">Cancel</button>
-              <button type="submit" class="btn btn-primary btn-sm btn-buyer" id="save-btn">Save Changes</button>
+            <div class="np-edit-actions" id="edit-actions" style="display: none;">
+              <button type="button" class="np-btn np-btn-outline btn-sm" onclick="cancelEditMode()">Cancel</button>
+              <button type="submit" class="np-btn np-btn-dark btn-sm" id="save-btn">
+                <span class="np-spin" aria-hidden="true"></span>
+                <span class="np-btn-label">Save Changes</span>
+              </button>
             </div>
           </form>
         </div>
 
-        <!-- Info / Settings Section -->
-        <div class="details-section settings-section" id="settings-section">
+        <!-- Security & Preferences Tab Section -->
+        <div class="np-details-wrapper settings-section" id="security-section">
           <!-- Change Password Form -->
           <div class="settings-title">Change Password</div>
           <form id="settings-password-form" onsubmit="handlePasswordChange(event)">
             <div class="settings-grid">
               <div class="settings-row full-width">
                 <label for="old-password">Current Password</label>
-                <input type="password" id="old-password" class="input-field" required placeholder="••••••••" style="max-width: 320px;" />
+                <input type="password" id="old-password" class="np-field" required placeholder="••••••••" style="max-width: 320px;" />
               </div>
               <div class="settings-row">
                 <label for="new-password">New Password</label>
-                <input type="password" id="new-password" class="input-field" required placeholder="••••••••" />
+                <input type="password" id="new-password" class="np-field" required placeholder="••••••••" />
               </div>
               <div class="settings-row">
                 <label for="confirm-new-password">Confirm New Password</label>
-                <input type="password" id="confirm-new-password" class="input-field" required placeholder="••••••••" />
+                <input type="password" id="confirm-new-password" class="np-field" required placeholder="••••••••" />
               </div>
               <div class="settings-row full-width" style="margin-top: 10px;">
-                <button type="submit" class="btn btn-primary btn-sm" id="change-pass-btn" style="max-width: 180px;">Update Password</button>
+                <button type="submit" class="np-btn np-btn-dark btn-sm" id="change-pass-btn" style="max-width: 180px;">Update Password</button>
               </div>
             </div>
           </form>
@@ -630,7 +436,7 @@
           <div class="settings-grid">
             <div class="settings-row">
               <label for="theme-pref">Color Theme</label>
-              <select id="theme-pref" class="input-field" onchange="handleThemePreferenceChange(this.value)">
+              <select id="theme-pref" class="np-field" onchange="handleThemePreferenceChange(this.value)">
                 <option value="light">Light Theme (Default)</option>
                 <option value="dark">Dark Theme</option>
               </select>
@@ -651,24 +457,25 @@
     </div>
 
     <!-- Back to Workspace Nav -->
-    <a href="generate-rfq.html" class="back-nav" id="back-link">← Back to Workspace</a>
+    <a href="generate-rfq.html" class="np-link-arrow" id="back-link">← Back to Workspace</a>
   </div>
 
-  <div id="toast" class="toast-notif"></div>
+  <div id="toast" class="np-toast-notif"></div>
 
   <script src="state.js"></script>
   <script src="auth.js"></script>
+  <script src="assets/app.js"></script>
   <script>
     let isEditMode = false;
     let currentUser = null;
+    let currentTab = 'details';
+    let editBackup = {};
 
     const roleAccents = {
       buyer: { color: '#7600E6', soft: 'rgba(118, 0, 230, 0.12)', label: 'Buyer' },
-      vendor: { color: '#00A370', soft: 'rgba(0, 255, 140, 0.14)', label: 'Vendor' },
-      admin: { color: '#4700E0', soft: 'rgba(71, 0, 224, 0.12)', label: 'Admin' }
+      vendor: { color: '#00A370', soft: 'rgba(63, 122, 84, 0.12)', label: 'Vendor' }
     };
 
-    // 1. Compute Initials for Avatar
     function getInitials(name, email) {
       if (name && name.trim()) {
         const parts = name.trim().split(/\s+/);
@@ -683,7 +490,6 @@
       return "NP";
     }
 
-    // 2. Load User Profile Details
     function loadProfile() {
       currentUser = getCurrentUser();
       if (!currentUser) {
@@ -691,102 +497,142 @@
         return;
       }
 
-      // Sync role accent color
-      const role = currentUser.role || 'buyer';
+      // Read role from local storage (default to 'buyer' if unset)
+      const role = getNexproRole();
       const accent = roleAccents[role] || roleAccents.buyer;
       document.documentElement.style.setProperty('--accent-current', accent.color);
       document.documentElement.style.setProperty('--accent-current-soft', accent.soft);
       
       const saveBtn = document.getElementById('save-btn');
-      saveBtn.className = `btn btn-primary btn-sm btn-${role}`;
+      if (saveBtn) saveBtn.className = `np-btn np-btn-dark btn-sm`;
 
-      // Bind hero identity information
       document.getElementById('display-email').innerText = currentUser.email;
-      document.getElementById('role-badge').innerText = accent.label;
+      const badge = document.getElementById('role-badge');
+      badge.innerText = accent.label;
+      badge.className = `role-badge ${role}`;
 
       const profile = currentUser.profile || {};
       let name = "";
       if (role === 'buyer') {
         name = profile.fullName || "Jane Doe";
-      } else if (role === 'vendor') {
-        name = profile.companyName || "Acme Supplier Inc";
       } else {
-        name = profile.fullName || "Alex Admin";
+        name = profile.companyName || "Acme Supplier Inc";
       }
 
       document.getElementById('display-name').innerText = name;
       document.getElementById('avatar-initials').innerText = getInitials(name, currentUser.email);
 
-      // Handle Back Link destination based on Role
+      // Back Link
       const backLink = document.getElementById('back-link');
-      if (role === 'admin') {
-        backLink.href = 'generate-rfq.html#cumulative-dashboard';
-        backLink.innerText = '← Back to Admin Dashboard';
+      backLink.href = 'generate-rfq.html';
+      backLink.className = 'np-link-arrow';
+      backLink.innerText = '← Back to Workspace';
+
+      // Update Tab 2 name
+      const secondTab = document.getElementById('second-tab-btn');
+      if (role === 'buyer') {
+        secondTab.innerText = 'Sourcing Preferences';
       } else {
-        backLink.href = 'generate-rfq.html';
-        backLink.innerText = '← Back to Workspace';
+        secondTab.innerText = 'Business & Payment Info';
       }
 
+      renderStatsRow(role);
       renderDetailsGrid();
     }
 
-    // 3. Render grid elements (read-only vs edit inputs)
-    function renderDetailsGrid() {
-      const grid = document.getElementById('details-grid');
-      grid.innerHTML = "";
-      const profile = currentUser.profile || {};
-      const role = currentUser.role || 'buyer';
-
+    function renderStatsRow(role) {
+      const statsRow = document.getElementById('stats-row');
+      statsRow.innerHTML = "";
+      
       if (role === 'buyer') {
-        grid.innerHTML = `
-          ${renderField('Full Name', 'fullName', profile.fullName || '', 'b-name', true)}
-          ${renderField('Designation / Job Title', 'designation', profile.designation || '', 'b-title', true)}
-          ${renderField('Company Name', 'companyName', profile.companyName || '', 'b-company', true)}
-          ${renderField('Department', 'department', profile.department || '', 'b-dept', true)}
-          ${renderField('Phone Number', 'phone', profile.phone || '', 'b-phone', true)}
-          ${renderField('City', 'city', profile.city || '', 'b-city', true)}
-          ${renderField('Country', 'country', profile.country || '', 'b-country', true)}
-          ${renderField('Business Address', 'address', profile.address || '', 'b-address', true, true)}
+        statsRow.innerHTML = `
+          <div class="np-stat-chip">
+            <span class="np-stat-label">RFQs Posted</span>
+            <span class="np-stat-val">14</span>
+          </div>
+          <div class="np-stat-chip">
+            <span class="np-stat-label">Active Suppliers</span>
+            <span class="np-stat-val">8</span>
+          </div>
+          <div class="np-stat-chip">
+            <span class="np-stat-label">Total Spend</span>
+            <span class="np-stat-val">$420K</span>
+          </div>
         `;
-      } else if (role === 'vendor') {
-        grid.innerHTML = `
-          ${renderField('Company / Business Name', 'companyName', profile.companyName || '', 'v-company', true)}
-          ${renderField('Contact Person Name', 'contactName', profile.contactName || '', 'v-contact', true)}
-          ${renderField('Product / Service Category', 'category', profile.category || '', 'v-category', true)}
-          ${renderField('Phone Number', 'phone', profile.phone || '', 'v-phone', true)}
-          ${renderField('GSTIN / Tax ID', 'gstin', profile.gstin || '', 'v-gst', true)}
-          ${renderField('City', 'city', profile.city || '', 'v-city', true)}
-          ${renderField('Website', 'website', profile.website || '', 'v-website', false)}
-          ${renderField('Business Address', 'address', profile.address || '', 'v-address', true, true)}
-        `;
-      } else if (role === 'admin') {
-        grid.innerHTML = `
-          ${renderField('Full Name', 'fullName', profile.fullName || '', 'a-name', true)}
-          ${renderField('Phone Number', 'phone', profile.phone || '', 'a-phone', true)}
-          <div class="admin-note">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-purple);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            <span>Admin accounts only store basic contact details.</span>
+      } else {
+        statsRow.innerHTML = `
+          <div class="np-stat-chip">
+            <span class="np-stat-label">Bids Submitted</span>
+            <span class="np-stat-val">29</span>
+          </div>
+          <div class="np-stat-chip">
+            <span class="np-stat-label">Win Rate</span>
+            <span class="np-stat-val">38%</span>
+          </div>
+          <div class="np-stat-chip">
+            <span class="np-stat-label">Active Contracts</span>
+            <span class="np-stat-val">5</span>
           </div>
         `;
       }
     }
 
-    // Helper: generate HTML snippet for a profile field
+    function renderDetailsGrid() {
+      const grid = document.getElementById('details-grid');
+      grid.innerHTML = "";
+      const profile = currentUser.profile || {};
+      const role = getNexproRole();
+
+      if (currentTab === 'details') {
+        if (role === 'buyer') {
+          grid.innerHTML = `
+            ${renderField('Full Name', 'fullName', profile.fullName || '', 'b-name', true)}
+            ${renderField('Designation / Job Title', 'designation', profile.designation || '', 'b-title', true)}
+            ${renderField('Company Name', 'companyName', profile.companyName || '', 'b-company', true)}
+            ${renderField('Department', 'department', profile.department || '', 'b-dept', true)}
+            ${renderField('Phone Number', 'phone', profile.phone || '', 'b-phone', true)}
+          `;
+        } else {
+          grid.innerHTML = `
+            ${renderField('Full Name', 'fullName', profile.fullName || '', 'v-contact', true)}
+            ${renderField('Business Name', 'companyName', profile.companyName || '', 'v-company', true)}
+            ${renderField('GST / Tax ID', 'gstin', profile.gstin || '', 'v-gst', true)}
+            ${renderField('Industry Category', 'category', profile.category || '', 'v-category', true)}
+            ${renderField('Phone Number', 'phone', profile.phone || '', 'v-phone', true)}
+          `;
+        }
+      } else if (currentTab === 'role-tab') {
+        if (role === 'buyer') {
+          grid.innerHTML = `
+            ${renderField('City', 'city', profile.city || '', 'b-city', true)}
+            ${renderField('Country', 'country', profile.country || '', 'b-country', true)}
+            ${renderField('Business Address', 'address', profile.address || '', 'b-address', true, true)}
+          `;
+        } else {
+          grid.innerHTML = `
+            ${renderField('Warehouse Location', 'warehouseLocation', profile.warehouseLocation || '', 'v-warehouse', true)}
+            ${renderField('Country', 'country', profile.country || '', 'v-country', true)}
+            ${renderField('Bank / Payment Details', 'paymentDetails', profile.paymentDetails || '', 'v-payment', true, true)}
+          `;
+        }
+      }
+    }
+
     function renderField(label, key, val, id, isRequired, isFullWidth = false) {
       const fullWidthClass = isFullWidth ? 'full-width' : '';
       if (isEditMode) {
         const reqAttr = isRequired ? 'required' : '';
         return `
-          <div class="detail-item ${fullWidthClass}">
+          <div class="np-field-row ${fullWidthClass}">
             <label for="${id}">${label}</label>
-            <input type="text" id="${id}" data-key="${key}" class="input-field" value="${escapeHTML(val)}" ${reqAttr} />
+            <input type="text" id="${id}" data-key="${key}" class="np-field" value="${escapeHTML(val)}" ${reqAttr} />
           </div>
         `;
       } else {
         return `
-          <div class="detail-item ${fullWidthClass}">
-            <span class="detail-label">${label}</span>
-            <span class="detail-value">${escapeHTML(val) || '—'}</span>
+          <div class="np-info-row ${fullWidthClass}">
+            <label>${label}</label>
+            <span class="np-value">${escapeHTML(val) || '—'}</span>
           </div>
         `;
       }
@@ -797,34 +643,53 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // 4. Toggle Edit Mode
     function toggleEditMode() {
-      isEditMode = true;
+      // Create clean deep copy back up of the fields in currentUser state
+      const profile = currentUser.profile || {};
+      editBackup = JSON.parse(JSON.stringify(profile));
+
       document.getElementById('edit-btn').style.display = 'none';
       document.getElementById('edit-actions').style.display = 'flex';
-      renderDetailsGrid();
+
+      const grid = document.getElementById('details-grid');
+      grid.style.opacity = 0;
+      grid.style.transform = 'translateY(8px)';
+      
+      setTimeout(() => {
+        isEditMode = true;
+        renderDetailsGrid();
+        grid.offsetHeight;
+        grid.style.opacity = 1;
+        grid.style.transform = 'translateY(0)';
+      }, 190);
     }
 
     function cancelEditMode() {
-      isEditMode = false;
+      // Revert edit backup to global state in memory
+      currentUser.profile = JSON.parse(JSON.stringify(editBackup));
+
       document.getElementById('edit-btn').style.display = 'block';
       document.getElementById('edit-actions').style.display = 'none';
-      renderDetailsGrid();
-    }
 
-    function showToastNotification(text) {
-      const toast = document.getElementById('toast');
-      toast.innerText = text;
-      toast.classList.add('active');
+      const grid = document.getElementById('details-grid');
+      grid.style.opacity = 0;
+      grid.style.transform = 'translateY(-8px)';
+      
       setTimeout(() => {
-        toast.classList.remove('active');
-      }, 4000);
+        isEditMode = false;
+        renderDetailsGrid();
+        grid.offsetHeight;
+        grid.style.opacity = 1;
+        grid.style.transform = 'translateY(0)';
+      }, 190);
     }
 
-    // 5. Save Changes back to state
     function saveProfileChanges(e) {
       e.preventDefault();
       
+      const saveBtn = document.getElementById('save-btn');
+      saveBtn.classList.add('np-loading');
+
       const profile = currentUser.profile || {};
       const inputs = document.querySelectorAll('#profile-form input');
       
@@ -835,65 +700,68 @@
         }
       });
 
-      // Update matching user object inside users array
+      // Update mock db user
       const userIndex = window.appState.users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase() && u.role === currentUser.role);
       if (userIndex !== -1) {
         window.appState.users[userIndex].profile = profile;
         currentUser.profile = profile;
         
-        // Save current user updates
         setCurrentUser(currentUser);
         saveGlobalState();
+      }
+
+      setTimeout(() => {
+        saveBtn.classList.remove('np-loading');
         
-        // Exit edit mode and reload
-        isEditMode = false;
         document.getElementById('edit-btn').style.display = 'block';
         document.getElementById('edit-actions').style.display = 'none';
         
-        loadProfile();
-        showToastNotification("Profile updated successfully");
-      } else {
-        console.error("Failed to update user profile in global users list");
-      }
-    }
-
-    // 6. Sub-tab Profile vs Settings Switcher
-    function moveProfileTabPill(tab) {
-      const tabs = document.getElementById('profile-tabs');
-      const pill = document.getElementById('profile-tab-pill');
-      const target = tabs.querySelector(`.tab-btn[data-tab="${tab}"]`);
-      if (!pill || !target) return;
-      const index = Array.from(tabs.querySelectorAll('.tab-btn')).indexOf(target);
-      pill.style.transform = `translateX(${index * 100}%)`;
+        const grid = document.getElementById('details-grid');
+        grid.style.opacity = 0;
+        grid.style.transform = 'translateY(-8px)';
+        
+        setTimeout(() => {
+          isEditMode = false;
+          loadProfile();
+          grid.offsetHeight;
+          grid.style.opacity = 1;
+          grid.style.transform = 'translateY(0)';
+          showToast("Profile updated successfully");
+        }, 190);
+      }, 600);
     }
 
     function switchProfileTab(tab) {
-      document.querySelectorAll('#profile-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`#profile-tabs .tab-btn[data-tab="${tab}"]`).classList.add('active');
-      moveProfileTabPill(tab);
+      currentTab = tab;
+      
+      document.querySelectorAll('#profile-tabs .np-ptab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`#profile-tabs .np-ptab-btn[data-tab="${tab}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
 
       const detailsSection = document.getElementById('details-section-wrapper');
-      const settingsSection = document.getElementById('settings-section');
+      const securitySection = document.getElementById('security-section');
       const editBtn = document.getElementById('edit-btn');
 
-      if (tab === 'details') {
+      if (tab === 'details' || tab === 'role-tab') {
         detailsSection.style.display = 'block';
-        settingsSection.style.display = 'none';
+        securitySection.style.display = 'none';
         editBtn.style.display = isEditMode ? 'none' : 'block';
+
+        const grid = document.getElementById('details-grid');
+        grid.style.opacity = 0;
+        setTimeout(() => {
+          renderDetailsGrid();
+          grid.offsetHeight;
+          grid.style.opacity = 1;
+        }, 150);
       } else {
         detailsSection.style.display = 'none';
-        settingsSection.style.display = 'block';
+        securitySection.style.display = 'block';
         editBtn.style.display = 'none';
         if (isEditMode) cancelEditMode();
       }
-      hideMessage();
     }
 
-    function hideMessage() {
-      // Empty helper for compatibility
-    }
-
-    // 7. Settings Handlers
     function handlePasswordChange(e) {
       e.preventDefault();
 
@@ -902,19 +770,19 @@
       const confirmNewPass = document.getElementById('confirm-new-password').value;
 
       if (currentUser.password !== oldPass) {
-        showToastNotification("Current password does not match.");
+        showToast("Current password does not match.");
         return;
       }
       if (newPass !== confirmNewPass) {
-        showToastNotification("Passwords do not match.");
+        showToast("New passwords do not match.");
         return;
       }
       if (newPass.length < 6) {
-        showToastNotification("New password must be at least 6 characters.");
+        showToast("New password must be at least 6 characters.");
         return;
       }
 
-      // Save password updates
+      // Update password inside users array and state
       const userIndex = window.appState.users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase() && u.role === currentUser.role);
       if (userIndex !== -1) {
         window.appState.users[userIndex].password = newPass;
@@ -924,7 +792,7 @@
         saveGlobalState();
 
         document.getElementById('settings-password-form').reset();
-        showToastNotification("Password updated successfully");
+        showToast("Password updated successfully");
       }
     }
 
@@ -939,23 +807,27 @@
               background-color: #121212 !important;
               color: #E5E5E5 !important;
             }
-            body.dark-theme-override .profile-card {
+            body.dark-theme-override .np-profile-card {
               background: rgba(26, 26, 26, 0.85) !important;
               border-color: rgba(255, 255, 255, 0.1) !important;
             }
             body.dark-theme-override .display-name,
-            body.dark-theme-override .detail-value,
+            body.dark-theme-override .np-value,
             body.dark-theme-override label,
             body.dark-theme-override .settings-title {
               color: #E5E5E5 !important;
             }
-            body.dark-theme-override .input-field {
+            body.dark-theme-override .np-field {
               background: rgba(40, 40, 40, 0.95) !important;
               color: #E5E5E5 !important;
               border-color: rgba(255, 255, 255, 0.15) !important;
             }
-            body.dark-theme-override .tab-pill {
+            body.dark-theme-override .np-stat-chip {
               background: #252525 !important;
+              border-color: #333 !important;
+            }
+            body.dark-theme-override .np-stat-val {
+              color: #FFF !important;
             }
           `;
           document.head.appendChild(styles);
@@ -985,11 +857,9 @@
       }
     }
 
-    // Initialize profile bindings
     document.addEventListener('DOMContentLoaded', () => {
       loadProfile();
 
-      // Bind saved preference values
       const prefs = currentUser.preferences || {};
       if (prefs.theme) {
         document.getElementById('theme-pref').value = prefs.theme;
@@ -998,15 +868,67 @@
       document.getElementById('email-notif-pref').checked = (prefs.emailNotifications !== false);
       document.getElementById('sys-notif-pref').checked = (prefs.systemNotifications !== false);
 
-      // Check query parameter prompt_edit
       const params = new URLSearchParams(window.location.search);
       if (params.get('prompt_edit') === 'true') {
         toggleEditMode();
         setTimeout(() => {
-          showToastNotification("Please complete your profile details to proceed.");
+          showToast("Please complete your profile details to proceed.");
         }, 400);
       }
     });
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Starfield canvas particles
+    (function initParticles() {
+      const canvas = document.getElementById('particles-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, particles;
+      let mouseX = 0, mouseY = 0;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        const count = Math.min(110, Math.floor((w * h) / 14000));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.6 + 0.4,
+          baseAlpha: Math.random() * 0.5 + 0.2,
+          twinkleSpeed: Math.random() * 0.015 + 0.005,
+          phase: Math.random() * Math.PI * 2,
+          depth: Math.random() * 0.6 + 0.2
+        }));
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        for (const p of particles) {
+          const alpha = p.baseAlpha * (0.6 + 0.4 * Math.sin(t * p.twinkleSpeed + p.phase));
+          const offsetX = (mouseX - w / 2) * p.depth * 0.02;
+          const offsetY = (mouseY - h / 2) * p.depth * 0.02;
+          ctx.beginPath();
+          ctx.arc(p.x + offsetX, p.y + offsetY, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(118, 0, 230, ${alpha * 0.6})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      resize();
+      if (!prefersReducedMotion) {
+        requestAnimationFrame(draw);
+      } else {
+        draw(0);
+      }
+    })();
   </script>
 </body>
 </html>

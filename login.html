@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="assets/style.css" />
   <style>
     :root {
       --bg-main: #F3F3F3;
@@ -46,7 +47,7 @@
       position: relative;
     }
 
-    /* Ambient aurora background layer — slow, elegant, never distracting */
+    /* Ambient aurora background layer */
     .aurora-layer {
       position: fixed;
       inset: 0;
@@ -98,7 +99,7 @@
       animation: driftC 32s ease-in-out infinite;
     }
 
-    /* Floating glass shapes — layered 3D depth around the card */
+    /* Floating glass shapes */
     .glass-shape {
       position: fixed;
       border-radius: 22px;
@@ -203,23 +204,14 @@
       40%, 60% { transform: translateX(4px); }
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-    }
-
     @media (prefers-reduced-motion: reduce) {
-      .aurora-blob, .split-layout, .flow-step, .login-section > * , .logo-glow, .glass-shape, .card-shell {
+      .aurora-layer, .glass-shape, .card-shell {
         animation: none !important;
       }
-      .split-layout, .card-shell { transition: none !important; }
+      .card-shell { transition: none !important; }
     }
 
-    /* Fixed Top Navbar alignment with home page */
+    /* Top Navbar */
     .navbar {
       background-color: rgba(255, 255, 255, 0.85) !important;
       backdrop-filter: blur(12px);
@@ -227,13 +219,9 @@
       border-bottom: 1px solid var(--border-color) !important;
     }
 
-    .brand text {
-      fill: #1A1A1A !important;
-    }
-
-    /* Hero Main Container */
+    /* Container */
     .login-container {
-      max-width: 1100px;
+      max-width: 1000px;
       margin: 120px auto 60px auto;
       padding: 0 24px;
       width: 100%;
@@ -244,393 +232,10 @@
 
     .card-shell {
       position: relative;
-      border-radius: 25px;
+      border-radius: 24px;
       animation: cardEntrance 1s var(--ease-premium) both, cardFloat 8s ease-in-out 1s infinite;
       transition: transform 0.25s var(--ease-premium);
       transform-style: preserve-3d;
-    }
-
-    /* Rotating conic-gradient glow ring, masked to a bold border */
-    .card-shell::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      padding: 2px;
-      background: conic-gradient(from 0deg, var(--accent-purple), var(--accent-blue), var(--accent-green), var(--accent-purple));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.8;
-      animation: borderRotate 8s linear infinite;
-      transform-origin: center;
-      pointer-events: none;
-    }
-
-    .card-shell::after {
-      content: "";
-      position: absolute;
-      inset: -60px;
-      border-radius: inherit;
-      background: radial-gradient(ellipse at center, var(--accent-current-soft) 0%, transparent 70%);
-      opacity: 0.65;
-      filter: blur(40px);
-      z-index: -1;
-      pointer-events: none;
-      transition: background 0.4s ease;
-    }
-
-    .split-layout {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border-color);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 30px 60px rgba(31, 38, 135, 0.1);
-      position: relative;
-    }
-
-    /* Left Side: Schematic Sourcing Process */
-    .process-sidebar {
-      padding: 50px;
-      background: linear-gradient(135deg, rgba(118,0,230,0.03) 0%, rgba(0,255,140,0.03) 100%);
-      border-right: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .process-header {
-      margin-bottom: 40px;
-    }
-
-    .process-title {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-
-    .process-subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    /* Flow Schematic Timeline */
-    .flow-schematic {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .flow-schematic::before {
-      content: "";
-      position: absolute;
-      left: 19px;
-      top: 15px;
-      bottom: 15px;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--accent-purple), var(--accent-green));
-      opacity: 0.3;
-    }
-
-    .flow-step {
-      display: flex;
-      gap: 20px;
-      position: relative;
-      opacity: 0;
-      animation: fadeInUp 0.6s var(--ease-premium) both;
-    }
-
-    .flow-step:nth-child(1) { animation-delay: 0.25s; }
-    .flow-step:nth-child(2) { animation-delay: 0.35s; }
-    .flow-step:nth-child(3) { animation-delay: 0.45s; }
-    .flow-step:nth-child(4) { animation-delay: 0.55s; }
-
-    .step-node {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      border: 2px solid var(--border-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--text-secondary);
-      z-index: 2;
-      flex-shrink: 0;
-      transition: all 0.3s var(--ease-premium);
-      box-shadow: 0 4px 10px rgba(31,38,135,0.08);
-    }
-
-    .flow-step.active .step-node {
-      border-color: var(--accent-purple);
-      color: var(--accent-purple);
-      box-shadow: 0 0 12px rgba(118, 0, 230, 0.25);
-      background: rgba(118, 0, 230, 0.05);
-    }
-
-    .flow-step.completed .step-node {
-      border-color: #00A370;
-      color: #00A370;
-      box-shadow: 0 0 12px rgba(0, 163, 112, 0.25);
-      background: rgba(0, 163, 112, 0.06);
-    }
-
-    .step-content {
-      padding-top: 4px;
-    }
-
-    .step-title {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--text-primary);
-    }
-
-    .step-desc {
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    /* Right Side: Login Card */
-    .login-section {
-      padding: 50px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .login-section > * {
-      opacity: 0;
-      animation: fadeInUp 0.6s var(--ease-premium) 0.4s both;
-    }
-
-    .login-section > *:nth-child(2) { animation-delay: 0.48s; }
-    .login-section > *:nth-child(3) { animation-delay: 0.56s; }
-    .login-section > *:nth-child(4) { animation-delay: 0.64s; }
-    .login-section > *:nth-child(5) { animation-delay: 0.72s; }
-
-    .logo-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 30px;
-      position: relative;
-    }
-
-    .logo-glow {
-      position: absolute;
-      width: 160px;
-      height: 80px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(ellipse at center, var(--accent-current-soft) 0%, transparent 70%);
-      filter: blur(24px);
-      z-index: 0;
-      animation: glowPulse 4s ease-in-out infinite;
-      transition: background 0.4s ease;
-    }
-
-    .logo-text {
-      font-size: 34px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      color: var(--text-primary);
-      position: relative;
-      z-index: 1;
-    }
-
-    .logo-highlight {
-      color: #00A370;
-    }
-
-    .tabs {
-      display: flex;
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 32px;
-      border: 1px solid var(--border-color);
-      position: relative;
-    }
-
-    .tab-pill {
-      position: absolute;
-      top: 4px;
-      bottom: 4px;
-      left: 4px;
-      width: calc((100% - 8px) / 3);
-      border-radius: 8px;
-      background: #FFFFFF;
-      box-shadow: 0 4px 14px var(--accent-current-soft), inset 0 0 0 1px rgba(0,0,0,0.04);
-      transition: transform 0.35s var(--ease-premium), box-shadow 0.35s ease;
-      pointer-events: none;
-    }
-
-    .tab-btn {
-      flex: 1;
-      text-align: center;
-      padding: 10px 0;
-      font-weight: 600;
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      border-radius: 8px;
-      transition: color 0.3s ease;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tab-btn.active {
-      color: var(--text-primary);
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: color 0.25s ease;
-    }
-
-    .input-field {
-      width: 100%;
-      height: 46px;
-      background: rgba(0, 0, 0, 0.02);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0 16px;
-      font-size: 15px;
-      color: var(--text-primary);
-      outline: none;
-      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
-    }
-
-    .input-field:hover {
-      border-color: rgba(0, 0, 0, 0.2);
-    }
-
-    .input-field:focus {
-      border-color: var(--accent-current);
-      background: #FFFFFF;
-      box-shadow: 0 0 0 3px var(--accent-current-soft);
-    }
-
-    .form-group:focus-within label {
-      color: var(--text-primary);
-    }
-
-    .btn {
-      width: 100%;
-      height: 48px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      border: none;
-      transition: transform 0.2s var(--ease-premium), box-shadow 0.25s ease, background 0.2s ease;
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
-    }
-
-    .btn:hover::before {
-      transform: translateX(100%);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .btn:disabled {
-      cursor: default;
-      opacity: 0.85;
-      transform: none;
-    }
-
-    .btn-spinner {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.35);
-      border-top-color: #fff;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
-
-    .btn.loading .btn-spinner {
-      display: inline-block;
-    }
-
-    .btn.loading .btn-label {
-      opacity: 0.85;
-    }
-
-    .btn-buyer {
-      background: var(--accent-purple);
-      color: white;
-    }
-    .btn-buyer:hover {
-      background: var(--accent-purple-light);
-      box-shadow: 0 8px 22px rgba(118, 0, 230, 0.28);
-    }
-
-    .btn-vendor {
-      background: var(--accent-green);
-      color: #07090e;
-    }
-    .btn-vendor:hover {
-      background: #33ffa3;
-      box-shadow: 0 8px 22px rgba(0, 255, 140, 0.35);
-    }
-    .btn-vendor .btn-spinner {
-      border: 2px solid rgba(7, 9, 14, 0.3);
-      border-top-color: #07090e;
-    }
-
-    .btn-admin {
-      background: var(--accent-blue);
-      color: white;
-    }
-    .btn-admin:hover {
-      background: #6a2bf5;
-      box-shadow: 0 8px 22px rgba(71, 0, 224, 0.3);
     }
 
     .message {
@@ -677,10 +282,6 @@
       text-align: center;
     }
 
-    .signup-btn:hover {
-      color: var(--accent-purple);
-    }
-
     .back-home {
       display: block;
       text-align: center;
@@ -703,7 +304,7 @@
       color: var(--text-secondary);
     }
     .signup-link-container a {
-      color: var(--accent-current);
+      color: var(--accent-purple);
       font-weight: 700;
       text-decoration: underline;
       cursor: pointer;
@@ -711,19 +312,6 @@
     }
     .signup-link-container a:hover {
       color: var(--text-primary);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 800px) {
-      .split-layout {
-        grid-template-columns: 1fr;
-      }
-      .process-sidebar {
-        display: none;
-      }
-      .card-shell {
-        animation: cardEntrance 1s var(--ease-premium) both;
-      }
     }
   </style>
 </head>
@@ -769,152 +357,177 @@
 
   <div class="login-container">
     <div class="card-shell" id="card-shell">
-    <div class="split-layout">
-      <!-- Left: Schematic Sourcing Process -->
-      <div class="process-sidebar">
-        <div class="process-header">
-          <h2 class="process-title">Autonomous Sourcing Lifecycle</h2>
-          <p class="process-subtitle">Connect, audit, and award procurement pipelines with specialized AI agents.</p>
+      <div class="np-split-layout">
+        <!-- Left Editorial Dark Panel -->
+        <div class="np-editorial-side">
+          <div class="np-editorial-glow"></div>
+          <div class="np-editorial-header">
+            <div class="np-editorial-logo">nex<span>Pro</span></div>
+          </div>
+          <div class="np-editorial-quote-wrap">
+            <blockquote class="np-editorial-quote" id="editorial-quote">
+              "Source smarter with AI-powered procurement."
+            </blockquote>
+          </div>
+          <div class="np-editorial-footer">
+            NEXPRO OS &copy; 2026
+          </div>
         </div>
 
-        <div class="flow-schematic">
-          <div class="flow-step completed">
-            <div class="step-node">1</div>
-            <div class="step-content">
-              <h4 class="step-title">Requirements & Intake</h4>
-              <p class="step-desc">AI Intake Agent analyzes requirements and auto-generates comprehensive RFQ specifications.</p>
-            </div>
+        <!-- Right Authentication Form -->
+        <div class="np-auth-side">
+          <div class="np-auth-header">
+            <h2 class="np-auth-title">Welcome to nexPro</h2>
+            <p class="np-auth-subtitle" id="auth-subtitle">Source smarter with AI-powered procurement.</p>
           </div>
-          <div class="flow-step active">
-            <div class="step-node">2</div>
-            <div class="step-content">
-              <h4 class="step-title">Intelligent Matching</h4>
-              <p class="step-desc">Suppliers matched in real-time by category, capabilities, location, and rating metrics.</p>
-            </div>
+
+          <!-- Sliding Portal Switcher -->
+          <div class="np-portal-switch" id="portal-switch">
+            <div class="np-portal-thumb" id="portal-thumb"></div>
+            <button type="button" class="np-portal-btn active" data-role="buyer" onclick="switchTab('buyer')">Buyer</button>
+            <button type="button" class="np-portal-btn" data-role="vendor" onclick="switchTab('vendor')">Vendor</button>
           </div>
-          <div class="flow-step">
-            <div class="step-node">3</div>
-            <div class="step-content">
-              <h4 class="step-title">Bid Execution & Distribution</h4>
-              <p class="step-desc">RFQs dispatched via public marketplace channels or targeted private invitations.</p>
+
+          <!-- Auth Form -->
+          <form id="login-form" onsubmit="handleAuthSubmit(event)">
+            <div class="np-auth-fields-wrapper">
+              <!-- Buyer Fields -->
+              <div id="buyer-fields" class="np-auth-fields active">
+                <div class="np-form-group">
+                  <label for="buyer-username">Work Email</label>
+                  <input type="text" id="buyer-username" class="np-field" required placeholder="buyer@nexpro.com" autocomplete="username"/>
+                </div>
+                <div class="np-form-group" style="margin-bottom: 24px;">
+                  <label for="buyer-password">Password</label>
+                  <input type="password" id="buyer-password" class="np-field" required placeholder="••••••••" autocomplete="current-password"/>
+                </div>
+              </div>
+
+              <!-- Vendor Fields -->
+              <div id="vendor-fields" class="np-auth-fields">
+                <div class="np-form-group">
+                  <label for="vendor-username">Work Email</label>
+                  <input type="text" id="vendor-username" class="np-field" placeholder="vendor@nexpro.com" autocomplete="username"/>
+                </div>
+                <div class="np-form-group">
+                  <label for="vendor-password">Password</label>
+                  <input type="password" id="vendor-password" class="np-field" placeholder="••••••••" autocomplete="current-password"/>
+                </div>
+                <div class="np-form-group" style="margin-bottom: 24px;">
+                  <label for="vendor-business-id">Business ID</label>
+                  <input type="text" id="vendor-business-id" class="np-field" placeholder="e.g. GST-12345" />
+                </div>
+              </div>
             </div>
+
+            <button type="submit" id="submit-btn" class="np-btn np-btn-dark">
+              <span class="np-spin" aria-hidden="true"></span>
+              <span class="np-btn-label">Login as Buyer</span>
+            </button>
+          </form>
+
+          <div id="signup-link-wrapper" class="signup-link-container">
+            Don't have an account? <a onclick="handleSignup()">Sign Up</a>
           </div>
-          <div class="flow-step">
-            <div class="step-node">4</div>
-            <div class="step-content">
-              <h4 class="step-title">Evaluation & Awards</h4>
-              <p class="step-desc">Proposals parsed, ranked, and optimized via automated vendor negotiation sprints.</p>
-            </div>
+
+          <div id="msg-box" class="message"></div>
+
+          <div id="signup-box" class="signup-invite">
+            <div id="signup-text">Account not found. Click below to sign up.</div>
+            <button class="signup-btn" onclick="handleSignup()">Create Account</button>
           </div>
+
+          <a href="index.html" class="back-home">← Back to Marketing Site</a>
         </div>
       </div>
-
-      <!-- Right: Authentication Form -->
-      <div class="login-section">
-        <div class="logo-wrap">
-          <div class="logo-glow" id="logo-glow"></div>
-          <div class="logo-text">nex<span class="logo-highlight">Pro</span></div>
-        </div>
-
-        <div class="tabs" id="tabs">
-          <div class="tab-pill" id="tab-pill"></div>
-          <div class="tab-btn active" data-role="buyer" onclick="switchTab('buyer')">Buyer</div>
-          <div class="tab-btn" data-role="vendor" onclick="switchTab('vendor')">Vendor</div>
-          <div class="tab-btn" data-role="admin" onclick="switchTab('admin')">Admin</div>
-        </div>
-
-        <form id="login-form" onsubmit="handleAuthSubmit(event)">
-          <div class="form-group">
-            <label for="username">Email / Username</label>
-            <input type="text" id="username" class="input-field" required placeholder="buyer@nexpro.com" autocomplete="username"/>
-          </div>
-          <div class="form-group" style="margin-bottom: 24px;">
-            <label for="password">Password</label>
-            <input type="password" id="password" class="input-field" required placeholder="••••••••" autocomplete="current-password"/>
-          </div>
-
-          <button type="submit" id="submit-btn" class="btn btn-buyer">
-            <span class="btn-spinner" aria-hidden="true"></span>
-            <span class="btn-label">Login as Buyer</span>
-          </button>
-        </form>
-
-        <div id="signup-link-wrapper" class="signup-link-container">
-          Don't have an account? <a onclick="handleSignup()">Sign Up</a>
-        </div>
-
-        <div id="msg-box" class="message"></div>
-
-        <div id="signup-box" class="signup-invite">
-          <div id="signup-text">Account not found. Click below to sign up.</div>
-          <button class="signup-btn" onclick="handleSignup()">Create Account</button>
-        </div>
-
-        <a href="index.html" class="back-home">← Back to Marketing Site</a>
-      </div>
-    </div>
     </div>
   </div>
 
   <script src="state.js"></script>
   <script src="auth.js"></script>
+  <script src="assets/app.js"></script>
   <script>
     let activeRole = 'buyer';
 
-    const roleAccents = {
-      buyer: { color: '#7600E6', soft: 'rgba(118, 0, 230, 0.14)' },
-      vendor: { color: '#00A370', soft: 'rgba(0, 255, 140, 0.16)' },
-      admin: { color: '#4700E0', soft: 'rgba(71, 0, 224, 0.14)' }
+    const quotes = {
+      buyer: '"Source smarter with AI-powered procurement."',
+      vendor: '"Win more business with AI-matched RFQs."'
+    };
+
+    const subtitles = {
+      buyer: "Source smarter with AI-powered procurement.",
+      vendor: "Win more business with AI-matched RFQs."
     };
 
     function moveTabPill(role) {
-      const tabs = document.getElementById('tabs');
-      const pill = document.getElementById('tab-pill');
-      const target = tabs.querySelector(`.tab-btn[data-role="${role}"]`);
-      if (!pill || !target) return;
-      const index = Array.from(tabs.querySelectorAll('.tab-btn')).indexOf(target);
-      pill.style.transform = `translateX(${index * 100}%)`;
+      const switchEl = document.getElementById('portal-switch');
+      const thumb = document.getElementById('portal-thumb');
+      const target = switchEl.querySelector(`.np-portal-btn[data-role="${role}"]`);
+      if (!thumb || !target) return;
+      const index = Array.from(switchEl.querySelectorAll('.np-portal-btn')).indexOf(target);
+      thumb.style.transform = `translateX(${index * 100}%)`;
     }
 
     function switchTab(role) {
       activeRole = role;
       
-      // Update active tab styles
-      document.querySelectorAll('.tab-btn').forEach(btn => {
+      // Update portal switcher buttons
+      document.querySelectorAll('.np-portal-btn').forEach(btn => {
         btn.classList.remove('active');
       });
-      document.querySelector(`.tab-btn[data-role="${role}"]`).classList.add('active');
+      document.querySelector(`.np-portal-btn[data-role="${role}"]`).classList.add('active');
       moveTabPill(role);
 
-      // Update submit button role style and label
-      const btn = document.getElementById('submit-btn');
-      btn.className = `btn btn-${role}`;
-      btn.querySelector('.btn-label').innerText = `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
-
-      // Sync ambient accent (card glow, logo glow, focus rings) to the active role
-      const accent = roleAccents[role];
-      if (accent) {
-        document.documentElement.style.setProperty('--accent-current', accent.color);
-        document.documentElement.style.setProperty('--accent-current-soft', accent.soft);
+      // Quote swap animation
+      const quoteEl = document.getElementById('editorial-quote');
+      if (quoteEl) {
+        quoteEl.style.opacity = 0;
+        quoteEl.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+          quoteEl.innerText = quotes[role];
+          quoteEl.style.opacity = 1;
+          quoteEl.style.transform = 'translateY(0)';
+        }, 150);
       }
 
-      // Update placeholders
-      const usernameInput = document.getElementById('username');
+      // Title/subtitle text swap
+      const subtitleEl = document.getElementById('auth-subtitle');
+      if (subtitleEl) {
+        subtitleEl.innerText = subtitles[role];
+      }
+
+      // Fields crossfade
+      const buyerFields = document.getElementById('buyer-fields');
+      const vendorFields = document.getElementById('vendor-fields');
+
       if (role === 'buyer') {
-        usernameInput.placeholder = 'buyer@nexpro.com';
-      } else if (role === 'vendor') {
-        usernameInput.placeholder = 'vendor@nexpro.com';
+        vendorFields.classList.remove('active');
+        setTimeout(() => {
+          buyerFields.classList.add('active');
+        }, 150);
+
+        document.getElementById('buyer-username').required = true;
+        document.getElementById('buyer-password').required = true;
+        document.getElementById('vendor-username').required = false;
+        document.getElementById('vendor-password').required = false;
+        document.getElementById('vendor-business-id').required = false;
       } else {
-        usernameInput.placeholder = 'admin@nexpro.com';
+        buyerFields.classList.remove('active');
+        setTimeout(() => {
+          vendorFields.classList.add('active');
+        }, 150);
+
+        document.getElementById('buyer-username').required = false;
+        document.getElementById('buyer-password').required = false;
+        document.getElementById('vendor-username').required = true;
+        document.getElementById('vendor-password').required = true;
+        document.getElementById('vendor-business-id').required = true;
       }
 
-      // Hide signup link container for admins
-      const signupLinkWrapper = document.getElementById('signup-link-wrapper');
-      if (signupLinkWrapper) {
-        signupLinkWrapper.style.display = (role === 'admin') ? 'none' : 'block';
-      }
+      // Button tag label
+      const btn = document.getElementById('submit-btn');
+      btn.querySelector('.np-btn-label').innerText = `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
 
-      // Hide messages
       hideMessage();
     }
 
@@ -932,7 +545,7 @@
 
     function setButtonLoading(isLoading) {
       const btn = document.getElementById('submit-btn');
-      btn.classList.toggle('loading', isLoading);
+      btn.classList.toggle('np-loading', isLoading);
       btn.disabled = isLoading;
     }
 
@@ -940,19 +553,30 @@
       e.preventDefault();
       hideMessage();
 
-      const email = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value;
+      let email, pass;
+      if (activeRole === 'buyer') {
+        email = document.getElementById('buyer-username').value.trim();
+        pass = document.getElementById('buyer-password').value;
+      } else {
+        email = document.getElementById('vendor-username').value.trim();
+        pass = document.getElementById('vendor-password').value;
+        const bizId = document.getElementById('vendor-business-id').value.trim();
+        if (!bizId) {
+          showMessage("Business ID is required for Vendor login.");
+          return;
+        }
+      }
 
-      // Find user
-      const user = window.appState.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.role === activeRole);
+      // Allow admin account to login under buyer tab
+      const user = window.appState.users.find(u => 
+        u.email.toLowerCase() === email.toLowerCase() && 
+        (u.role === activeRole || (activeRole === 'buyer' && u.role === 'admin'))
+      );
 
       if (!user) {
-        // User doesn't exist for this role
-        if (activeRole === 'admin') {
-          showMessage("Admin account not found. Admin credentials are not self-serve. Please contact support or your system administrator.");
-        } else {
-          showMessage("Entered account does not exist.");
-          const signupBox = document.getElementById('signup-box');
+        showMessage("Entered account does not exist.");
+        const signupBox = document.getElementById('signup-box');
+        if (signupBox) {
           const signupText = document.getElementById('signup-text');
           signupText.innerText = `Account not found. Recommend creating a new account to access the ${activeRole.charAt(0).toUpperCase() + activeRole.slice(1)} features.`;
           signupBox.style.display = 'block';
@@ -965,40 +589,40 @@
         return;
       }
 
-      // Successful login — brief premium loading state, then route
       setButtonLoading(true);
+      
+      // Update local storage role
+      if (user.role === 'admin') {
+        setNexproRole('buyer');
+      } else {
+        setNexproRole(activeRole);
+      }
+      
       setCurrentUser(user);
 
-      const isProfileIncomplete = !user.profile || 
-        (user.role === 'buyer' && !user.profile.fullName) || 
-        (user.role === 'vendor' && !user.profile.companyName);
-
+      // Route directly to generate-rfq.html workspace dashboard bypassing any prompt form
       setTimeout(() => {
-        if (isProfileIncomplete && user.role !== 'admin') {
-          window.location.href = 'profile.html?prompt_edit=true';
-        } else {
-          window.location.href = 'platformOverview.html';
-        }
-      }, 450);
+        window.location.href = 'generate-rfq.html';
+      }, 600);
     }
 
     function handleSignup() {
-      const email = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value;
-
-      if (activeRole === 'admin') {
-        showMessage("Admin accounts are not self-serve. Please contact support or your system administrator.");
-        return;
+      let email = "";
+      let pass = "";
+      if (activeRole === 'buyer') {
+        email = document.getElementById('buyer-username').value.trim();
+        pass = document.getElementById('buyer-password').value;
+      } else {
+        email = document.getElementById('vendor-username').value.trim();
+        pass = document.getElementById('vendor-password').value;
       }
 
-      // Redirect to signup.html carrying over parameters
       let url = `signup.html?role=${encodeURIComponent(activeRole)}`;
       if (email) url += `&email=${encodeURIComponent(email)}`;
       if (pass) url += `&password=${encodeURIComponent(pass)}`;
       window.location.href = url;
     }
 
-    // --- Premium polish: tab pill position + cursor-reactive 3D depth ---
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1023,7 +647,7 @@
 
     window.addEventListener('resize', () => moveTabPill(activeRole));
 
-    // --- Ambient particle starfield with gentle parallax ---
+    // Particle field
     (function initParticles() {
       const canvas = document.getElementById('particles-canvas');
       if (!canvas) return;

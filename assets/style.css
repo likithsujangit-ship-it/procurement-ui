@@ -1,0 +1,802 @@
+/* NexPro Premium Design System Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --np-cream-0: #FBF9F4;
+  --np-cream-1: #F5F1E8;
+  --np-cream-2: #EFE9DB;
+  --np-paper: #FFFFFF;
+  --np-ink-0: #17140F;
+  --np-ink-1: #3A362E;
+  --np-ink-2: #6B6558;
+  --np-ink-3: #948D7C;
+  --np-line: #E4DDCB;
+  --np-line-soft: #EDE7D8;
+  --np-bronze-0: #8A6A34;
+  --np-bronze-1: #B8934D;
+  --np-bronze-2: #D8B573;
+  --np-bronze-glow: rgba(184, 147, 77, 0.16);
+  --np-ink-panel: #141210;
+  --np-ink-panel-2: #1D1A15;
+  --np-good: #3F7A54;
+  --np-bad: #B4523B;
+  --np-radius-l: 22px;
+  --np-radius-m: 14px;
+  --np-radius-s: 9px;
+  --np-ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --np-ease-bounce: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Base resets & typography for new components */
+.np-serif {
+  font-family: 'Fraunces', serif;
+}
+
+.np-sans {
+  font-family: 'Inter', sans-serif;
+}
+
+/* 1. Portal Switcher */
+.np-portal-switch {
+  position: relative;
+  display: flex;
+  background: var(--np-cream-1);
+  border: 1px solid var(--np-line);
+  border-radius: var(--np-radius-m);
+  padding: 4px;
+  margin-bottom: 28px;
+  user-select: none;
+}
+
+.np-portal-thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  background: var(--np-paper);
+  border-radius: calc(var(--np-radius-m) - 2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: transform 380ms var(--np-ease-bounce);
+  z-index: 1;
+}
+
+.np-portal-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--np-ink-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 300ms ease;
+  outline: none;
+}
+
+.np-portal-btn.active {
+  color: var(--np-ink-0);
+  font-weight: 700;
+}
+
+/* 2. Editorial Split Screen Layout */
+.np-split-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  background: var(--np-paper);
+  border: 1px solid var(--np-line-soft);
+  border-radius: var(--np-radius-l);
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(23, 20, 15, 0.06);
+  position: relative;
+  min-height: 580px;
+}
+
+.np-editorial-side {
+  background-color: var(--np-ink-panel);
+  position: relative;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* Bronze radial glow */
+.np-editorial-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, var(--np-bronze-glow) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.np-editorial-header {
+  position: relative;
+  z-index: 1;
+}
+
+.np-editorial-logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--np-paper);
+  letter-spacing: -1px;
+}
+
+.np-editorial-logo span {
+  color: var(--np-bronze-2);
+}
+
+.np-editorial-quote-wrap {
+  position: relative;
+  z-index: 1;
+  margin: auto 0;
+}
+
+.np-editorial-quote {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--np-cream-1);
+  font-style: italic;
+  font-weight: 400;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.np-editorial-footer {
+  position: relative;
+  z-index: 1;
+  color: var(--np-ink-3);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.np-auth-side {
+  background: var(--np-cream-0);
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.np-auth-header {
+  margin-bottom: 24px;
+}
+
+.np-auth-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--np-ink-0);
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.np-auth-subtitle {
+  font-family: 'Inter', sans-serif;
+  color: var(--np-ink-2);
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+/* Form Crossfading and Animation */
+.np-auth-fields-wrapper {
+  position: relative;
+}
+
+.np-auth-fields {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 300ms ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.np-auth-fields.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+  position: relative;
+}
+
+.np-form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.np-form-group label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--np-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.np-field {
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  height: 44px;
+  background: var(--np-paper);
+  border: 1px solid var(--np-line);
+  border-radius: var(--np-radius-s);
+  padding: 0 14px;
+  font-size: 14.5px;
+  color: var(--np-ink-0);
+  outline: none;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.np-field:focus {
+  border-color: var(--np-bronze-1);
+  box-shadow: 0 0 0 3px var(--np-bronze-glow);
+}
+
+.np-btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  height: 46px;
+  border-radius: var(--np-radius-s);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: transform 150ms ease, background-color 200ms ease, box-shadow 200ms ease;
+  width: 100%;
+  position: relative;
+  text-decoration: none;
+  outline: none;
+}
+
+.np-btn:active {
+  transform: scale(0.97);
+}
+
+.np-btn-dark {
+  background: var(--np-ink-1);
+  color: var(--np-paper);
+}
+
+.np-btn-dark:hover {
+  background: var(--np-ink-0);
+}
+
+.np-btn-outline {
+  background: transparent;
+  border: 1px solid var(--np-line);
+  color: var(--np-ink-1);
+}
+
+.np-btn-outline:hover {
+  background: var(--np-cream-1);
+  border-color: var(--np-ink-2);
+}
+
+/* Spinner Loader */
+.np-spin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: var(--np-paper);
+  animation: np-spinner-spin 0.7s linear infinite;
+  display: none;
+}
+
+.np-btn-outline .np-spin {
+  border-top-color: var(--np-ink-1);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.np-btn.np-loading .np-spin {
+  display: inline-block;
+}
+
+.np-btn.np-loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+@keyframes np-spinner-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 3. Global Navbar Components */
+.np-header-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.np-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.np-search-input {
+  font-family: 'Inter', sans-serif;
+  height: 38px;
+  width: 200px;
+  border-radius: var(--np-radius-s);
+  border: 1px solid var(--np-line);
+  background: var(--np-cream-1);
+  padding: 0 12px 0 34px;
+  font-size: 13.5px;
+  color: var(--np-ink-1);
+  outline: none;
+  transition: width 250ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+
+.np-search-input:focus {
+  width: 260px;
+  border-color: var(--np-bronze-1);
+  background-color: var(--np-paper);
+}
+
+.np-search-icon {
+  position: absolute;
+  left: 11px;
+  color: var(--np-ink-3);
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+}
+
+.np-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--np-ink-2);
+  cursor: pointer;
+  padding: 6px;
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 200ms ease, color 200ms ease;
+  outline: none;
+}
+
+.np-icon-btn:hover {
+  background-color: var(--np-cream-1);
+  color: var(--np-ink-0);
+}
+
+.np-icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.np-icon-btn .np-badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--np-bad);
+  border: 1.5px solid var(--np-paper);
+}
+
+/* User Avatar Menu */
+.np-user-menu {
+  position: relative;
+  z-index: 1001;
+}
+
+.np-avatar-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--np-bronze-1);
+  color: var(--np-paper);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(184, 147, 77, 0.15);
+  transition: transform 150ms ease;
+  outline: none;
+}
+
+.np-avatar-btn:active {
+  transform: scale(0.95);
+}
+
+.np-account-menu-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 170px;
+  background: var(--np-paper);
+  border: 1px solid var(--np-line);
+  border-radius: var(--np-radius-m);
+  box-shadow: 0 12px 36px rgba(23, 20, 15, 0.08);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: scale(0.92) translate(4px, -10px);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1), transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.np-account-menu-panel.active {
+  opacity: 1;
+  transform: scale(1) translate(0, 0);
+  pointer-events: all;
+}
+
+.np-account-menu-item {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--np-ink-1);
+  padding: 8px 12px;
+  border-radius: var(--np-radius-s);
+  text-decoration: none;
+  display: block;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.np-account-menu-item:hover {
+  background: var(--np-cream-1);
+  color: var(--np-ink-0);
+}
+
+/* Loading state for global nav injection */
+.nav-links-wrap.np-loading {
+  opacity: 0;
+}
+
+/* 4. Profile Page Components */
+.np-profile-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.np-profile-hero {
+  height: 150px;
+  background: linear-gradient(135deg, var(--np-ink-panel) 0%, var(--np-ink-panel-2) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.np-profile-hero::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle, var(--np-bronze-glow) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.np-profile-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+}
+
+.np-profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--np-paper);
+  border: 4px solid var(--np-paper);
+  box-shadow: 0 10px 24px rgba(23, 20, 15, 0.08);
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  color: var(--np-bronze-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.np-profile-id-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.np-role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.np-role-badge.buyer {
+  background: rgba(118, 0, 230, 0.08);
+  color: #7600E6;
+}
+
+.np-role-badge.vendor {
+  background: rgba(63, 122, 84, 0.08);
+  color: var(--np-good);
+}
+
+/* Tabs */
+.np-ptab {
+  display: flex;
+  border-bottom: 1px solid var(--np-line-soft);
+  gap: 28px;
+  margin: 32px 48px 0px 48px;
+}
+
+.np-ptab-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--np-ink-3);
+  padding: 10px 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: color 200ms ease;
+  outline: none;
+}
+
+.np-ptab-btn:hover {
+  color: var(--np-ink-1);
+}
+
+.np-ptab-btn.active {
+  color: var(--np-ink-0);
+  font-weight: 700;
+}
+
+.np-ptab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--np-ink-0);
+}
+
+/* Stats Chip Row */
+.np-stat-chip-row {
+  display: flex;
+  gap: 16px;
+  margin: 28px 48px 0px 48px;
+  flex-wrap: wrap;
+}
+
+.np-stat-chip {
+  flex: 1;
+  min-width: 140px;
+  background: var(--np-paper);
+  border: 1px solid var(--np-line-soft);
+  border-radius: var(--np-radius-m);
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(23, 20, 15, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.np-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--np-ink-3);
+  letter-spacing: 0.5px;
+}
+
+.np-stat-val {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--np-ink-0);
+}
+
+/* Info Rows / Details view */
+.np-details-wrapper {
+  padding: 32px 48px;
+}
+
+.np-fade-swap {
+  transition: opacity 380ms var(--np-ease-premium), transform 380ms var(--np-ease-premium);
+}
+
+.np-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--np-line-soft);
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+}
+
+.np-info-row label {
+  font-weight: 600;
+  color: var(--np-ink-2);
+}
+
+.np-info-row .np-value {
+  font-weight: 700;
+  color: var(--np-ink-0);
+  text-align: right;
+  word-break: break-word;
+  max-width: 60%;
+}
+
+/* Edit Mode Layout */
+.np-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.np-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.np-field-row.full-width {
+  grid-column: span 2;
+}
+
+.np-field-row label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--np-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.np-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.np-edit-actions .np-btn {
+  max-width: 140px;
+}
+
+/* Toast Notifications */
+.np-toast-notif {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--np-ink-panel-2);
+  border: 1px solid var(--np-line);
+  color: var(--np-cream-0);
+  padding: 14px 24px;
+  border-radius: var(--np-radius-m);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 14px 40px rgba(23, 20, 15, 0.18);
+  z-index: 99999;
+  opacity: 0;
+  transform: translateY(24px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 300ms var(--np-ease-premium), transform 300ms var(--np-ease-premium);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.np-toast-notif.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.np-toast-success-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--np-good);
+}
+
+.np-link-arrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--np-ink-2);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 200ms ease, transform 200ms ease;
+  margin-top: 24px;
+}
+
+.np-link-arrow:hover {
+  color: var(--np-ink-0);
+  transform: translateX(-2px);
+}
+
+/* Reduced motion media query overrides */
+@media (prefers-reduced-motion: reduce) {
+  .np-portal-thumb,
+  .np-auth-fields,
+  .np-account-menu-panel,
+  .np-toast-notif,
+  .np-search-input,
+  .np-link-arrow {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .np-split-layout {
+    grid-template-columns: 1fr;
+  }
+  .np-editorial-side {
+    display: none;
+  }
+  .np-edit-grid {
+    grid-template-columns: 1fr;
+  }
+  .np-field-row.full-width {
+    grid-column: span 1;
+  }
+  .np-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .np-info-row .np-value {
+    text-align: left;
+    max-width: 100%;
+  }
+  .np-ptab {
+    margin: 24px 24px 0 24px;
+    gap: 16px;
+  }
+  .np-stat-chip-row {
+    margin: 24px 24px 0 24px;
+  }
+  .np-details-wrapper {
+    padding: 24px;
+  }
+}
