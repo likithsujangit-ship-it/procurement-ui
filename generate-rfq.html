@@ -5664,7 +5664,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       grid.innerHTML = "";
 
       const template = state.templates.find(t => t.id === selectedTemplateId);
-      const isRfqFlow = (template !== null);
+      const isRfqFlow = !!template;
 
       const suppliers = getFilteredSuppliers();
       
