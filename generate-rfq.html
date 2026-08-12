@@ -4751,6 +4751,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       if (selectedResponseId) {
         response = state.submittedResponses.find(r => r.id === selectedResponseId);
       }
+      const isComplete = response ? isResponseComplete(response) : false;
       
       // Assemble AI Assistant Card for new response filling
       let aiCardHTML = "";
@@ -4830,7 +4831,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         }
         
         // Render inputs depending on type
-        if (response) {
+        if (response && isComplete) {
           // Read-only Details View
           const valDisplay = document.createElement("div");
           valDisplay.className = "app-input";
@@ -4859,26 +4860,26 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         } else {
           // Fillable Interactive Form
           if (field.type === "short-text") {
-            group.innerHTML += `<input type="text" class="app-input" data-field-id="${field.id}" placeholder="Enter response...">`;
+            group.innerHTML += `<input type="text" class="app-input" data-field-id="${field.id}" placeholder="Enter response..." value="${escapeHTML(savedVal)}">`;
             SpeechToText.attach(group.querySelector(`input[data-field-id="${field.id}"]`));
           } else if (field.type === "long-text") {
-            group.innerHTML += `<textarea class="app-input" data-field-id="${field.id}" style="min-height: 100px; resize: vertical; padding: 12px;" placeholder="Provide detailed comments..."></textarea>`;
+            group.innerHTML += `<textarea class="app-input" data-field-id="${field.id}" style="min-height: 100px; resize: vertical; padding: 12px;" placeholder="Provide detailed comments...">${escapeHTML(savedVal)}</textarea>`;
             SpeechToText.attach(group.querySelector(`textarea[data-field-id="${field.id}"]`));
           } else if (field.type === "number") {
-            group.innerHTML += `<input type="number" class="app-input" data-field-id="${field.id}" placeholder="0.00">`;
+            group.innerHTML += `<input type="number" class="app-input" data-field-id="${field.id}" placeholder="0.00" value="${escapeHTML(savedVal)}">`;
             SpeechToText.attach(group.querySelector(`input[data-field-id="${field.id}"]`));
           } else if (field.type === "date") {
-            group.innerHTML += `<input type="date" class="app-input" data-field-id="${field.id}">`;
+            group.innerHTML += `<input type="date" class="app-input" data-field-id="${field.id}" value="${escapeHTML(savedVal)}">`;
           } else if (field.type === "checkbox") {
             group.style.flexDirection = "row";
             group.style.alignItems = "center";
             group.style.gap = "12px";
             group.innerHTML = `
-              <input type="checkbox" id="field-${field.id}" data-field-id="${field.id}" style="width:18px; height:18px; cursor:pointer;">
+              <input type="checkbox" id="field-${field.id}" data-field-id="${field.id}" style="width:18px; height:18px; cursor:pointer;" ${savedVal ? 'checked' : ''}>
               <label for="field-${field.id}" style="font-size:14px; color:var(--text-primary); cursor:pointer;">${escapeHTML(field.label)}</label>
             `;
           } else if (field.type === "dropdown" || field.type === "select") {
-            const optsHTML = (field.options || []).map(o => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
+            const optsHTML = (field.options || []).map(o => `<option value="${escapeHTML(o)}" ${savedVal === o ? 'selected' : ''}>${escapeHTML(o)}</option>`).join("");
             group.innerHTML += `
               <select class="app-input w-select" data-field-id="${field.id}">
                 <option value="">-- Choose option --</option>
@@ -4886,27 +4887,32 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
               </select>
             `;
           } else if (field.type === "multi-select") {
-            const checkHTML = (field.options || []).map((o, idx) => `
-              <label style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--text-primary); cursor:pointer;">
-                <input type="checkbox" data-field-id="${field.id}" value="${escapeHTML(o)}" style="width:16px; height:16px;">
-                ${escapeHTML(o)}
-              </label>
-            `).join("");
+            const checkHTML = (field.options || []).map((o, idx) => {
+              const isChecked = Array.isArray(savedVal) ? savedVal.includes(o) : (savedVal === o);
+              return `
+                <label style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--text-primary); cursor:pointer;">
+                  <input type="checkbox" data-field-id="${field.id}" value="${escapeHTML(o)}" style="width:16px; height:16px;" ${isChecked ? 'checked' : ''}>
+                  ${escapeHTML(o)}
+                </label>
+              `;
+            }).join("");
             group.innerHTML += `
               <div style="display:flex; flex-direction:column; gap:8px; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-main);">
                 ${checkHTML}
               </div>
             `;
           } else if (field.type === "file") {
+            const fileLabel = savedVal ? "Selected: " + savedVal : "Click to upload document";
             group.innerHTML += `
               <div class="file-uploader" onclick="document.querySelector('input[type=&quot;file&quot;][data-field-id=&quot;${field.id}&quot;]').click()">
                 <div style="font-size:20px; margin-bottom:4px;">📤</div>
-                <div style="font-weight:600; font-size:13px; color:var(--text-primary);" id="file-label-${field.id}">Click to upload document</div>
+                <div style="font-weight:600; font-size:13px; color:var(--text-primary);" id="file-label-${field.id}">${escapeHTML(fileLabel)}</div>
                 <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">PDF, DOCX, XLSX up to 10MB</div>
-                <input type="file" style="display:none;" data-field-id="${field.id}" multiple onchange="handleFileSelected('${field.id}', this)" />
+                <input type="file" style="display:none;" data-field-id="${field.id}" data-saved-value="${escapeHTML(savedVal)}" multiple onchange="handleFileSelected('${field.id}', this)" />
               </div>
             `;
           }
+          
           // F3: placeholder for inline validation warnings
           group.innerHTML += `<div class="field-validation-error" id="field-error-${field.id}" style="display:none; color: var(--accent-red); font-size: 11.5px; font-weight: 600; margin-top: 2px;"></div>`;
         }
@@ -4922,7 +4928,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       `;
       
       let actionButtons = "";
-      if (response) {
+      if (response && isComplete) {
         actionButtons = `
           <div style="display: flex; gap: 16px; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border-color); padding-top: 24px; margin-top: 32px;">
             <button class="secondary-btn" onclick="openPrintPreview()">
@@ -4935,7 +4941,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       } else {
         actionButtons = `
           <div style="display: flex; gap: 16px; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border-color); padding-top: 24px; margin-top: 32px;">
-            <button class="secondary-btn" onclick="navigateTo('companies')">Cancel</button>
+            <button class="secondary-btn" onclick="navigateTo('submitted-responses')">Cancel</button>
+            <button class="secondary-btn" onclick="saveFormDraft()">Save Draft</button>
             <button class="primary-btn" onclick="submitFormResponse()">Submit Response</button>
           </div>
         `;
@@ -5038,10 +5045,12 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         return;
       }
       
+      const response = selectedResponseId ? state.submittedResponses.find(r => r.id === selectedResponseId) : null;
+      const initialName = response ? response.responseID : "";
       const bodyHTML = `
         <div class="field-input-group">
           <span class="field-label-span">Response Name</span>
-          <input type="text" id="modal-input" class="app-input" placeholder="e.g. SpaceX Falcon 9 Propellant Sourcing - Batch A">
+          <input type="text" id="modal-input" class="app-input" value="${escapeHTML(initialName)}" placeholder="e.g. SpaceX Falcon 9 Propellant Sourcing - Batch A">
         </div>
       `;
       
@@ -5057,64 +5066,117 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           }
           
           // Duplicate check
-          const duplicate = state.submittedResponses.some(r => r.responseID.toLowerCase() === val.trim().toLowerCase());
+          const duplicate = state.submittedResponses.some(r => r.id !== selectedResponseId && r.responseID.toLowerCase() === val.trim().toLowerCase());
           if (duplicate) {
             showToast("A submitted response with this name already exists", "error");
             return;
           }
           
           closeModal();
-          confirmAndSubmitResponse(val.trim());
+          confirmAndSubmitResponse(val.trim(), false);
         }
       });
     }
 
-    function confirmAndSubmitResponse(responseName) {
+    function saveFormDraft() {
+      const template = state.templates.find(t => t.id === selectedTemplateId);
+      if (!template) return;
+
+      const response = selectedResponseId ? state.submittedResponses.find(r => r.id === selectedResponseId) : null;
+      const initialName = response ? response.responseID : "";
+      
+      const bodyHTML = `
+        <div class="field-input-group">
+          <span class="field-label-span">Draft Name</span>
+          <input type="text" id="modal-input" class="app-input" value="${escapeHTML(initialName)}" placeholder="e.g. SpaceX Falcon 9 Propellant Sourcing - Batch A">
+        </div>
+      `;
+      
+      openModal({
+        title: "Save as Draft",
+        desc: "Save your progress. You can find and complete this draft in the 'Draft Bids' tab.",
+        bodyHTML,
+        confirmText: "Save Draft",
+        onConfirm: (val) => {
+          if (!val || val.trim() === "") {
+            showToast("Draft name cannot be empty", "error");
+            return;
+          }
+          
+          const duplicate = state.submittedResponses.some(r => r.id !== selectedResponseId && r.responseID.toLowerCase() === val.trim().toLowerCase());
+          if (duplicate) {
+            showToast("A response with this name already exists", "error");
+            return;
+          }
+          
+          closeModal();
+          confirmAndSubmitResponse(val.trim(), true);
+        }
+      });
+    }
+
+    function confirmAndSubmitResponse(responseName, isDraft = false) {
       const template = state.templates.find(t => t.id === selectedTemplateId);
       if (!template) return;
 
       const currentUser = getCurrentUser();
       const vendorEmail = currentUser ? currentUser.email : "vendor@nexpro.com";
 
-      const newResponse = {
-        id: "response-" + Date.now(),
-        templateId: template.id,
-        templateName: template.name,
-        responseID: responseName,
-        vendorEmail: vendorEmail,
-        submittedAt: new Date().toISOString(),
-        status: "SUBMITTED",
-        fields: template.fields.map(field => {
-          let val = "";
-          const inputEl = document.querySelector('[data-field-id="' + field.id + '"]');
-          if (field.type === 'checkbox') {
-            val = inputEl ? inputEl.checked : false;
-          } else if (field.type === 'multi-select') {
-            const checked = Array.from(document.querySelectorAll('[data-field-id="' + field.id + '"]:checked'));
-            val = checked.map(el => el.value);
-          } else if (field.type === 'file') {
-            const input = document.querySelector('input[type="file"][data-field-id="' + field.id + '"]');
-            val = (input && input.files && input.files[0]) ? input.files[0].name : (input ? input.dataset.savedValue || "" : "");
-          } else {
-            val = inputEl ? inputEl.value.trim() : "";
-          }
-          return {
-            id: field.id,
-            label: field.label,
-            type: field.type,
-            value: val
-          };
-        })
-      };
+      const fieldsData = template.fields.map(field => {
+        let val = "";
+        const inputEl = document.querySelector('[data-field-id="' + field.id + '"]');
+        if (field.type === 'checkbox') {
+          val = inputEl ? inputEl.checked : false;
+        } else if (field.type === 'multi-select') {
+          const checked = Array.from(document.querySelectorAll('[data-field-id="' + field.id + '"]:checked'));
+          val = checked.map(el => el.value);
+        } else if (field.type === 'file') {
+          const input = document.querySelector('input[type="file"][data-field-id="' + field.id + '"]');
+          val = (input && input.files && input.files[0]) ? input.files[0].name : (input ? input.dataset.savedValue || "" : "");
+        } else {
+          val = inputEl ? inputEl.value.trim() : "";
+        }
+        return {
+          id: field.id,
+          label: field.label,
+          type: field.type,
+          value: val
+        };
+      });
 
-      state.submittedResponses = state.submittedResponses || [];
-      state.submittedResponses.push(newResponse);
+      if (selectedResponseId) {
+        const existing = state.submittedResponses.find(r => r.id === selectedResponseId);
+        if (existing) {
+          existing.responseID = responseName;
+          existing.fields = fieldsData;
+          existing.submittedAt = new Date().toISOString();
+          existing.status = isDraft ? "DRAFT" : "SUBMITTED";
+        }
+      } else {
+        const newResponse = {
+          id: "response-" + Date.now(),
+          templateId: template.id,
+          templateName: template.name,
+          responseID: responseName,
+          vendorEmail: vendorEmail,
+          submittedAt: new Date().toISOString(),
+          status: isDraft ? "DRAFT" : "SUBMITTED",
+          fields: fieldsData
+        };
+        state.submittedResponses = state.submittedResponses || [];
+        state.submittedResponses.push(newResponse);
+      }
       saveState();
 
-      // Trigger green checkmark modal popup
-      const overlay = document.getElementById("success-overlay");
-      if (overlay) {
-        overlay.classList.add("active");
+      if (isDraft) {
+        showToast("Draft saved successfully!", "success");
+        navigateTo("submitted-responses");
+      } else {
+        // Trigger green checkmark modal popup
+        const overlay = document.getElementById("success-overlay");
+        if (overlay) {
+          overlay.classList.add("active");
+        }
       }
     }
 
@@ -5129,9 +5191,16 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
     function renderSubmittedResponsesView(container) {
       const showAll = !selectedTemplateId;
-      const responses = showAll
+      let responses = showAll
         ? state.submittedResponses
         : state.submittedResponses.filter(r => r.templateId === selectedTemplateId);
+
+      // Filter by completeness/draft status if not showing archived
+      if (activeResponsesTab === "submitted") {
+        responses = responses.filter(r => isResponseComplete(r));
+      } else if (activeResponsesTab === "draft") {
+        responses = responses.filter(r => !isResponseComplete(r));
+      }
 
       const wrap = document.createElement("div");
       wrap.className = "submitted-responses-wrap";
@@ -5145,7 +5214,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const tabsBar = document.createElement("div");
         tabsBar.className = "modal-tabs";
         tabsBar.innerHTML = `
-          <div class="tab-btn ${activeResponsesTab === "active" ? "active" : ""}" onclick="switchResponsesTab('active')">Active Bids</div>
+          <div class="tab-btn ${activeResponsesTab === "submitted" ? "active" : ""}" onclick="switchResponsesTab('submitted')">Submitted Bids</div>
+          <div class="tab-btn ${activeResponsesTab === "draft" ? "active" : ""}" onclick="switchResponsesTab('draft')">Draft Bids</div>
           <div class="tab-btn ${activeResponsesTab === "archived" ? "active" : ""}" onclick="switchResponsesTab('archived')">Archived Bids</div>
         `;
         wrap.appendChild(tabsBar);
@@ -5281,9 +5351,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           }
         }
 
-        const statusHTML = response.hasProcurement
-          ? `<span class="supplier-status status-active" style="font-size:11px; padding:2px 8px;">Under Process</span>`
-          : `<span class="supplier-status status-pending-verification" style="font-size:11px; padding:2px 8px;">Sourcing Ready</span>`;
+        const statusHTML = !isResponseComplete(response)
+          ? `<span class="supplier-status status-pending" style="font-size:11px; padding:2px 8px; background: rgba(255, 100, 0, 0.08); color: var(--accent-orange);">DRAFT</span>`
+          : (response.hasProcurement
+            ? `<span class="supplier-status status-active" style="font-size:11px; padding:2px 8px;">Under Process</span>`
+            : `<span class="supplier-status status-pending-verification" style="font-size:11px; padding:2px 8px;">Sourcing Ready</span>`);
 
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
@@ -5406,12 +5478,32 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       state.submittedResponses = state.submittedResponses.filter(r => r.id !== responseId);
     }
 
+    function isResponseComplete(response) {
+      const template = state.templates.find(t => t.id === response.templateId);
+      const fields = response.fields || [];
+      if (!template) {
+        if (fields.length === 0) return false;
+        return fields.every(f => {
+          if (Array.isArray(f.value)) return f.value.length > 0;
+          return f.value !== undefined && f.value !== null && f.value !== "" && f.value !== false;
+        });
+      }
+      const totalFields = template.fields || [];
+      if (totalFields.length === 0) return true;
+      const answeredCount = fields.filter(f => {
+        if (Array.isArray(f.value)) return f.value.length > 0;
+        return f.value !== undefined && f.value !== null && f.value !== "" && f.value !== false;
+      }).length;
+      return answeredCount === totalFields.length;
+    }
+
     // F11: Archived Bids tab
-    let activeResponsesTab = "active";
+    let activeResponsesTab = "submitted";
     let archivedResponsesCache = [];
 
     function switchResponsesTab(tab) {
       activeResponsesTab = tab;
+      selectedResponseId = null; // Clear active detail view selection
       render();
     }
 
