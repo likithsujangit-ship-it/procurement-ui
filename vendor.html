@@ -3225,7 +3225,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     currentUser: null
   };
 
-  let currentView = "vendor-dashboard";
+  let currentView = "invited-rfqs";
   let selectedRfqId = null;
 
   // Filter states
@@ -3374,7 +3374,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
   }
 
   function handleHashRoute() {
-    const hash = window.location.hash || '#vendor-dashboard';
+    const hash = window.location.hash || '#invited-rfqs';
     const parts = hash.substring(1).split('?');
     currentView = parts[0];
     selectedRfqId = null;
@@ -3433,20 +3433,18 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
   function renderBreadcrumbs(user, vendorRecord) {
     const container = document.getElementById("breadcrumb");
     container.innerHTML = "";
-    if (currentView === "vendor-dashboard") {
-      container.innerHTML = "<span>Portal Dashboard</span>";
-    } else if (currentView === "invited-rfqs") {
-      container.innerHTML = `<a onclick="navigateTo('vendor-dashboard')">Dashboard</a> <span class="breadcrumb-separator">/</span> <span>Invited Opportunities</span>`;
+    if (currentView === "invited-rfqs") {
+      container.innerHTML = "<span>Invited RFQs</span>";
     } else if (currentView === "submit-bid") {
-      container.innerHTML = `<a onclick="navigateTo('vendor-dashboard')">Dashboard</a> <span class="breadcrumb-separator">/</span> <a onclick="navigateTo('invited-rfqs')">Opportunities</a> <span class="breadcrumb-separator">/</span> <span>Submit Quote</span>`;
+      container.innerHTML = `<a onclick="navigateTo('invited-rfqs')">Invited RFQs</a> <span class="breadcrumb-separator">/</span> <span>Submit Quote</span>`;
     } else if (currentView === "my-bids") {
-      container.innerHTML = `<a onclick="navigateTo('vendor-dashboard')">Dashboard</a> <span class="breadcrumb-separator">/</span> <span>My Quotations</span>`;
+      container.innerHTML = `<a onclick="navigateTo('invited-rfqs')">Invited RFQs</a> <span class="breadcrumb-separator">/</span> <span>My Quotations</span>`;
     } else if (currentView === "my-orders") {
-      container.innerHTML = `<a onclick="navigateTo('vendor-dashboard')">Dashboard</a> <span class="breadcrumb-separator">/</span> <span>Awarded Orders</span>`;
+      container.innerHTML = `<a onclick="navigateTo('invited-rfqs')">Invited RFQs</a> <span class="breadcrumb-separator">/</span> <span>Awarded Orders</span>`;
     } else if (currentView === "my-invoices") {
-      container.innerHTML = `<a onclick="navigateTo('vendor-dashboard')">Dashboard</a> <span class="breadcrumb-separator">/</span> <span>Invoices &amp; Payments</span>`;
+      container.innerHTML = `<a onclick="navigateTo('invited-rfqs')">Invited RFQs</a> <span class="breadcrumb-separator">/</span> <span>Invoices &amp; Payments</span>`;
     } else if (currentView === "vendor-profile") {
-      container.innerHTML = `<a onclick="navigateTo('vendor-dashboard')">Dashboard</a> <span class="breadcrumb-separator">/</span> <span>Company Profile</span>`;
+      container.innerHTML = `<a onclick="navigateTo('invited-rfqs')">Invited RFQs</a> <span class="breadcrumb-separator">/</span> <span>Company Profile</span>`;
     }
   }
 
@@ -4498,7 +4496,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; border-top: 1px solid var(--border-color); padding-top: 16px;">
-            <button type="button" class="secondary-btn" onclick="navigateTo('vendor-dashboard')">Cancel</button>
+            <button type="button" class="secondary-btn" onclick="navigateTo('invited-rfqs')">Cancel</button>
             <button type="submit" class="primary-btn">Save Changes</button>
           </div>
         </form>

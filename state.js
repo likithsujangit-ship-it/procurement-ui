@@ -474,7 +474,15 @@ async function loginUser(email, password) {
 function getVendorSupplierRecord(user) {
   if (!user || !user.email) return null;
   const suppliers = window.appState.suppliers || [];
-  return suppliers.find(s => (s.linkedUserEmail || '').toLowerCase() === user.email.toLowerCase()) || null;
+  let record = suppliers.find(s => (s.linkedUserEmail || '').toLowerCase() === user.email.toLowerCase());
+  if (!record && user.email.toLowerCase() === 'vendor@nexpro.com') {
+    record = suppliers.find(s => s.name === 'Acme Supplier Inc' || (s.email || '').toLowerCase() === 'vendor@nexpro.com');
+    if (record) {
+      record.linkedUserEmail = 'vendor@nexpro.com';
+      saveGlobalState();
+    }
+  }
+  return record || null;
 }
 
 function getCurrentUser() {
