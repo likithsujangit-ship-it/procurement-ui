@@ -3,6 +3,7 @@
 const DEFAULT_SUPPLIERS = [
   {
     id: "sup-orion-alloys",
+    linkedUserEmail: "vendor@nexpro.com",
     name: "Orion Alloys Ltd",
     category: "Mechanical Parts",
     status: "Active",
@@ -37,6 +38,7 @@ const DEFAULT_SUPPLIERS = [
   },
   {
     id: "sup-blueforge",
+    linkedUserEmail: "",
     name: "BlueForge Components",
     category: "Electrical Parts",
     status: "Active",
@@ -71,6 +73,7 @@ const DEFAULT_SUPPLIERS = [
   },
   {
     id: "sup-meridian-chem",
+    linkedUserEmail: "",
     name: "Meridian Chemtech Industries",
     category: "Chemical Raw Materials",
     status: "Active",
@@ -105,6 +108,7 @@ const DEFAULT_SUPPLIERS = [
   },
   {
     id: "sup-vantage-pack",
+    linkedUserEmail: "",
     name: "Vantage Packaging Solutions",
     category: "Packaging Materials",
     status: "Active",
@@ -225,6 +229,7 @@ window.appState = {
   templates: [...DEFAULT_TEMPLATES],
   submittedResponses: [...DEFAULT_RESPONSES],
   applications: [], // Vendor applications: { id, rfqId, rfqTitle, vendorId, vendorName, priority, status ("PENDING" | "ACCEPTED" | "REJECTED"), date, details: {} }
+  invoices: [], // Invoice shape: { id, orderId, vendorId, amount, status: "SUBMITTED"|"APPROVED"|"PAID", submittedAt, dueDate }
   currentUser: null
 };
 
@@ -304,6 +309,12 @@ function loadGlobalState() {
 }
 
 // Helper methods for Auth
+function getVendorSupplierRecord(user) {
+  if (!user || !user.email) return null;
+  const suppliers = window.appState.suppliers || [];
+  return suppliers.find(s => (s.linkedUserEmail || '').toLowerCase() === user.email.toLowerCase()) || null;
+}
+
 function getCurrentUser() {
   return window.appState.currentUser;
 }

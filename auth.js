@@ -30,6 +30,10 @@
     if (!user || user.role !== 'admin') {
       window.location.href = 'login.html';
     }
+  } else if (pageName === 'vendor.html') {
+    if (!user || user.role !== 'vendor') {
+      window.location.href = 'login.html';
+    }
   } else if (pageName === 'login.html' || pageName === 'signup.html') {
     if (user) {
       window.location.href = 'generate-rfq.html';
@@ -160,6 +164,44 @@ document.addEventListener('DOMContentLoaded', () => {
               <a href="generate-rfq.html#admin-logs" class="dd-navlink w-inline-block">
                 <div>System Activity Log</div>
                 <div class="dd-link-txt">Audit records and live system events log</div>
+                <div class="dd-link-dot"></div>
+              </a>
+            </div>
+          `;
+        }
+      } else if (isLoggedIn && user.role === 'vendor') {
+        const ddContent = dd.querySelector('.dd-content');
+        if (ddContent) {
+          ddContent.innerHTML = `
+            <div class="dd-column">
+              <a href="vendor.html#vendor-dashboard" class="dd-navlink w-inline-block">
+                <div>Dashboard</div>
+                <div class="dd-link-txt">Overview of invited RFQs, bids, and orders</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="vendor.html#invited-rfqs" class="dd-navlink w-inline-block">
+                <div>Invited RFQs</div>
+                <div class="dd-link-txt">View sourcing requests you've been matched with</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="vendor.html#my-bids" class="dd-navlink w-inline-block">
+                <div>My Bids</div>
+                <div class="dd-link-txt">Track submitted proposals and their status</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="vendor.html#my-orders" class="dd-navlink w-inline-block">
+                <div>My Orders</div>
+                <div class="dd-link-txt">Manage awarded purchase orders and deliveries</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="vendor.html#my-invoices" class="dd-navlink w-inline-block">
+                <div>Invoices &amp; Payments</div>
+                <div class="dd-link-txt">Submit invoices and track payment status</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="vendor.html#vendor-profile" class="dd-navlink w-inline-block">
+                <div>Company Profile</div>
+                <div class="dd-link-txt">Update your business details and certifications</div>
                 <div class="dd-link-dot"></div>
               </a>
             </div>
