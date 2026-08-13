@@ -18,10 +18,11 @@
       --bg-card: rgba(255, 255, 255, 0.7);
       --text-primary: #1A1A1A;
       --text-secondary: #666666;
+      --bg-main: #fafafc;
     }
     body {
       font-family: "Public Sans", sans-serif;
-      background: #fafafc;
+      background: var(--bg-main);
       color: var(--text-primary);
     }
     .main {
@@ -112,6 +113,12 @@
       background: rgba(0, 0, 0, 0.02);
       border-color: rgba(0, 0, 0, 0.15);
     }
+    .secondary-btn:disabled {
+      background: transparent;
+      color: #ccc;
+      border-color: #eee;
+      cursor: not-allowed;
+    }
     .danger-btn {
       background: transparent;
       color: var(--accent-red);
@@ -171,6 +178,7 @@
     .badge-accepted { background: rgba(0, 201, 139, 0.08); color: #00c98b; }
     .badge-rejected { background: rgba(255, 14, 86, 0.08); color: var(--accent-red); }
     .badge-approved { background: rgba(118, 0, 230, 0.08); color: var(--accent-purple); }
+    
     .dashboard-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -182,9 +190,15 @@
       border-radius: 12px;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
     }
     .stat-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       color: var(--text-secondary);
@@ -196,6 +210,7 @@
       font-weight: 800;
       margin: 0;
     }
+    
     /* Fixed Top Navbar Styling */
     .navbar-div {
       position: fixed;
@@ -228,6 +243,7 @@
     footer, .section.is-footer, .footer-cta-link {
       display: none !important;
     }
+    
     /* Modal styles */
     .modal-overlay {
       position: fixed;
@@ -288,6 +304,53 @@
       padding: 24px;
       overflow-y: auto;
     }
+    
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    td {
+      font-size: 14px;
+      padding: 16px;
+      color: var(--text-primary);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .empty-state-title {
+      font-family: "Outfit", sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .empty-state-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     /* Toast alerts */
     .toast-notif {
       position: fixed;
@@ -324,70 +387,7 @@
       color: #ff0e56;
     }
     
-    /* Success overlay */
-    .success-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .success-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .success-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 450px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-      transform: scale(0.9);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .success-overlay.active .success-card {
-      transform: scale(1);
-    }
-    .success-icon-wrapper {
-      width: 80px;
-      height: 80px;
-      background: rgba(0, 201, 139, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px auto;
-    }
-    .checkmark-svg {
-      width: 40px;
-      height: 40px;
-      stroke: #00c98b;
-      stroke-width: 4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-    }
-    .success-title {
-      font-family: "Outfit", sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-    .success-message {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-    
-    /* STT micro button pulse */
+    /* Speech to Text Mic */
     .stt-mic-btn {
       width: 32px;
       height: 32px;
@@ -422,6 +422,33 @@
       0% { box-shadow: 0 0 0 0 rgba(255, 14, 86, 0.45); }
       70% { box-shadow: 0 0 0 8px rgba(255, 14, 86, 0); }
       100% { box-shadow: 0 0 0 0 rgba(255, 14, 86, 0); }
+    }
+
+    /* Print styling rules */
+    @media print {
+      body > *:not(#print-preview-modal), 
+      .modal-overlay:not(#print-preview-modal),
+      .modal-card > *:not(.modal-body),
+      .modal-header,
+      .secondary-btn,
+      .primary-btn {
+        display: none !important;
+      }
+      .modal-overlay {
+        position: relative !important;
+        background: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      .modal-card {
+        box-shadow: none !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .modal-body {
+        padding: 0 !important;
+      }
     }
   </style>
 </head>
@@ -481,7 +508,7 @@
 
       <!-- Section Title Header -->
       <div class="app-header">
-        <h1 id="app-title" class="app-title">Vendor Dashboard</h1>
+        <h1 id="app-title" class="app-title">Dashboard</h1>
         <div id="header-actions"></div>
       </div>
 
@@ -494,159 +521,61 @@
 
 <!-- INLINE MODALS -->
 
-<!-- 1. Customizable Invoice Creator Modal -->
-<div id="invoice-modal" class="modal-overlay" onclick="handleOverlayClick(event, 'invoice-modal')">
-  <div class="modal-card" style="max-width: 800px; width: 95%;">
-    <div class="modal-header">
-      <h3 class="modal-title">Create Customizable Invoice</h3>
-      <button class="modal-close" onclick="closeInvoiceModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="custom-invoice-form" onsubmit="submitCustomInvoice(event)">
-        <input type="hidden" id="inv-order-id" />
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-          <div>
-            <label class="field-label">Invoice Number *</label>
-            <input type="text" id="inv-num" class="app-input" required placeholder="e.g. INV-2026-0001" />
-          </div>
-          <div>
-            <label class="field-label">Order Reference (PO)</label>
-            <input type="text" id="inv-order-ref" class="app-input" disabled style="background: rgba(0,0,0,0.03);" />
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-          <div>
-            <label class="field-label">Issue Date *</label>
-            <input type="date" id="inv-issue-date" class="app-input" required />
-          </div>
-          <div>
-            <label class="field-label">Due Date *</label>
-            <input type="date" id="inv-due-date" class="app-input" required />
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-          <div>
-            <label class="field-label">Bill From (Your Supplier details) *</label>
-            <textarea id="inv-bill-from" class="app-input" required style="height: 70px; resize: vertical;"></textarea>
-          </div>
-          <div>
-            <label class="field-label">Bill To (Buyer details) *</label>
-            <textarea id="inv-bill-to" class="app-input" required style="height: 70px; resize: vertical;"></textarea>
-          </div>
-        </div>
-
-        <!-- Dynamic Items Table -->
-        <label class="field-label" style="margin-top: 20px;">Line Items</label>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
-          <thead>
-            <tr style="border-bottom: 1px solid var(--border-color);">
-              <th style="padding: 8px 4px;">Item Description</th>
-              <th style="padding: 8px 4px; width: 70px; text-align: center;">Qty</th>
-              <th style="padding: 8px 4px; width: 110px; text-align: right;">Unit Price ($)</th>
-              <th style="padding: 8px 4px; width: 100px; text-align: right;">Total ($)</th>
-              <th style="padding: 8px 4px; width: 40px; text-align: center;"></th>
-            </tr>
-          </thead>
-          <tbody id="inv-items-body"></tbody>
-        </table>
-        <button type="button" class="secondary-btn" style="padding: 6px 12px; font-size: 12px; margin-bottom: 16px;" onclick="addInvoiceItemRow('', 1, 0)">+ Add Item</button>
-
-        <!-- Totals Panel -->
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-          <div style="width: 260px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-              <span style="color: var(--text-secondary);">Subtotal:</span>
-              <strong id="inv-subtotal">$0.00</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13px;">
-              <span style="color: var(--text-secondary);">Tax Rate (%):</span>
-              <input type="number" id="inv-tax-rate" class="app-input" min="0" max="100" value="5" style="width: 70px; height: 28px; padding: 0 8px; text-align: right;" oninput="recalculateInvoiceTotals()" />
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13px;">
-              <span style="color: var(--text-secondary);">Discount (%):</span>
-              <input type="number" id="inv-discount" class="app-input" min="0" max="100" value="0" style="width: 70px; height: 28px; padding: 0 8px; text-align: right;" oninput="recalculateInvoiceTotals()" />
-            </div>
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 8px 0;" />
-            <div style="display: flex; justify-content: space-between; font-size: 14px;">
-              <strong>Total Amount:</strong>
-              <strong id="inv-total-amount" style="color: var(--accent-purple); font-size: 16px;">$0.00</strong>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-          <label class="field-label">Payment Instructions / Notes</label>
-          <textarea id="inv-notes" class="app-input" style="height: 50px; resize: vertical;" placeholder="Payment terms, bank coordinates, REACH statements..."></textarea>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 12px;">
-          <button type="button" class="secondary-btn" onclick="closeInvoiceModal()">Cancel</button>
-          <button type="submit" class="primary-btn">Generate &amp; Submit Invoice</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- 2. Invoice File Uploader Modal -->
-<div id="upload-invoice-modal" class="modal-overlay" onclick="handleOverlayClick(event, 'upload-invoice-modal')">
-  <div class="modal-card" style="max-width: 480px; width: 95%;">
-    <div class="modal-header">
-      <h3 class="modal-title">Upload Completed Invoice File</h3>
-      <button class="modal-close" onclick="closeUploadInvoiceModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="upload-invoice-form" onsubmit="submitUploadedInvoice(event)">
-        <input type="hidden" id="upload-order-id" />
-        
-        <div style="margin-bottom: 16px;">
-          <label class="field-label">Invoice Number *</label>
-          <input type="text" id="upload-inv-num" class="app-input" required placeholder="e.g. INV-2026-908" />
-        </div>
-
-        <div style="margin-bottom: 16px;">
-          <label class="field-label">Invoice Document File *</label>
-          <input type="file" id="upload-inv-file" class="app-input" required accept=".pdf,image/*,.doc,.docx" />
-          <span style="font-size:11px; color:var(--text-secondary); margin-top:4px; display:block;">Supported formats: PDF, PNG, JPG, DOCX (Max 10MB)</span>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-          <label class="field-label">Total Invoiced Amount ($) *</label>
-          <input type="number" id="upload-inv-amount" class="app-input" required min="0.01" step="0.01" placeholder="e.g. 1540.00" />
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 12px;">
-          <button type="button" class="secondary-btn" onclick="closeUploadInvoiceModal()">Cancel</button>
-          <button type="submit" class="primary-btn">Submit Invoice File</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- 3. Print / PDF Preview Modal -->
+<!-- 1. Print / PDF Preview Modal -->
 <div id="print-preview-modal" class="modal-overlay" onclick="handleOverlayClick(event, 'print-preview-modal')">
-  <div class="modal-card" style="max-width: 850px; width: 95%; max-height: 85vh;">
+  <div class="modal-card" style="max-width: 800px; width: 95%; max-height: 85vh;">
     <div class="modal-header">
-      <h3 class="modal-title">Quotation PDF Preview</h3>
+      <h3 class="modal-title">Bid Quotation Summary</h3>
       <button class="modal-close" onclick="closePrintPreview()">&times;</button>
     </div>
     <div class="modal-body" style="background: #e2e8f0; padding: 24px;">
-      <div id="print-preview-sheet" style="background: #FFF; padding: 40px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); min-height: 600px; box-sizing: border-box;">
+      <div id="print-preview-sheet" style="background: #FFF; padding: 40px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); min-height: 500px; box-sizing: border-box; color: #1A1A1A;">
         <!-- Dynamic bid details sheet -->
       </div>
     </div>
     <div style="padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 12px;">
       <button class="secondary-btn" onclick="closePrintPreview()">Cancel</button>
-      <button class="primary-btn" onclick="triggerActualPrint()">Print / Save PDF</button>
+      <button class="primary-btn" onclick="window.print()">Print / Save PDF</button>
     </div>
   </div>
 </div>
 
-<!-- 4. Success Overlay Modal -->
+<!-- 2. Create Invoice Modal -->
+<div id="create-invoice-modal" class="modal-overlay" onclick="handleOverlayClick(event, 'create-invoice-modal')">
+  <div class="modal-card" style="max-width: 480px; width: 95%;">
+    <div class="modal-header">
+      <h3 class="modal-title">Create Sourcing Invoice</h3>
+      <button class="modal-close" onclick="closeCreateInvoiceModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="create-invoice-form" onsubmit="submitCreatedInvoice(event)">
+        <input type="hidden" id="cr-order-id" />
+        
+        <div style="margin-bottom: 16px;">
+          <label class="field-label">Invoice Number</label>
+          <input type="text" id="cr-inv-num" class="app-input" disabled style="background: rgba(0,0,0,0.03);" />
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label class="field-label">Invoice Amount ($) *</label>
+          <input type="number" id="cr-inv-amount" class="app-input" required min="0.01" step="0.01" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label class="field-label">Due Date *</label>
+          <input type="date" id="cr-inv-due-date" class="app-input" required />
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="secondary-btn" onclick="closeCreateInvoiceModal()">Cancel</button>
+          <button type="submit" class="primary-btn">Submit Invoice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Success Overlay Modal -->
 <div id="success-overlay" class="success-overlay">
   <div class="success-card">
     <div class="success-icon-wrapper">
@@ -661,7 +590,7 @@
   </div>
 </div>
 
-<!-- 5. Toast alerts container -->
+<!-- 4. Toast alerts container -->
 <div id="toast-notification" class="toast-notif">Action completed successfully</div>
 
 <!-- JS LIBS & STORES -->
@@ -679,15 +608,94 @@
     currentUser: null
   };
 
-  let currentView = "invited-rfqs";
+  let currentView = "vendor-dashboard";
   let selectedRfqId = null;
-  let printResponseId = null;
 
-  // Initialize and Sync State
+  // Filter states
+  let invitedFilters = { search: "", status: "all" };
+  let bidsFilters = { status: "all" };
+
+  // Speech to Text Helper
+  const SpeechToText = {
+    attach(inputElement) {
+      if (!inputElement) return;
+      const parent = inputElement.parentNode;
+      if (parent.querySelector('.stt-mic-btn')) return;
+      
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "stt-mic-btn";
+      btn.title = "Use voice input";
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.42 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+        </svg>
+      `;
+      parent.appendChild(btn);
+
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        btn.style.display = "none";
+        return;
+      }
+
+      const rec = new SpeechRec();
+      rec.continuous = false;
+      rec.interimResults = false;
+      rec.lang = 'en-US';
+
+      rec.onstart = () => {
+        btn.classList.add("stt-listening");
+        showToast("Voice input listening...", "success");
+      };
+
+      rec.onresult = (e) => {
+        const text = e.results[0][0].transcript;
+        if (text) {
+          // Parse number if the input field expects it
+          if (inputElement.type === "number") {
+            const numVal = parseFloat(text.replace(/[^0-9.]/g, ''));
+            if (!isNaN(numVal)) {
+              inputElement.value = numVal;
+            } else {
+              showToast("Could not recognize a numeric value.", "error");
+            }
+          } else {
+            inputElement.value = text;
+          }
+          // Trigger change events
+          inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+          inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      };
+
+      rec.onend = () => {
+        btn.classList.remove("stt-listening");
+      };
+
+      rec.onerror = () => {
+        btn.classList.remove("stt-listening");
+        showToast("Voice recognition failed.", "error");
+      };
+
+      btn.onclick = () => {
+        if (btn.classList.contains("stt-listening")) {
+          rec.stop();
+        } else {
+          rec.start();
+        }
+      };
+    }
+  };
+
+  // State Management Sync wrapper
   function loadState() {
     if (window.appState) {
       state = window.appState;
     }
+    // Ensure nested properties exist
+    if (!state.applications) state.applications = [];
+    if (!state.invoices) state.invoices = [];
   }
 
   function saveState() {
@@ -698,7 +706,7 @@
     }
   }
 
-  // Toast Alerts Helper
+  // Toast notification alerts
   function showToast(message, type = "success") {
     const toast = document.getElementById("toast-notification");
     if (!toast) return;
@@ -717,7 +725,6 @@
     document.getElementById("success-overlay").classList.add("active");
   }
 
-  // This handles the transition back to the dashboard / bids list
   function closeSuccessOverlay() {
     document.getElementById("success-overlay").classList.remove("active");
     navigateTo("my-bids");
@@ -730,7 +737,7 @@
     }
   }
 
-  // HTML sanitization to prevent XSS
+  // HTML sanitization helper
   function escapeHTML(str) {
     if (!str) return '';
     return String(str)
@@ -741,7 +748,7 @@
       .replace(/'/g, '&#39;');
   }
 
-  // Navigation & Render Routing
+  // Route router controller
   function navigateTo(view, rfqId = null) {
     currentView = view;
     selectedRfqId = rfqId;
@@ -750,7 +757,7 @@
   }
 
   function handleHashRoute() {
-    const hash = window.location.hash || '#invited-rfqs';
+    const hash = window.location.hash || '#vendor-dashboard';
     const parts = hash.substring(1).split('?');
     currentView = parts[0];
     selectedRfqId = null;
@@ -772,7 +779,8 @@
     const workspace = document.getElementById("workspace-view");
     workspace.innerHTML = "";
 
-    if (!vendorRecord) {
+    // Global vendor record validation check
+    if (!vendorRecord && currentView !== "vendor-profile") {
       renderOnboardingNotice(workspace);
       return;
     }
@@ -800,7 +808,7 @@
         renderVendorProfile(workspace, user, vendorRecord);
         break;
       default:
-        renderInvitedRfqs(workspace, user, vendorRecord);
+        renderDashboard(workspace, user, vendorRecord);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -830,7 +838,10 @@
     const actionsEl = document.getElementById("header-actions");
     actionsEl.innerHTML = "";
 
-    if (currentView === "invited-rfqs") {
+    if (currentView === "vendor-dashboard") {
+      titleEl.innerText = "Dashboard";
+      actionsEl.innerHTML = `<button class="primary-btn" onclick="navigateTo('invited-rfqs')">View Opportunities</button>`;
+    } else if (currentView === "invited-rfqs") {
       titleEl.innerText = "Invited RFQs";
     } else if (currentView === "submit-bid") {
       titleEl.innerText = "Compile Proposal";
@@ -857,331 +868,931 @@
     `;
   }
 
-  // VIEW 2: INVITED OPPORTUNITIES (Buyer-style Grid Cards)
-  function renderInvitedRfqs(container, user, vendorRecord) {
-    const invites = state.submittedResponses.filter(r => r.hasProcurement && (r.supplierIds || []).includes(vendorRecord.id));
-
-    if (invites.length === 0) {
+  // VIEW 1: VENDOR PORTAL DASHBOARD
+  function renderDashboard(container, user, vendorRecord) {
+    if (!vendorRecord) {
       container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state-icon">📥</div>
-          <div class="empty-state-title">No Active Invitations</div>
-          <div class="empty-state-desc">You don't have any active RFQ invitations at the moment.</div>
+        <div class="glass-card" style="padding:40px; text-align:center;">
+          <h3 style="margin-bottom:12px; font-weight:800; font-family:'Outfit';">Account Unlinked</h3>
+          <p style="color:var(--text-secondary); margin-bottom:20px;">Your account isn't linked to a company profile yet. Contact your administrator.</p>
         </div>
       `;
       return;
     }
 
-    const grid = document.createElement("div");
-    grid.className = "company-grid";
+    // 1. Calculate stats counts
+    // Count of invited RFQs where status is PENDING SUPPLIER and vendor is in supplierIds and hasn't already submitted a bid
+    const invitedRfqs = state.submittedResponses.filter(r => 
+      r.hasProcurement && (r.supplierIds || []).includes(vendorRecord.id)
+    );
+    const pendingInvitesCount = invitedRfqs.filter(r => 
+      r.procurementStatus === "PENDING SUPPLIER" && 
+      !state.applications.some(a => a.rfqId === r.id && a.vendorId === vendorRecord.id)
+    ).length;
 
-    invites.forEach((r, index) => {
-      const template = state.templates.find(t => t.id === r.templateId);
-      const isAlreadyBid = (state.applications || []).some(a => a.rfqId === r.id && a.vendorId === vendorRecord.id);
+    // Count of pending applications
+    const pendingBidsCount = state.applications.filter(a => a.vendorId === vendorRecord.id && a.status === "PENDING").length;
 
-      let statusBadge = `<span class="status-badge badge-pending">Invited</span>`;
-      let footerAction = `
-        <span class="card-link-btn" onclick="navigateTo('submit-bid', '${r.id}')">
-          Submit Quote
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </span>
-      `;
+    // Count of active orders
+    const activeOrdersCount = state.applications.filter(a => a.vendorId === vendorRecord.id && a.status === "ACCEPTED").length;
 
-      if (isAlreadyBid) {
-        statusBadge = `<span class="status-badge badge-accepted">Bid Submitted</span>`;
-        footerAction = `<span class="card-meta">Proposal Complete</span>`;
-      } else if (r.procurementStatus !== "PENDING SUPPLIER") {
-        statusBadge = `<span class="status-badge badge-rejected">Closed</span>`;
-        footerAction = `<span class="card-meta">Closed Opportunity</span>`;
+    // Count of unpaid invoices
+    const unpaidInvoicesCount = state.invoices.filter(i => i.vendorId === vendorRecord.id && i.status !== "PAID").length;
+
+    // 2. Aggregate Recent Activity Feed (vendor scope only, max 8 items)
+    const rawActivities = [];
+    
+    // Bids submitted & Orders status details
+    state.applications.filter(a => a.vendorId === vendorRecord.id).forEach(app => {
+      rawActivities.push({
+        text: `Bid submitted for <strong>${escapeHTML(app.rfqTitle)}</strong> — <strong>$${Number(app.price).toLocaleString()}</strong>`,
+        date: new Date(app.date)
+      });
+      if (app.status === "ACCEPTED") {
+        const deliveryStatus = app.deliveryStatus || "Processing";
+        rawActivities.push({
+          text: `Order status updated to <strong>${escapeHTML(deliveryStatus)}</strong> for <strong>${escapeHTML(app.rfqTitle)}</strong>`,
+          date: new Date(app.date) // Approximated status date
+        });
       }
-
-      const card = document.createElement("div");
-      card.className = `app-card color-${(index + 1) % 4}`;
-      card.style.cursor = isAlreadyBid ? "default" : "pointer";
-      if (!isAlreadyBid && r.procurementStatus === "PENDING SUPPLIER") {
-        card.onclick = () => navigateTo('submit-bid', r.id);
-      }
-
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-          <h3 class="card-title">${escapeHTML(template ? template.name : r.templateName)}</h3>
-          ${statusBadge}
-        </div>
-        <div style="margin-top: 10px; display:flex; flex-direction:column; gap:4px;">
-          <span class="card-meta">Category: <strong>${escapeHTML(template ? template.category : "—")}</strong></span>
-          <span class="card-meta">Ref ID: <strong>${escapeHTML(r.responseID)}</strong></span>
-          <span class="card-meta">Deadline: <strong>${escapeHTML(r.deadline || "—")}</strong></span>
-        </div>
-        <div class="card-footer" style="margin-top: 16px;">
-          <span class="card-meta">Sourcing Match</span>
-          ${footerAction}
-        </div>
-      `;
-      grid.appendChild(card);
     });
 
-    container.appendChild(grid);
-  }
+    // Invoices details
+    state.invoices.filter(i => i.vendorId === vendorRecord.id).forEach(inv => {
+      rawActivities.push({
+        text: `Invoice <strong>#${escapeHTML(inv.id)}</strong> submitted for <strong>$${Number(inv.amount).toLocaleString()}</strong>`,
+        date: new Date(inv.submittedAt)
+      });
+    });
 
-  // VIEW 3: SUBMIT BID FORM
-  function renderSubmitBid(workspace, user, vendorRecord, rfqId) {
-    const rfq = state.submittedResponses.find(r => r.id === rfqId);
-    if (!rfq) {
-      workspace.innerHTML = `<div class="glass-card"><p style="color:var(--accent-red);">Selected RFQ opportunity could not be found.</p></div>`;
-      return;
-    }
+    // Sort by date desc
+    rawActivities.sort((a, b) => b.date - a.date);
+    const topActivities = rawActivities.slice(0, 8);
 
-    const template = state.templates.find(t => t.id === rfq.templateId) || { fields: rfq.fields };
-
-    // Render Dynamic Fields
-    const fieldsHTML = template.fields.map(field => {
-      if (field.id === "field-supplier") {
-        return `
-          <div style="margin-bottom:18px;">
-            <label class="field-label">${escapeHTML(field.label)}</label>
-            <input type="text" class="app-input" disabled value="${escapeHTML(vendorRecord.name)}" style="background: rgba(0,0,0,0.03);" />
-          </div>
-        `;
-      }
-
-      let inputElement = "";
-      if (field.type === 'long-text') {
-        inputElement = `<textarea id="form-field-${field.id}" class="app-input" ${field.required ? 'required' : ''} style="height:100px; resize:vertical;"></textarea>`;
-      } else if (field.type === 'dropdown') {
-        const optionsHTML = (field.options || []).map(opt => `<option value="${escapeHTML(opt)}">${escapeHTML(opt)}</option>`).join("");
-        inputElement = `<select id="form-field-${field.id}" class="app-input" ${field.required ? 'required' : ''}>${optionsHTML}</select>`;
-      } else if (field.type === 'checkbox') {
-        inputElement = `<input type="checkbox" id="form-field-${field.id}" style="width:20px; height:20px; accent-color:var(--accent-purple);" />`;
-      } else if (field.type === 'date') {
-        inputElement = `<input type="date" id="form-field-${field.id}" class="app-input" ${field.required ? 'required' : ''} />`;
-      } else if (field.type === 'number') {
-        inputElement = `
-          <div style="display:flex; align-items:center;">
-            <input type="number" id="form-field-${field.id}" class="app-input" ${field.required ? 'required' : ''} style="flex:1;" />
-            <button type="button" class="stt-mic-btn" onclick="startVoiceDictation('form-field-${field.id}')" title="Use Voice Input">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.42 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-            </button>
-          </div>
-        `;
-      } else {
-        inputElement = `<input type="text" id="form-field-${field.id}" class="app-input" ${field.required ? 'required' : ''} />`;
-      }
-
+    let activityListHTML = topActivities.map(act => {
+      const relTime = getRelativeTime(act.date);
       return `
-        <div style="margin-bottom:18px;">
-          <label class="field-label">${escapeHTML(field.label)} ${field.required ? '<span style="color:var(--accent-red);">*</span>' : ''}</label>
-          ${inputElement}
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+          <span style="font-size:13.5px; color:var(--text-primary);">${act.text}</span>
+          <span style="font-size:11px; font-weight:600; color:var(--text-secondary);">${relTime}</span>
         </div>
       `;
     }).join("");
 
-    workspace.innerHTML = `
-      <div class="glass-card" style="max-width: 750px; margin: 0 auto;">
-        <h2 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-          Bidding on RFQ: ${escapeHTML(rfq.templateName || "Opportunity")}
-        </h2>
-        
-        <form id="submit-bid-form" onsubmit="processBidSubmission(event, '${rfq.id}')">
-          <!-- Mandatory Sourcing Fields -->
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:18px;">
-            <div>
-              <label class="field-label">My Bid Price ($) *</label>
-              <div style="display:flex; align-items:center;">
-                <input type="number" id="bid-price-input" class="app-input" min="0.01" step="0.01" required style="flex:1;" />
-                <button type="button" class="stt-mic-btn" onclick="startVoiceDictation('bid-price-input')" title="Use Voice Input">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.42 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-                </button>
-              </div>
-            </div>
-            <div>
-              <label class="field-label">Delivery Lead Time (Days) *</label>
-              <div style="display:flex; align-items:center;">
-                <input type="number" id="bid-lead-time" class="app-input" min="1" required style="flex:1;" />
-                <button type="button" class="stt-mic-btn" onclick="startVoiceDictation('bid-lead-time')" title="Use Voice Input">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.42 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
+    if (topActivities.length === 0) {
+      activityListHTML = `
+        <div class="empty-state" style="padding:20px 0;">
+          <div class="empty-state-title">No activity yet</div>
+          <div class="empty-state-desc">Check Invited RFQs to get started.</div>
+          <button class="primary-btn" onclick="navigateTo('invited-rfqs')" style="padding:6px 12px; font-size:12px;">Go to Invitations</button>
+        </div>
+      `;
+    }
 
-          <!-- Dynamic Template Fields -->
-          ${fieldsHTML}
+    container.innerHTML = `
+      <div class="glass-card" style="margin-bottom: 28px;">
+        <h2 style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px;">Welcome, ${escapeHTML(vendorRecord.contactPerson || user.email)}!</h2>
+        <p style="color:var(--text-secondary); font-size:13.5px; margin:0;">Company Context: <strong>${escapeHTML(vendorRecord.name)}</strong></p>
+      </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; border-top:1px solid var(--border-color); padding-top:16px;">
-            <button type="button" class="secondary-btn" onclick="navigateTo('invited-rfqs')">Cancel</button>
-            <button type="submit" class="primary-btn">Submit Formal Proposal</button>
-          </div>
-        </form>
+      <!-- 4 Stat Cards Row -->
+      <div class="dashboard-grid">
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-yellow); margin-bottom: 0;" onclick="navigateTo('invited-rfqs')">
+          <div class="stat-title">Invited RFQs</div>
+          <div class="stat-value">${pendingInvitesCount}</div>
+        </div>
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-purple); margin-bottom: 0;" onclick="navigateTo('my-bids')">
+          <div class="stat-title">Pending Bids</div>
+          <div class="stat-value">${pendingBidsCount}</div>
+        </div>
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-green); margin-bottom: 0;" onclick="navigateTo('my-orders')">
+          <div class="stat-title">Active Orders</div>
+          <div class="stat-value">${activeOrdersCount}</div>
+        </div>
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-red); margin-bottom: 0;" onclick="navigateTo('my-invoices')">
+          <div class="stat-title">Unpaid Invoices</div>
+          <div class="stat-value">${unpaidInvoicesCount}</div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Feed -->
+      <div class="glass-card" style="margin-top:24px;">
+        <h3 style="font-family:'Outfit'; font-size:16px; font-weight:800; margin-bottom:16px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">Recent Activity</h3>
+        <div style="display:flex; flex-direction:column;">
+          ${activityListHTML}
+        </div>
       </div>
     `;
   }
 
-  // VIEW 4: MY BIDS LIST (Buyer-style Grid Cards)
+  function getRelativeTime(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    if (seconds < 5) return 'just now';
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  }
+
+  // VIEW 2: INVITED OPPORTUNITIES (RFQS)
+  function renderInvitedRfqs(container, user, vendorRecord) {
+    const invited = state.submittedResponses.filter(r =>
+      r.hasProcurement && (r.supplierIds || []).includes(vendorRecord.id)
+    );
+
+    if (invited.length === 0) {
+      container.innerHTML = `
+        <div class="glass-card empty-state">
+          <div class="empty-state-icon">📧</div>
+          <div class="empty-state-title">No Invitations</div>
+          <div class="empty-state-desc">You haven't been invited to any RFQs yet.</div>
+        </div>
+      `;
+      return;
+    }
+
+    const wrap = document.createElement("div");
+    wrap.className = "step-transition-in";
+    wrap.innerHTML = `
+      <div class="glass-card">
+        <!-- Search and Stage Filters -->
+        <div style="display:flex; gap:12px; margin-bottom:20px;">
+          <input type="text" id="rfq-search-input" class="app-input" style="flex:1.5;" placeholder="Search RFQ name or ID..." oninput="filterInvitedList()" />
+          <select id="rfq-stage-select" class="app-input" style="flex:1;" onchange="filterInvitedList()">
+            <option value="all">All Stages</option>
+            <option value="PENDING SUPPLIER">Pending Supplier</option>
+            <option value="EVALUATING">Evaluating Bids</option>
+            <option value="COMPLETED">Completed</option>
+          </select>
+        </div>
+
+        <div style="width:100%; overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <th>RFQ ID</th>
+                <th>RFQ/Template Name</th>
+                <th>Category</th>
+                <th>Stage</th>
+                <th>Deadline</th>
+                <th style="text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="invited-rfq-list-body"></tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    container.appendChild(wrap);
+
+    // Initial render of the rows
+    filterInvitedList();
+  }
+
+  function filterInvitedList() {
+    const user = getCurrentUser();
+    const vendorRecord = getVendorSupplierRecord(user);
+    if (!vendorRecord) return;
+
+    const query = (document.getElementById("rfq-search-input")?.value || "").toLowerCase();
+    const stageVal = document.getElementById("rfq-stage-select")?.value || "all";
+    const tbody = document.getElementById("invited-rfq-list-body");
+    if (!tbody) return;
+
+    const invited = state.submittedResponses.filter(r =>
+      r.hasProcurement && (r.supplierIds || []).includes(vendorRecord.id)
+    );
+
+    const filtered = invited.filter(r => {
+      const template = state.templates.find(t => t.id === r.templateId);
+      const name = (template ? template.name : r.templateName || "").toLowerCase();
+      const id = (r.responseID || "").toLowerCase();
+
+      if (query && !name.includes(query) && !id.includes(query)) return false;
+      if (stageVal !== "all" && r.procurementStatus !== stageVal) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-secondary); padding:20px;">No matching RFQ invitations found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = "";
+    filtered.forEach(r => {
+      const template = state.templates.find(t => t.id === r.templateId);
+      const category = template ? (template.category || "—") : "—";
+      const deadline = r.deadline || "—";
+
+      let statusStyle = "background:rgba(245, 158, 11, 0.08); color:var(--accent-yellow);";
+      let statusText = "Pending Supplier";
+      if (r.procurementStatus === "EVALUATING") {
+        statusStyle = "background:rgba(118, 0, 230, 0.08); color:#9066ff;";
+        statusText = "Evaluating Bids";
+      } else if (r.procurementStatus === "COMPLETED") {
+        statusStyle = "background:rgba(0, 201, 139, 0.08); color:#00A370;";
+        statusText = "Completed";
+      }
+
+      // Check if bid exists
+      const hasBid = state.applications.some(a => a.rfqId === r.id && a.vendorId === vendorRecord.id);
+      let actionBtnHTML = "";
+
+      if (hasBid) {
+        actionBtnHTML = `<button class="secondary-btn" style="padding:6px 12px; font-size:12.5px;" onclick="navigateTo('my-bids')">View Bid</button>`;
+      } else if (r.procurementStatus === "PENDING SUPPLIER") {
+        actionBtnHTML = `<button class="primary-btn" style="padding:6px 12px; font-size:12.5px;" onclick="navigateTo('submit-bid', '${r.id}')">Submit Quote</button>`;
+      } else {
+        actionBtnHTML = `<button class="secondary-btn" disabled style="padding:6px 12px; font-size:12.5px;">Bidding Closed</button>`;
+      }
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${escapeHTML(r.responseID)}</strong></td>
+        <td>${escapeHTML(template ? template.name : r.templateName)}</td>
+        <td>${escapeHTML(category)}</td>
+        <td><span class="status-badge" style="${statusStyle}">${statusText}</span></td>
+        <td>${escapeHTML(deadline)}</td>
+        <td style="text-align:right;">${actionBtnHTML}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // VIEW 3: COMPILE BID SUBMISSION
+  function renderSubmitBid(workspace, user, vendorRecord, rfqId) {
+    const rfq = state.submittedResponses.find(r => r.id === rfqId);
+    if (!rfq) {
+      workspace.innerHTML = `<div class="glass-card"><p style="color:var(--accent-red); text-align:center;">Selected RFQ opportunity could not be found.</p></div>`;
+      return;
+    }
+
+    const template = state.templates.find(t => t.id === rfq.templateId) || { id: rfq.templateId, name: rfq.templateName, fields: rfq.fields || [] };
+
+    // Guard: already submitted
+    const existingBid = state.applications.find(a => a.rfqId === rfqId && a.vendorId === vendorRecord.id);
+    if (existingBid) {
+      setTimeout(() => {
+        showToast("You've already submitted a quote for this RFQ.", "error");
+        navigateTo("my-bids");
+      }, 50);
+      return;
+    }
+
+    const formCard = document.createElement("div");
+    formCard.className = "glass-card";
+    formCard.style.maxWidth = "750px";
+    formCard.style.margin = "0 auto";
+
+    let fieldsHTML = "";
+    if (template.fields && template.fields.length > 0) {
+      fieldsHTML = template.fields.map(field => {
+        if (field.id === "field-supplier") {
+          return `
+            <div style="margin-bottom:18px;">
+              <label class="field-label">${escapeHTML(field.label)}</label>
+              <input type="text" class="app-input" disabled value="${escapeHTML(vendorRecord.name)}" style="background: rgba(0,0,0,0.03);" data-field-id="${field.id}" />
+            </div>
+          `;
+        }
+
+        let inputHTML = "";
+        if (field.type === "short-text") {
+          inputHTML = `<input type="text" class="app-input" data-field-id="${field.id}" placeholder="Enter response..." />`;
+        } else if (field.type === "long-text") {
+          inputHTML = `<textarea class="app-input" data-field-id="${field.id}" style="min-height: 80px; padding:12px; resize: vertical;" placeholder="Provide comments..."></textarea>`;
+        } else if (field.type === "number") {
+          inputHTML = `
+            <div style="display:flex; align-items:center;">
+              <input type="number" class="app-input" data-field-id="${field.id}" placeholder="0.00" style="flex:1;" />
+            </div>
+          `;
+        } else if (field.type === "date") {
+          inputHTML = `<input type="date" class="app-input" data-field-id="${field.id}" />`;
+        } else if (field.type === "checkbox") {
+          inputHTML = `
+            <div style="display:flex; align-items:center; gap:8px;">
+              <input type="checkbox" id="field-${field.id}" data-field-id="${field.id}" style="width:18px; height:18px;" />
+              <label for="field-${field.id}" style="font-size:14px; cursor:pointer;">Confirm checkbox terms</label>
+            </div>
+          `;
+        } else if (field.type === "dropdown" || field.type === "select") {
+          const optsHTML = (field.options || []).map(o => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
+          inputHTML = `
+            <select class="app-input" data-field-id="${field.id}">
+              <option value="">-- Choose option --</option>
+              ${optsHTML}
+            </select>
+          `;
+        } else if (field.type === "file") {
+          inputHTML = `
+            <div class="file-uploader" onclick="document.getElementById('file-${field.id}').click()" style="border: 1px dashed var(--border-color); padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+              <span id="label-file-${field.id}" style="font-size:13px; color:var(--text-secondary);">Click to attach document</span>
+              <input type="file" id="file-${field.id}" style="display:none;" data-field-id="${field.id}" onchange="document.getElementById('label-file-${field.id}').innerText = 'Selected: ' + this.files[0].name" />
+            </div>
+          `;
+        }
+
+        return `
+          <div style="margin-bottom:18px;" class="field-container">
+            <label class="field-label">${escapeHTML(field.label)} ${field.required ? '<span style="color:var(--accent-red);">*</span>' : ''}</label>
+            ${inputHTML}
+            <div class="field-validation-error" id="field-error-${field.id}" style="display:none; color:var(--accent-red); font-size: 11.5px; font-weight:600; margin-top:2px;"></div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    formCard.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+        <h2 style="font-family:'Outfit'; font-size:18px; font-weight:800; margin:0;">Bidding: ${escapeHTML(template.name)}</h2>
+        <a onclick="navigateTo('invited-rfqs')" style="font-size:13px; font-weight:600; color:var(--accent-purple); cursor:pointer;">&larr; Back to Invited RFQs</a>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.01); border:1px solid var(--border-color); border-radius:8px; padding:16px; margin-bottom:24px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div>
+            <span class="field-label">Company Name</span>
+            <strong style="font-size:14px;">${escapeHTML(vendorRecord.name)}</strong>
+          </div>
+          <div>
+            <span class="field-label">Contact Person</span>
+            <strong style="font-size:14px;">${escapeHTML(vendorRecord.contactPerson)}</strong>
+          </div>
+        </div>
+      </div>
+
+      <form id="bid-submit-form" onsubmit="handleBidSubmission(event, '${rfq.id}')">
+        <!-- 2 Standard Fields -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+          <div>
+            <label class="field-label">Quote Price ($) <span style="color:var(--accent-red);">*</span></label>
+            <div style="display:flex; align-items:center;">
+              <span style="font-weight:700; margin-right:8px; font-size:16px; color:var(--text-secondary);">$</span>
+              <input type="number" id="bid-price-value" class="app-input" placeholder="0.00" min="0.01" step="0.01" required style="flex:1;" />
+            </div>
+            <div class="field-validation-error" id="field-error-price" style="display:none; color:var(--accent-red); font-size:11.5px; font-weight:600; margin-top:2px;"></div>
+          </div>
+          <div>
+            <label class="field-label">Estimated Delivery Lead Time (Days) <span style="color:var(--accent-red);">*</span></label>
+            <input type="number" id="bid-lead-time" class="app-input" placeholder="e.g. 10" min="0" required />
+            <div class="field-validation-error" id="field-error-lead" style="display:none; color:var(--accent-red); font-size:11.5px; font-weight:600; margin-top:2px;"></div>
+          </div>
+        </div>
+
+        <!-- Dynamic Template Fields -->
+        <div style="margin-bottom:24px;">
+          ${fieldsHTML}
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; border-top:1px solid var(--border-color); padding-top:16px;">
+          <button type="button" class="secondary-btn" onclick="navigateTo('invited-rfqs')">Cancel</button>
+          <button type="submit" class="primary-btn">Submit Quote</button>
+        </div>
+      </form>
+    `;
+
+    workspace.appendChild(formCard);
+
+    // Attach speech dictation and speech recognition where applicable
+    const inputs = formCard.querySelectorAll('input[type="number"]');
+    inputs.forEach(inp => SpeechToText.attach(inp));
+    const textareas = formCard.querySelectorAll('textarea');
+    textareas.forEach(ta => SpeechToText.attach(ta));
+    const textInputs = formCard.querySelectorAll('input[type="text"]:not([disabled])');
+    textInputs.forEach(ti => SpeechToText.attach(ti));
+  }
+
+  function handleBidSubmission(event, rfqId) {
+    event.preventDefault();
+    const user = getCurrentUser();
+    const vendorRecord = getVendorSupplierRecord(user);
+    if (!vendorRecord) return;
+
+    const rfq = state.submittedResponses.find(r => r.id === rfqId);
+    if (!rfq) return;
+
+    const template = state.templates.find(t => t.id === rfq.templateId) || { id: rfq.templateId, name: rfq.templateName, fields: rfq.fields || [] };
+
+    // Reset validations
+    const errors = document.querySelectorAll(".field-validation-error");
+    errors.forEach(e => {
+      e.style.display = "none";
+      e.innerText = "";
+    });
+
+    let isValid = true;
+    let firstInvalidEl = null;
+
+    // Validate standard Quote Price
+    const priceInput = document.getElementById("bid-price-value");
+    const priceVal = parseFloat(priceInput.value);
+    if (isNaN(priceVal) || priceVal <= 0) {
+      const errEl = document.getElementById("field-error-price");
+      errEl.innerText = "Quote Price must be greater than $0.00.";
+      errEl.style.display = "block";
+      isValid = false;
+      if (!firstInvalidEl) firstInvalidEl = priceInput;
+    }
+
+    // Validate standard Lead Time
+    const leadInput = document.getElementById("bid-lead-time");
+    const leadVal = parseInt(leadInput.value);
+    if (isNaN(leadVal) || leadVal < 0) {
+      const errEl = document.getElementById("field-error-lead");
+      errEl.innerText = "Estimated Lead Time must be greater than or equal to 0 days.";
+      errEl.style.display = "block";
+      isValid = false;
+      if (!firstInvalidEl) firstInvalidEl = leadInput;
+    }
+
+    // Validate dynamic template fields
+    const bidDetails = {};
+    if (template.fields) {
+      for (const field of template.fields) {
+        if (field.id === "field-supplier") {
+          bidDetails[field.id] = vendorRecord.name;
+          continue;
+        }
+
+        const inputEl = document.querySelector(`[data-field-id="${field.id}"]`);
+        let val = "";
+        if (inputEl) {
+          if (field.type === "checkbox") {
+            val = inputEl.checked;
+          } else if (field.type === "file") {
+            val = inputEl.files.length > 0 ? inputEl.files[0].name : (inputEl.dataset.savedValue || "");
+          } else {
+            val = inputEl.value.trim();
+          }
+        }
+
+        if (field.required && (val === undefined || val === null || val === "" || val === false)) {
+          const errEl = document.getElementById(`field-error-${field.id}`);
+          if (errEl) {
+            errEl.innerText = `${field.label} is required.`;
+            errEl.style.display = "block";
+          }
+          isValid = false;
+          if (!firstInvalidEl) firstInvalidEl = inputEl;
+        }
+        bidDetails[field.id] = val;
+      }
+    }
+
+    if (!isValid) {
+      if (firstInvalidEl) {
+        firstInvalidEl.focus();
+        firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    // Construct application object
+    const newApplication = {
+      id: `app-${Date.now()}`,
+      rfqId: rfq.id,
+      rfqTitle: template.name || rfq.templateName,
+      vendorId: vendorRecord.id,
+      vendorName: vendorRecord.name,
+      priority: "normal",
+      status: "PENDING",
+      date: new Date().toISOString(),
+      price: priceVal,
+      leadTimeDays: leadVal,
+      deliveryStatus: "Processing",
+      details: bidDetails
+    };
+
+    if (!state.applications) state.applications = [];
+    state.applications.push(newApplication);
+    saveState();
+
+    // Show success modal overlay
+    showSuccessOverlay("Quotation Submitted!", `Your formal proposal for "${template.name}" was successfully validated and securely cataloged.`);
+  }
+
+  // VIEW 4: MY SUBMITTED BIDS
   function renderMyBids(container, user, vendorRecord) {
-    const bids = (state.applications || []).filter(b => b.vendorId === vendorRecord.id);
+    const bids = state.applications.filter(a => a.vendorId === vendorRecord.id);
 
     if (bids.length === 0) {
       container.innerHTML = `
-        <div class="empty-state">
+        <div class="glass-card empty-state">
           <div class="empty-state-icon">📋</div>
-          <div class="empty-state-title">No Bids Submitted</div>
-          <div class="empty-state-desc">You haven't submitted any RFQ bids yet.</div>
+          <div class="empty-state-title">No Submitted Bids</div>
+          <div class="empty-state-desc">You haven't submitted any quotes yet.</div>
+          <button class="primary-btn" onclick="navigateTo('invited-rfqs')">View RFQ Invitations</button>
         </div>
       `;
       return;
     }
 
-    const grid = document.createElement("div");
-    grid.className = "company-grid";
-
-    bids.forEach((b, index) => {
-      const formattedPrice = b.details && b.details.price ? `$${Number(b.details.price).toLocaleString()}` : "—";
-      let statusStyle = "badge-pending";
-      if (b.status === "ACCEPTED") statusStyle = "badge-accepted";
-      else if (b.status === "REJECTED") statusStyle = "badge-rejected";
-
-      const card = document.createElement("div");
-      card.className = `app-card color-${(index + 2) % 4}`;
-      card.style.cursor = "pointer";
-      card.onclick = () => openPrintPreview(b.id);
-
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-          <h3 class="card-title">${escapeHTML(b.rfqTitle)}</h3>
-          <span class="status-badge ${statusStyle}">${escapeHTML(b.status)}</span>
+    const wrap = document.createElement("div");
+    wrap.className = "step-transition-in";
+    wrap.innerHTML = `
+      <div class="glass-card">
+        <!-- Status filter bar -->
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-bottom:20px;">
+          <div style="width:200px;">
+            <select id="bid-status-select" class="app-input" onchange="filterBidsList()">
+              <option value="all">All Statuses</option>
+              <option value="PENDING">Pending</option>
+              <option value="ACCEPTED">Accepted</option>
+              <option value="REJECTED">Rejected</option>
+            </select>
+          </div>
         </div>
-        <div style="margin-top: 10px; display:flex; flex-direction:column; gap:4px;">
-          <span class="card-meta">Bid Reference: <strong>${escapeHTML(b.id)}</strong></span>
-          <span class="card-meta">Price Quote: <strong>${formattedPrice}</strong></span>
-          <span class="card-meta">Delivery Lead Time: <strong>${escapeHTML(b.details.deliveryLeadTime || '—')} Days</strong></span>
-          <span class="card-meta">Submitted: <strong>${new Date(b.date).toLocaleDateString()}</strong></span>
-        </div>
-        <div class="card-footer" style="margin-top: 16px;">
-          <span class="card-meta">Formal Bid</span>
-          <span class="card-link-btn" onclick="event.stopPropagation(); openPrintPreview('${b.id}')">
-            Print PDF
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          </span>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
 
-    container.appendChild(grid);
+        <div style="width:100%; overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <th>RFQ Title</th>
+                <th>Quote Price</th>
+                <th>Lead Time</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bids-list-body"></tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    container.appendChild(wrap);
+
+    filterBidsList();
   }
 
-  // VIEW 5: MY ORDERS (PO LIST - Buyer-style Grid Cards)
+  function filterBidsList() {
+    const user = getCurrentUser();
+    const vendorRecord = getVendorSupplierRecord(user);
+    if (!vendorRecord) return;
+
+    const statusVal = document.getElementById("bid-status-select")?.value || "all";
+    const tbody = document.getElementById("bids-list-body");
+    if (!tbody) return;
+
+    // Filter and sort by date descending
+    const bids = state.applications.filter(a => a.vendorId === vendorRecord.id);
+    const sorted = bids.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const filtered = sorted.filter(b => {
+      if (statusVal !== "all" && b.status !== statusVal) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-secondary); padding:20px;">No matching submitted bids found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = "";
+    filtered.forEach(b => {
+      const formattedPrice = `$${Number(b.price).toLocaleString()}`;
+      let statusStyle = "background:rgba(245, 158, 11, 0.08); color:var(--accent-yellow);";
+      if (b.status === "ACCEPTED") {
+        statusStyle = "background:rgba(0, 201, 139, 0.08); color:#00A370;";
+      } else if (b.status === "REJECTED") {
+        statusStyle = "background:rgba(255, 14, 86, 0.08); color:var(--accent-red);";
+      }
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${escapeHTML(b.rfqTitle)}</strong></td>
+        <td>${formattedPrice}</td>
+        <td>${b.leadTimeDays} Days</td>
+        <td><span class="status-badge" style="${statusStyle}">${escapeHTML(b.status)}</span></td>
+        <td>${new Date(b.date).toLocaleDateString()}</td>
+        <td style="text-align:right;">
+          <!-- Edit/Withdraw action: not implemented in this version -->
+          <button class="secondary-btn" style="padding:6px 12px; font-size:12px; display:inline-flex; align-items:center; gap:4px;" onclick="openPrintPreview('${b.id}')">
+            <span>🖨️</span> Print Bid
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Bid summary printable sheet overlay
+  function openPrintPreview(applicationId) {
+    const app = state.applications.find(a => a.id === applicationId);
+    if (!app) return;
+
+    const rfq = state.submittedResponses.find(r => r.id === app.rfqId);
+    const template = rfq ? (state.templates.find(t => t.id === rfq.templateId) || { fields: rfq.fields || [] }) : null;
+
+    let detailsHTML = "";
+    if (app.details) {
+      detailsHTML = Object.entries(app.details).map(([fieldId, val]) => {
+        // Resolve field label
+        let label = fieldId;
+        if (template && template.fields) {
+          const fObj = template.fields.find(f => f.id === fieldId);
+          if (fObj) label = fObj.label;
+        }
+        return `
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f1f5f9;">
+            <span style="color:#64748b; font-weight:600; font-size:13.5px;">${escapeHTML(label)}:</span>
+            <span style="font-weight:700; font-size:13.5px; color:#1e293b;">${escapeHTML(String(val))}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    const sheet = document.getElementById("print-preview-sheet");
+    sheet.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; border-bottom:2px solid #e2e8f0; padding-bottom:16px;">
+        <div>
+          <h2 style="font-family:'Outfit'; font-size:24px; font-weight:900; margin:0; color:#1e293b;">nexPro Quotation Proposal</h2>
+          <span style="font-size:12px; color:#64748b; font-weight:600;">System Reference ID: ${escapeHTML(app.id)}</span>
+        </div>
+        <div style="text-align:right;">
+          <h3 style="font-family:'Outfit'; font-size:18px; font-weight:800; margin:0; color:#7600E6;">Acme Supplier Inc</h3>
+          <span style="font-size:12px; color:#64748b; font-weight:600;">Date Submitted: ${new Date(app.date).toLocaleDateString()}</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:28px;">
+        <h4 style="font-family:'Outfit'; font-size:15px; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;">Opportunity Target</h4>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:8px;">
+          <span style="display:block; font-size:12px; color:#64748b; font-weight:700; text-transform:uppercase;">RFQ Name</span>
+          <strong style="font-size:16px; color:#0f172a;">${escapeHTML(app.rfqTitle)}</strong>
+        </div>
+      </div>
+
+      <div style="margin-bottom:28px;">
+        <h4 style="font-family:'Outfit'; font-size:15px; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;">Financial &amp; Delivery Terms</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:8px;">
+            <span style="display:block; font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase;">Proposed Quote Price</span>
+            <strong style="font-size:20px; color:#7600E6;">$${Number(app.price).toLocaleString()} USD</strong>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:8px;">
+            <span style="display:block; font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase;">Delivery Lead Time</span>
+            <strong style="font-size:20px; color:#0f172a;">${app.leadTimeDays} Days</strong>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:28px;">
+        <h4 style="font-family:'Outfit'; font-size:15px; font-weight:800; color:#475569; margin:0 0 12px 0; text-transform:uppercase;">Dynamic Specifications Response</h4>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          ${detailsHTML || '<p style="color:#64748b; font-size:13.5px;">No dynamic specifications fields defined.</p>'}
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #e2e8f0; padding-top:16px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:#94a3b8; font-weight:600;">Protected Sourcing Record — nexPro Network</span>
+        <span style="font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase;">Status: ${escapeHTML(app.status)}</span>
+      </div>
+    `;
+
+    document.getElementById("print-preview-modal").classList.add("is-active");
+  }
+
+  function closePrintPreview() {
+    document.getElementById("print-preview-modal").classList.remove("is-active");
+  }
+
+  // VIEW 5: MY ORDERS (PO LIST)
   function renderMyOrders(container, user, vendorRecord) {
-    const orders = (state.applications || []).filter(b => b.vendorId === vendorRecord.id && b.status === "ACCEPTED");
+    const orders = state.applications.filter(a => a.vendorId === vendorRecord.id && a.status === "ACCEPTED");
 
     if (orders.length === 0) {
       container.innerHTML = `
-        <div class="empty-state">
+        <div class="glass-card empty-state">
           <div class="empty-state-icon">📦</div>
-          <div class="empty-state-title">No Awarded Orders</div>
-          <div class="empty-state-desc">You do not have any active awarded purchase orders.</div>
+          <div class="empty-state-title">No Active Orders</div>
+          <div class="empty-state-desc">No active orders yet. Orders appear here once a buyer accepts one of your bids.</div>
         </div>
       `;
       return;
     }
 
-    const grid = document.createElement("div");
-    grid.className = "company-grid";
+    const wrap = document.createElement("div");
+    wrap.className = "step-transition-in";
+    wrap.innerHTML = `
+      <div class="glass-card">
+        <div style="width:100%; overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <th>PO ID</th>
+                <th>RFQ Sourcing Title</th>
+                <th>Order Value</th>
+                <th>Delivery Status</th>
+                <th>Date Awarded</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-list-body"></tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    container.appendChild(wrap);
 
-    orders.forEach((b, index) => {
-      const orderId = `PO-${b.id.substring(4)}`;
-      const price = b.details && b.details.price ? b.details.price : 0;
-      const formattedPrice = `$${Number(price).toLocaleString()}`;
+    const tbody = document.getElementById("orders-list-body");
+    orders.forEach(app => {
+      const orderId = `PO-${app.id.substring(4)}`;
+      const priceFormatted = `$${Number(app.price).toLocaleString()}`;
+      const hasInvoice = state.invoices.some(i => i.orderId === app.id);
       
-      const hasInvoice = (state.invoices || []).some(i => i.orderId === b.id);
-      let invoiceActions = "";
+      let invoiceBtnHTML = "";
       if (hasInvoice) {
-        invoiceActions = `<span class="status-badge badge-accepted">Invoiced</span>`;
+        invoiceBtnHTML = `<button class="secondary-btn" style="padding:6px 12px; font-size:12px;" onclick="navigateTo('my-invoices')">View Invoice</button>`;
       } else {
-        invoiceActions = `
-          <div style="display:flex; gap:8px;">
-            <button class="primary-btn" style="padding:4px 10px; font-size:12px; background:var(--accent-green);" onclick="event.stopPropagation(); openInvoiceModal('${b.id}', ${price})">Create Invoice</button>
-            <button class="secondary-btn" style="padding:4px 10px; font-size:12px;" onclick="event.stopPropagation(); openUploadInvoiceModal('${b.id}', ${price})">Upload Invoice</button>
-          </div>
-        `;
+        invoiceBtnHTML = `<button class="primary-btn" style="padding:6px 12px; font-size:12px; background:var(--accent-green);" onclick="openCreateInvoiceModal('${app.id}', ${app.price})">Create Invoice</button>`;
       }
 
-      const card = document.createElement("div");
-      card.className = `app-card color-${(index + 3) % 4}`;
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-          <h3 class="card-title">${escapeHTML(b.rfqTitle)}</h3>
-          <span class="status-badge badge-approved">Active PO</span>
-        </div>
-        <div style="margin-top: 10px; display:flex; flex-direction:column; gap:4px;">
-          <span class="card-meta">PO Reference: <strong>${escapeHTML(orderId)}</strong></span>
-          <span class="card-meta">Award Value: <strong>${formattedPrice}</strong></span>
-          <span class="card-meta">Award Date: <strong>${new Date(b.date).toLocaleDateString()}</strong></span>
-          <span class="card-meta">Delivery Status: <strong>Pending SOW Completion</strong></span>
-        </div>
-        <div class="card-footer" style="margin-top: 16px; align-items: center; justify-content: space-between;">
-          <span class="card-meta">Purchase Order</span>
-          ${invoiceActions}
-        </div>
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${escapeHTML(orderId)}</strong></td>
+        <td>${escapeHTML(app.rfqTitle)}</td>
+        <td><strong>${priceFormatted}</strong></td>
+        <td>
+          <div style="display:inline-flex; align-items:center; gap:8px;">
+            <select class="app-input" style="height:32px; padding:0 8px; width:120px; font-size:13px;" onchange="updateDeliveryStatus('${app.id}', this.value, this)">
+              <option value="Processing" ${app.deliveryStatus === 'Processing' ? 'selected' : ''}>Processing</option>
+              <option value="Shipped" ${app.deliveryStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
+              <option value="Delivered" ${app.deliveryStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+            </select>
+            <span class="save-flash" style="color:var(--accent-green); font-size:11px; font-weight:700; opacity:0; transition:opacity 0.2s;">Saved</span>
+          </div>
+        </td>
+        <td>${new Date(app.date).toLocaleDateString()}</td>
+        <td style="text-align:right;">${invoiceBtnHTML}</td>
       `;
-      grid.appendChild(card);
+      tbody.appendChild(tr);
     });
-
-    container.appendChild(grid);
   }
 
-  // VIEW 6: MY INVOICES TRACKER (Buyer-style Grid Cards)
+  function updateDeliveryStatus(appId, newStatus, selectElement) {
+    const app = state.applications.find(a => a.id === appId);
+    if (app) {
+      app.deliveryStatus = newStatus;
+      saveState();
+
+      // Show inline brief "Saved" confirmation flash next to dropdown
+      const flash = selectElement.parentNode.querySelector(".save-flash");
+      if (flash) {
+        flash.style.opacity = "1";
+        setTimeout(() => {
+          flash.style.opacity = "0";
+        }, 1200);
+      }
+    }
+  }
+
+  // CREATE INVOICE FORM OVERLAY MODAL
+  function openCreateInvoiceModal(orderId, price) {
+    document.getElementById("cr-order-id").value = orderId;
+    document.getElementById("cr-inv-num").value = `INV-${orderId.substring(4)}-${Math.floor(1000 + Math.random() * 9000)}`;
+    document.getElementById("cr-inv-amount").value = price;
+    
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 30);
+    document.getElementById("cr-inv-due-date").value = dueDate.toISOString().substring(0, 10);
+
+    document.getElementById("create-invoice-modal").classList.add("is-active");
+  }
+
+  function closeCreateInvoiceModal() {
+    document.getElementById("create-invoice-modal").classList.remove("is-active");
+  }
+
+  function submitCreatedInvoice(event) {
+    event.preventDefault();
+    const orderId = document.getElementById("cr-order-id").value;
+    const invNum = document.getElementById("cr-inv-num").value;
+    const amountVal = parseFloat(document.getElementById("cr-inv-amount").value);
+    const dueDateVal = document.getElementById("cr-inv-due-date").value;
+
+    const user = getCurrentUser();
+    const vendorRecord = getVendorSupplierRecord(user);
+
+    if (isNaN(amountVal) || amountVal <= 0) {
+      showToast("Invoice amount must be greater than 0.", "error");
+      return;
+    }
+
+    const newInvoice = {
+      id: invNum,
+      orderId: orderId,
+      vendorId: vendorRecord.id,
+      amount: amountVal,
+      status: "SUBMITTED",
+      submittedAt: new Date().toISOString(),
+      dueDate: dueDateVal
+    };
+
+    if (!state.invoices) state.invoices = [];
+    state.invoices.push(newInvoice);
+    saveState();
+
+    closeCreateInvoiceModal();
+    showToast(`Invoice submitted successfully.`);
+    navigateTo("my-invoices");
+  }
+
+  // VIEW 6: INVOICES & PAYMENTS LIST
   function renderMyInvoices(container, user, vendorRecord) {
-    const invoices = (state.invoices || []).filter(i => i.vendorId === vendorRecord.id);
+    const invoices = state.invoices.filter(i => i.vendorId === vendorRecord.id);
 
     if (invoices.length === 0) {
       container.innerHTML = `
-        <div class="empty-state">
+        <div class="glass-card empty-state">
           <div class="empty-state-icon">🧾</div>
-          <div class="empty-state-title">No Invoices Found</div>
-          <div class="empty-state-desc">You haven't submitted or uploaded any invoices yet.</div>
+          <div class="empty-state-title">No Invoices</div>
+          <div class="empty-state-desc">No invoices submitted yet. Create one from an active order in My Orders.</div>
+          <button class="primary-btn" onclick="navigateTo('my-orders')">View Active Orders</button>
         </div>
       `;
       return;
     }
 
-    const grid = document.createElement("div");
-    grid.className = "company-grid";
-
-    invoices.forEach((i, index) => {
-      let statusStyle = "badge-pending";
-      if (i.status === "APPROVED") statusStyle = "badge-approved";
-      else if (i.status === "PAID") statusStyle = "badge-accepted";
-
-      const details = i.fileName ? `Uploaded file: ${escapeHTML(i.fileName)}` : `Custom items: ${i.customItems ? i.customItems.length : 0}`;
-
-      const card = document.createElement("div");
-      card.className = `app-card color-${(index + 1) % 4}`;
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-          <h3 class="card-title">Invoice: ${escapeHTML(i.id)}</h3>
-          <span class="status-badge ${statusStyle}">${escapeHTML(i.status)}</span>
+    const wrap = document.createElement("div");
+    wrap.className = "step-transition-in";
+    wrap.innerHTML = `
+      <div class="glass-card">
+        <div style="width:100%; overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <th>Invoice ID</th>
+                <th>Linked RFQ Opportunity</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Submitted Date</th>
+                <th style="text-align:right;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="invoices-list-body"></tbody>
+          </table>
         </div>
-        <div style="margin-top: 10px; display:flex; flex-direction:column; gap:4px;">
-          <span class="card-meta">Order PO Ref: <strong>PO-${escapeHTML(i.orderId.substring(4))}</strong></span>
-          <span class="card-meta">Total Invoiced: <strong>$${Number(i.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></span>
-          <span class="card-meta">Submitted At: <strong>${new Date(i.submittedAt).toLocaleDateString()}</strong></span>
-          <span class="card-meta">Due Date: <strong>${new Date(i.dueDate).toLocaleDateString()}</strong></span>
-        </div>
-        <div class="card-footer" style="margin-top: 16px;">
-          <span class="card-meta" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHTML(details)}">${escapeHTML(details)}</span>
-        </div>
+      </div>
+    `;
+    container.appendChild(wrap);
+
+    const tbody = document.getElementById("invoices-list-body");
+    
+    // Sort by submitted date descending
+    const sorted = invoices.slice().sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+    sorted.forEach(inv => {
+      // Look up linked RFQ name
+      const app = state.applications.find(a => a.id === inv.orderId);
+      const rfqTitle = app ? app.rfqTitle : "Sourcing Opportunity";
+
+      let statusStyle = "background:rgba(128,128,128,0.08); color:grey;";
+      if (inv.status === "APPROVED") {
+        statusStyle = "background:rgba(118, 0, 230, 0.08); color:var(--accent-purple);";
+      } else if (inv.status === "PAID") {
+        statusStyle = "background:rgba(0, 201, 139, 0.08); color:var(--accent-green);";
+      }
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${escapeHTML(inv.id)}</strong></td>
+        <td>${escapeHTML(rfqTitle)}</td>
+        <td><strong>$${Number(inv.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+        <td>${new Date(inv.dueDate).toLocaleDateString()}</td>
+        <td>${new Date(inv.submittedAt).toLocaleDateString()}</td>
+        <td style="text-align:right;">
+          <span class="status-badge" style="${statusStyle}">${escapeHTML(inv.status)}</span>
+        </td>
       `;
-      grid.appendChild(card);
+      tbody.appendChild(tr);
     });
-
-    container.appendChild(grid);
   }
 
-  // VIEW 7: COMPANY PROFILE SETTINGS
+  // VIEW 7: COMPANY PROFILE CONFIGURATION
   function renderVendorProfile(container, user, vendorRecord) {
-    const certsText = (vendorRecord.certifications || []).map(c => typeof c === 'object' ? c.name : c).join(", ");
+    const name = vendorRecord ? vendorRecord.name : "";
+    const contact = vendorRecord ? vendorRecord.contactPerson : "";
+    const email = user ? user.email : "";
+    const phone = vendorRecord ? vendorRecord.phone : "";
+    const website = vendorRecord ? vendorRecord.website : "";
+    const gstin = vendorRecord ? vendorRecord.gstin : "";
+    const address = vendorRecord ? vendorRecord.addressLine : "";
+    const city = vendorRecord ? vendorRecord.city : "";
+    const sState = vendorRecord ? vendorRecord.state : "";
+    const country = vendorRecord ? vendorRecord.country : "";
+    const zip = vendorRecord ? vendorRecord.zip : "";
+    const bankName = vendorRecord ? (vendorRecord.bankName || "") : "";
+    const bankAccount = vendorRecord ? (vendorRecord.bankAccount || "******" + (vendorRecord.bankAccountLast4 || "9044")) : "";
     
+    const certsText = vendorRecord && vendorRecord.certifications 
+      ? vendorRecord.certifications.map(c => typeof c === 'object' ? c.name : c).join(", ")
+      : "";
+
     container.innerHTML = `
       <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
         <h2 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
@@ -1194,22 +1805,22 @@
           <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:16px; margin-bottom:18px;">
             <div>
               <label class="field-label">Legal Business Name *</label>
-              <input type="text" id="profile-name" class="app-input" required value="${escapeHTML(vendorRecord.name)}" />
+              <input type="text" id="profile-name" class="app-input" required value="${escapeHTML(name)}" />
             </div>
             <div>
-              <label class="field-label">Product/Service Category *</label>
-              <input type="text" id="profile-category" class="app-input" required value="${escapeHTML(vendorRecord.category)}" />
+              <label class="field-label">Primary Email (Read-only)</label>
+              <input type="email" class="app-input" disabled value="${escapeHTML(email)}" style="background: rgba(0,0,0,0.03);" />
             </div>
           </div>
 
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:18px;">
             <div>
-              <label class="field-label">GSTIN / Tax Registration ID</label>
-              <input type="text" id="profile-gstin" class="app-input" value="${escapeHTML(vendorRecord.gstin || '')}" />
+              <label class="field-label">GSTIN / Tax ID</label>
+              <input type="text" id="profile-gstin" class="app-input" value="${escapeHTML(gstin)}" />
             </div>
             <div>
-              <label class="field-label">Incorporation ID</label>
-              <input type="text" id="profile-reg" class="app-input" value="${escapeHTML(vendorRecord.registrationNumber || '')}" />
+              <label class="field-label">Website Domain *</label>
+              <input type="text" id="profile-web" class="app-input" required value="${escapeHTML(website)}" />
             </div>
           </div>
 
@@ -1217,280 +1828,144 @@
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:18px;">
             <div>
               <label class="field-label">Contact Person *</label>
-              <input type="text" id="profile-contact" class="app-input" required value="${escapeHTML(vendorRecord.contactPerson || '')}" />
+              <input type="text" id="profile-contact" class="app-input" required value="${escapeHTML(contact)}" />
             </div>
             <div>
-              <label class="field-label">Corporate Designation *</label>
-              <input type="text" id="profile-designation" class="app-input" required value="${escapeHTML(vendorRecord.designation || '')}" />
+              <label class="field-label">Representative Phone *</label>
+              <input type="tel" id="profile-phone" class="app-input" required value="${escapeHTML(phone)}" />
             </div>
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr 1.2fr; gap:16px; margin-bottom:18px;">
+          <h3 style="font-size: 13px; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; margin-top: 24px; margin-bottom: 12px;">Registered Office Address</h3>
+          <div style="margin-bottom:18px;">
+            <label class="field-label">Street Address *</label>
+            <input type="text" id="profile-address" class="app-input" required value="${escapeHTML(address)}" />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:16px; margin-bottom:18px;">
             <div>
-              <label class="field-label">Phone Number *</label>
-              <input type="tel" id="profile-phone" class="app-input" required value="${escapeHTML(vendorRecord.phone || '')}" />
+              <label class="field-label">City *</label>
+              <input type="text" id="profile-city" class="app-input" required value="${escapeHTML(city)}" />
             </div>
             <div>
-              <label class="field-label">Website Domain *</label>
-              <input type="text" id="profile-web" class="app-input" required value="${escapeHTML(vendorRecord.website || '')}" />
+              <label class="field-label">State / Province *</label>
+              <input type="text" id="profile-state" class="app-input" required value="${escapeHTML(sState)}" />
             </div>
             <div>
-              <label class="field-label">Registered Office Address *</label>
-              <input type="text" id="profile-address" class="app-input" required value="${escapeHTML(vendorRecord.addressLine || '')}" />
+              <label class="field-label">Country *</label>
+              <input type="text" id="profile-country" class="app-input" required value="${escapeHTML(country)}" />
+            </div>
+            <div>
+              <label class="field-label">ZIP / Postal Code *</label>
+              <input type="text" id="profile-zip" class="app-input" required value="${escapeHTML(zip)}" />
             </div>
           </div>
 
-          <h3 style="font-size: 13px; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; margin-top: 24px; margin-bottom: 12px;">Compliance &amp; Certifications</h3>
+          <h3 style="font-size: 13px; font-weight: 800; color: var(--accent-purple); text-transform: uppercase; margin-top: 24px; margin-bottom: 12px;">Compliance &amp; Finance</h3>
           <div style="margin-bottom:18px;">
             <label class="field-label">Empaneled Certifications (Comma separated)</label>
-            <input type="text" id="profile-certs" class="app-input" value="${escapeHTML(certsText)}" />
-            <span style="font-size: 11px; color:var(--text-secondary); margin-top: 4px; display:block;">e.g. ISO 9001, REACH Compliant, FDA Registered</span>
+            <input type="text" id="profile-certs" class="app-input" value="${escapeHTML(certsText)}" placeholder="ISO 9001, REACH Compliant, FDA Registered" />
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1.2fr; gap:16px; margin-bottom:18px;">
+            <div>
+              <label class="field-label">Payment Terms (Read-only)</label>
+              <input type="text" class="app-input" disabled value="${escapeHTML(vendorRecord ? vendorRecord.paymentTerms : 'Net 30')}" style="background: rgba(0,0,0,0.03);" />
+            </div>
+            <div>
+              <label class="field-label">Settlement Bank Name</label>
+              <input type="text" id="profile-bank-name" class="app-input" value="${escapeHTML(bankName)}" />
+            </div>
+            <div>
+              <label class="field-label">Bank Account Number</label>
+              <input type="text" id="profile-bank-account" class="app-input" value="${escapeHTML(bankAccount)}" onfocus="clearMaskedBankAccount(this)" />
+            </div>
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; border-top: 1px solid var(--border-color); padding-top: 16px;">
             <button type="button" class="secondary-btn" onclick="navigateTo('vendor-dashboard')">Cancel</button>
-            <button type="submit" class="primary-btn">Save Profile Config</button>
+            <button type="submit" class="primary-btn">Save Changes</button>
           </div>
         </form>
       </div>
     `;
   }
 
+  function clearMaskedBankAccount(input) {
+    if (input.value.startsWith("******")) {
+      input.value = "";
+    }
+  }
+
   function saveVendorProfile(event) {
     event.preventDefault();
     const user = getCurrentUser();
-    const vendorRecord = getVendorSupplierRecord(user);
+    let vendorRecord = getVendorSupplierRecord(user);
 
-    vendorRecord.name = document.getElementById("profile-name").value.trim();
-    vendorRecord.category = document.getElementById("profile-category").value.trim();
-    vendorRecord.gstin = document.getElementById("profile-gstin").value.trim();
-    vendorRecord.registrationNumber = document.getElementById("profile-reg").value.trim();
-    vendorRecord.contactPerson = document.getElementById("profile-contact").value.trim();
-    vendorRecord.designation = document.getElementById("profile-designation").value.trim();
-    vendorRecord.phone = document.getElementById("profile-phone").value.trim();
-    vendorRecord.website = document.getElementById("profile-web").value.trim();
-    vendorRecord.addressLine = document.getElementById("profile-address").value.trim();
+    const name = document.getElementById("profile-name").value.trim();
+    const contact = document.getElementById("profile-contact").value.trim();
+    const phone = document.getElementById("profile-phone").value.trim();
+    const website = document.getElementById("profile-web").value.trim();
+    const gstin = document.getElementById("profile-gstin").value.trim();
+    const address = document.getElementById("profile-address").value.trim();
+    const city = document.getElementById("profile-city").value.trim();
+    const sState = document.getElementById("profile-state").value.trim();
+    const country = document.getElementById("profile-country").value.trim();
+    const zip = document.getElementById("profile-zip").value.trim();
+    const bankName = document.getElementById("profile-bank-name").value.trim();
+    const bankAccountRaw = document.getElementById("profile-bank-account").value.trim();
 
-    // Map certifications
+    if (!vendorRecord) {
+      // Create new record if unlinked
+      vendorRecord = {
+        id: `sup-${Date.now()}`,
+        linkedUserEmail: user.email.toLowerCase(),
+        rating: 5.0,
+        pastDealsCount: 0,
+        totalBusinessValue: "$0",
+        paymentTerms: "Net 30"
+      };
+      state.suppliers.push(vendorRecord);
+    }
+
+    vendorRecord.name = name;
+    vendorRecord.contactPerson = contact;
+    vendorRecord.phone = phone;
+    vendorRecord.website = website;
+    vendorRecord.gstin = gstin;
+    vendorRecord.addressLine = address;
+    vendorRecord.city = city;
+    vendorRecord.state = sState;
+    vendorRecord.country = country;
+    vendorRecord.zip = zip;
+    vendorRecord.bankName = bankName;
+
+    // Handle masked bank account input saving
+    if (bankAccountRaw && !bankAccountRaw.startsWith("******")) {
+      vendorRecord.bankAccount = bankAccountRaw;
+      vendorRecord.bankAccountLast4 = bankAccountRaw.slice(-4);
+    }
+
+    // Split certifications by comma
     const certsRaw = document.getElementById("profile-certs").value;
     vendorRecord.certifications = certsRaw.split(",").map(c => c.trim()).filter(c => c !== "");
 
-    // Mirror to current user profile for consistency
+    // Sync to user profile for consistency
     if (user.profile) {
-      user.profile.companyName = vendorRecord.name;
-      user.profile.contactName = vendorRecord.contactPerson;
-      user.profile.phone = vendorRecord.phone;
-      user.profile.gstin = vendorRecord.gstin;
-      user.profile.address = vendorRecord.addressLine;
-      user.profile.website = vendorRecord.website;
+      user.profile.companyName = name;
+      user.profile.contactName = contact;
+      user.profile.phone = phone;
+      user.profile.gstin = gstin;
+      user.profile.address = address;
+      user.profile.website = website;
     }
 
     saveState();
-    showToast("Corporate Supplier Profile updated and synchronized successfully.");
-    navigateTo("vendor-dashboard");
-  }
-
-  // CUSTOMIZABLE INVOICE CREATION FLOW
-  let invoiceItems = [];
-
-  function openInvoiceModal(orderId, defaultAmount) {
-    const order = state.applications.find(a => a.id === orderId);
-    if (!order) return;
-
-    const user = getCurrentUser();
-    const vendorRecord = getVendorSupplierRecord(user);
-
-    document.getElementById("inv-order-id").value = orderId;
-    document.getElementById("inv-num").value = `INV-${orderId.substring(4)}-${Math.floor(1000 + Math.random() * 9000)}`;
-    document.getElementById("inv-order-ref").value = `PO-${orderId.substring(4)}`;
-    document.getElementById("inv-issue-date").value = new Date().toISOString().substring(0, 10);
+    showToast("Profile updated successfully.");
     
-    // Set default due date to 30 days out
-    const dueDate = new Date();
-    dueDate.setDate(dueDate.getDate() + 30);
-    document.getElementById("inv-due-date").value = dueDate.toISOString().substring(0, 10);
-
-    // Bill from & bill to details pre-population
-    document.getElementById("inv-bill-from").value = `${vendorRecord.name}\n${vendorRecord.addressLine || ''}\n${vendorRecord.city || ''}, ${vendorRecord.country || ''}\nGSTIN: ${vendorRecord.gstin || ''}`;
-    document.getElementById("inv-bill-to").value = `Nexpro Sourcing Corp\n123 Buyer Blvd\nNew York, USA\ninfo@nexpro.com`;
-
-    // Populate initial items
-    invoiceItems = [
-      { id: Date.now(), desc: `Sourcing Services Award: ${order.rfqTitle}`, qty: 1, unitPrice: defaultAmount }
-    ];
-
-    renderInvoiceItemsTable();
-    recalculateInvoiceTotals();
-
-    document.getElementById("invoice-modal").classList.add("is-active");
+    // Re-render immediately
+    render();
   }
 
-  function closeInvoiceModal() {
-    document.getElementById("invoice-modal").classList.remove("is-active");
-  }
-
-  function renderInvoiceItemsTable() {
-    const tbody = document.getElementById("inv-items-body");
-    tbody.innerHTML = "";
-
-    invoiceItems.forEach((item, idx) => {
-      const total = item.qty * item.unitPrice;
-      const tr = document.createElement("tr");
-      tr.style.borderBottom = "1px solid rgba(0,0,0,0.02)";
-      tr.innerHTML = `
-        <td style="padding: 6px 4px;">
-          <input type="text" class="app-input" value="${escapeHTML(item.desc)}" required style="height:32px; font-size:13px;" onchange="updateInvoiceItem(${item.id}, 'desc', this.value)" />
-        </td>
-        <td style="padding: 6px 4px;">
-          <input type="number" class="app-input" value="${item.qty}" min="1" required style="height:32px; text-align:center; padding:0; font-size:13px;" oninput="updateInvoiceItem(${item.id}, 'qty', parseInt(this.value) || 1)" />
-        </td>
-        <td style="padding: 6px 4px;">
-          <input type="number" class="app-input" value="${item.unitPrice}" min="0.01" step="0.01" required style="height:32px; text-align:right; font-size:13px;" oninput="updateInvoiceItem(${item.id}, 'unitPrice', parseFloat(this.value) || 0)" />
-        </td>
-        <td style="padding: 6px 4px; text-align:right; font-weight:700; font-size:13.5px;">
-          $${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-        </td>
-        <td style="padding: 6px 4px; text-align:center;">
-          <button type="button" style="background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:16px; font-weight:700;" onclick="removeInvoiceItemRow(${item.id})">&times;</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function addInvoiceItemRow(desc = "", qty = 1, price = 0) {
-    invoiceItems.push({
-      id: Date.now() + Math.random(),
-      desc: desc,
-      qty: qty,
-      unitPrice: price
-    });
-    renderInvoiceItemsTable();
-    recalculateInvoiceTotals();
-  }
-
-  function removeInvoiceItemRow(id) {
-    invoiceItems = invoiceItems.filter(item => item.id !== id);
-    renderInvoiceItemsTable();
-    recalculateInvoiceTotals();
-  }
-
-  function updateInvoiceItem(id, field, value) {
-    const item = invoiceItems.find(item => item.id === id);
-    if (item) {
-      item[field] = value;
-      // Re-render only the sums and specific cells if needed or table
-      renderInvoiceItemsTable();
-      recalculateInvoiceTotals();
-    }
-  }
-
-  function recalculateInvoiceTotals() {
-    let subtotal = 0;
-    invoiceItems.forEach(item => {
-      subtotal += item.qty * item.unitPrice;
-    });
-
-    const taxRate = parseFloat(document.getElementById("inv-tax-rate").value) || 0;
-    const discount = parseFloat(document.getElementById("inv-discount").value) || 0;
-
-    const discountAmount = subtotal * (discount / 100);
-    const taxableSubtotal = subtotal - discountAmount;
-    const taxAmount = taxableSubtotal * (taxRate / 100);
-    const grandTotal = taxableSubtotal + taxAmount;
-
-    document.getElementById("inv-subtotal").innerText = `$${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    document.getElementById("inv-total-amount").innerText = `$${grandTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-  }
-
-  function submitCustomInvoice(event) {
-    event.preventDefault();
-    const orderId = document.getElementById("inv-order-id").value;
-    const invNum = document.getElementById("inv-num").value.trim();
-    const dueDate = document.getElementById("inv-due-date").value;
-    
-    let subtotal = 0;
-    invoiceItems.forEach(item => {
-      subtotal += item.qty * item.unitPrice;
-    });
-    const taxRate = parseFloat(document.getElementById("inv-tax-rate").value) || 0;
-    const discount = parseFloat(document.getElementById("inv-discount").value) || 0;
-    const finalAmount = (subtotal * (1 - discount / 100)) * (1 + taxRate / 100);
-
-    const user = getCurrentUser();
-    const vendorRecord = getVendorSupplierRecord(user);
-
-    const newInv = {
-      id: invNum,
-      orderId: orderId,
-      vendorId: vendorRecord.id,
-      amount: finalAmount.toFixed(2),
-      status: "SUBMITTED",
-      submittedAt: new Date().toISOString(),
-      dueDate: dueDate,
-      customItems: invoiceItems
-    };
-
-    if (!state.invoices) state.invoices = [];
-    state.invoices.push(newInv);
-    saveState();
-
-    closeInvoiceModal();
-    showToast(`Invoice ${invNum} generated and submitted successfully.`);
-    navigateTo("my-invoices");
-  }
-
-  // UPLOAD INVOICE FILE FLOW
-  function openUploadInvoiceModal(orderId, defaultAmount) {
-    document.getElementById("upload-order-id").value = orderId;
-    document.getElementById("upload-inv-num").value = `INV-${orderId.substring(4)}-${Math.floor(1000 + Math.random() * 9000)}`;
-    document.getElementById("upload-inv-amount").value = defaultAmount;
-    document.getElementById("upload-inv-file").value = "";
-
-    document.getElementById("upload-invoice-modal").classList.add("is-active");
-  }
-
-  function closeUploadInvoiceModal() {
-    document.getElementById("upload-invoice-modal").classList.remove("is-active");
-  }
-
-  function submitUploadedInvoice(event) {
-    event.preventDefault();
-    const orderId = document.getElementById("upload-order-id").value;
-    const invNum = document.getElementById("upload-inv-num").value.trim();
-    const amount = parseFloat(document.getElementById("upload-inv-amount").value);
-    const fileEl = document.getElementById("upload-inv-file");
-
-    if (fileEl.files.length === 0) {
-      showToast("Please select an invoice file to upload.", "error");
-      return;
-    }
-
-    const fileName = fileEl.files[0].name;
-    const user = getCurrentUser();
-    const vendorRecord = getVendorSupplierRecord(user);
-
-    const newInv = {
-      id: invNum,
-      orderId: orderId,
-      vendorId: vendorRecord.id,
-      amount: amount.toFixed(2),
-      status: "SUBMITTED",
-      submittedAt: new Date().toISOString(),
-      dueDate: new Date(Date.now() + 3600000 * 24 * 30).toISOString().substring(0, 10), // Default Net 30
-      fileName: fileName
-    };
-
-    if (!state.invoices) state.invoices = [];
-    state.invoices.push(newInv);
-    saveState();
-
-    closeUploadInvoiceModal();
-    showToast(`Invoice file ${fileName} uploaded as invoice ${invNum}.`);
-    navigateTo("my-invoices");
-  }
-
-  // ON DOC LOAD
+  // DOC LOAD ATTACHMENTS
   document.addEventListener("DOMContentLoaded", () => {
     loadState();
     
