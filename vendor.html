@@ -679,7 +679,7 @@
     currentUser: null
   };
 
-  let currentView = "vendor-dashboard";
+  let currentView = "invited-rfqs";
   let selectedRfqId = null;
   let printResponseId = null;
 
@@ -750,7 +750,7 @@
   }
 
   function handleHashRoute() {
-    const hash = window.location.hash || '#vendor-dashboard';
+    const hash = window.location.hash || '#invited-rfqs';
     const parts = hash.substring(1).split('?');
     currentView = parts[0];
     selectedRfqId = null;
@@ -800,7 +800,7 @@
         renderVendorProfile(workspace, user, vendorRecord);
         break;
       default:
-        renderDashboard(workspace, user, vendorRecord);
+        renderInvitedRfqs(workspace, user, vendorRecord);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -830,10 +830,7 @@
     const actionsEl = document.getElementById("header-actions");
     actionsEl.innerHTML = "";
 
-    if (currentView === "vendor-dashboard") {
-      titleEl.innerText = "Dashboard";
-      actionsEl.innerHTML = `<button class="primary-btn" onclick="navigateTo('invited-rfqs')">View Opportunities</button>`;
-    } else if (currentView === "invited-rfqs") {
+    if (currentView === "invited-rfqs") {
       titleEl.innerText = "Invited RFQs";
     } else if (currentView === "submit-bid") {
       titleEl.innerText = "Compile Proposal";
@@ -856,109 +853,6 @@
           Your user account is not linked to any active supplier business records. Let's create your company profile to register your credentials on the platform.
         </p>
         <button class="primary-btn" onclick="navigateTo('vendor-profile')">Establish Company Profile</button>
-      </div>
-    `;
-  }
-
-  // VIEW 1: VENDOR DASHBOARD
-  function renderDashboard(container, user, vendorRecord) {
-    // 1. Calculate Metrics
-    const rfqInvites = state.submittedResponses.filter(r => r.hasProcurement && (r.supplierIds || []).includes(vendorRecord.id));
-    const pendingInvitesCount = rfqInvites.filter(r => r.procurementStatus === "PENDING SUPPLIER").length;
-
-    const bids = (state.applications || []).filter(a => a.vendorId === vendorRecord.id);
-    const activeBidsCount = bids.filter(a => a.status === "PENDING").length;
-    const acceptedOrdersCount = bids.filter(a => a.status === "ACCEPTED").length;
-
-    const invoices = (state.invoices || []).filter(i => i.vendorId === vendorRecord.id);
-    const unpaidInvoicesCount = invoices.filter(i => i.status !== "PAID").length;
-
-    // 2. Aggregate Recent Activity Log
-    const activities = [];
-    bids.forEach(b => {
-      activities.push({
-        text: `Submitted quotation response reference <strong>${escapeHTML(b.id)}</strong> for <em>${escapeHTML(b.rfqTitle)}</em>`,
-        date: new Date(b.date),
-        type: 'bid'
-      });
-      if (b.status === "ACCEPTED") {
-        activities.push({
-          text: `Awarded contract order reference <strong>PO-${escapeHTML(b.id.substring(4))}</strong> for <em>${escapeHTML(b.rfqTitle)}</em>`,
-          date: new Date(b.date),
-          type: 'order'
-        });
-      }
-    });
-    invoices.forEach(i => {
-      activities.push({
-        text: `Submitted invoice <strong>${escapeHTML(i.id)}</strong> for amount of <strong>$${Number(i.amount).toLocaleString()}</strong>`,
-        date: new Date(i.submittedAt),
-        type: 'invoice'
-      });
-      if (i.status === "PAID") {
-        activities.push({
-          text: `Payment confirmed for invoice <strong>${escapeHTML(i.id)}</strong> (${escapeHTML(i.status)})`,
-          date: new Date(i.submittedAt),
-          type: 'payment'
-        });
-      }
-    });
-    activities.sort((a,b) => b.date - a.date);
-    const topActivities = activities.slice(0, 5);
-
-    // 3. Render
-    let activityHTML = topActivities.map(act => `
-      <div style="display:flex; gap:12px; align-items:center; padding:12px 0; border-bottom: 1px solid rgba(0,0,0,0.02);">
-        <div style="width:8px; height:8px; border-radius:50%; background:var(--accent-purple); flex-shrink:0;"></div>
-        <div style="flex:1; font-size:13.5px; color:var(--text-primary);">${act.text}</div>
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:600;">${act.date.toLocaleDateString()}</div>
-      </div>
-    `).join("");
-
-    if (activityHTML === "") {
-      activityHTML = `<p style="color:var(--text-secondary); text-align:center; padding:20px 0; font-size:13.5px;">No recent activities logged yet.</p>`;
-    }
-
-    container.innerHTML = `
-      <div class="glass-card" style="margin-bottom: 28px;">
-        <h2 style="font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px;">Welcome back, ${escapeHTML(vendorRecord.contactPerson || user.email)}!</h2>
-        <p style="color:var(--text-secondary); font-size:14px; margin:0;">Account Dashboard for <strong>${escapeHTML(vendorRecord.name)}</strong></p>
-      </div>
-
-      <!-- Stat Cards -->
-      <div class="dashboard-grid">
-        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-yellow); margin-bottom: 0;">
-          <div class="stat-title">RFQ Invitations</div>
-          <div class="stat-value">${pendingInvitesCount}</div>
-        </div>
-        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-purple); margin-bottom: 0;">
-          <div class="stat-title">Active Bids</div>
-          <div class="stat-value">${activeBidsCount}</div>
-        </div>
-        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-green); margin-bottom: 0;">
-          <div class="stat-title">Awarded Orders</div>
-          <div class="stat-value">${acceptedOrdersCount}</div>
-        </div>
-        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-red); margin-bottom: 0;">
-          <div class="stat-title">Unpaid Invoices</div>
-          <div class="stat-value">${unpaidInvoicesCount}</div>
-        </div>
-      </div>
-
-      <!-- Lower Panels -->
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-top: 24px;">
-        <div class="glass-card">
-          <h3 style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 16px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">Recent Activity</h3>
-          ${activityHTML}
-        </div>
-        <div class="glass-card">
-          <h3 style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 16px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">Quick Actions</h3>
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <button class="secondary-btn" style="text-align:left; font-weight:600; border-radius:10px;" onclick="navigateTo('invited-rfqs')">1. Review RFQ Invitations (${pendingInvitesCount})</button>
-            <button class="secondary-btn" style="text-align:left; font-weight:600; border-radius:10px;" onclick="navigateTo('my-orders')">2. Process Pending POs &amp; Invoice</button>
-            <button class="secondary-btn" style="text-align:left; font-weight:600; border-radius:10px;" onclick="navigateTo('vendor-profile')">3. Update Company Certifications</button>
-          </div>
-        </div>
       </div>
     `;
   }

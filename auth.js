@@ -174,11 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ddContent) {
           ddContent.innerHTML = `
             <div class="dd-column">
-              <a href="vendor.html#vendor-dashboard" class="dd-navlink w-inline-block">
-                <div>Dashboard</div>
-                <div class="dd-link-txt">Overview of invited RFQs, bids, and orders</div>
-                <div class="dd-link-dot"></div>
-              </a>
               <a href="vendor.html#invited-rfqs" class="dd-navlink w-inline-block">
                 <div>Invited RFQs</div>
                 <div class="dd-link-txt">View sourcing requests you've been matched with</div>
