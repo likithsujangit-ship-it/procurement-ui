@@ -886,7 +886,18 @@ app.get('/api/responses', async (req, res) => {
     // F11: archived (soft-deleted) responses never leak into the active cockpit lists
     const query = { archived: { $ne: true } };
     if (req.query.vendorEmail) {
-      query.vendorEmail = req.query.vendorEmail.toLowerCase();
+      const email = req.query.vendorEmail.toLowerCase();
+      // Find the supplier ID for this email if any
+      const supplier = await SupplierModel.findOne({ email: email });
+      const supplierId = supplier ? supplier.id : null;
+
+      query.$or = [
+        { distribution: "public" },
+        { vendorEmail: email }
+      ];
+      if (supplierId) {
+        query.$or.push({ supplierIds: supplierId });
+      }
     }
     const responses = await ResponseModel.find(query);
     res.json(responses);
