@@ -255,9 +255,17 @@ document.addEventListener('DOMContentLoaded', () => {
       html, body {
         overflow-x: clip !important;
       }
-      /* Fix default black background hover pills globally */
+      /* Disable the background sliding pill completely */
       .hover-bg {
-        background-color: rgba(118, 0, 230, 0.06) !important;
+        display: none !important;
+      }
+      /* Add a subtle zoom animation on hover for navbar links */
+      .navlink {
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        display: inline-block !important; /* Ensure scale transform works correctly */
+      }
+      .navlink:hover {
+        transform: scale(1.05) !important;
       }
       /* Ensure CTA button text is always white and doesn't inherit the navbar dark color */
       .navbar-div .navlink.is-nav-cta .button-txt,
