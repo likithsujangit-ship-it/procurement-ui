@@ -8572,6 +8572,83 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
     let selectedBidsRfqId = "all";
 
+    window.simulateVendorBid = function() {
+      const activeRfqs = state.submittedResponses || [];
+      if (activeRfqs.length === 0) {
+        showToast("No active sourcing runs to bid on.", "error");
+        return;
+      }
+      
+      // Pick the currently selected RFQ, or a random one
+      const rfqId = selectedBidsRfqId === "all" ? activeRfqs[Math.floor(Math.random() * activeRfqs.length)].id : selectedBidsRfqId;
+      const rfq = activeRfqs.find(r => r.id === rfqId);
+      if (!rfq) return;
+
+      // Pool of mock suppliers
+      const mockSuppliers = [
+        { name: "Orion Space Alloys Ltd", email: "sales@orionalloys.com", isRegistered: true },
+        { name: "Apex Propulsion Systems", email: "contact@apexpropulsion.com", isRegistered: true },
+        { name: "Global Chemical Logistics Ltd", email: "logistics@globalchem.com", isRegistered: false },
+        { name: "SpaceTech Propellants Corp", email: "info@spacetech.com", isRegistered: false },
+        { name: "Houston Cryogenics", email: "houston@cryo.com", isRegistered: false }
+      ];
+
+      // Pick a random supplier from pool
+      const sup = mockSuppliers[Math.floor(Math.random() * mockSuppliers.length)];
+
+      const isPublic = rfq.distribution === "public";
+      
+      // If the selected RFQ is private, registered bids must be from registered users.
+      if (sup.isRegistered) {
+        const userExists = state.users.some(u => u.email.toLowerCase() === sup.email.toLowerCase());
+        if (!userExists) {
+          state.users.push({
+            email: sup.email,
+            role: "vendor",
+            password: "password123",
+            profile: { companyName: sup.name }
+          });
+        }
+        const supplierExists = state.suppliers.some(s => s.email.toLowerCase() === sup.email.toLowerCase());
+        if (!supplierExists) {
+          state.suppliers.push({
+            id: "sup-" + Date.now(),
+            name: sup.name,
+            email: sup.email,
+            contactPerson: "Jane Doe"
+          });
+        }
+      }
+
+      const randomPrice = Math.floor(Math.random() * 500000) + 800000;
+      const randomLead = Math.floor(Math.random() * 10) + 5;
+
+      const newBid = {
+        id: "app-sim-" + Date.now(),
+        rfqId: rfq.id,
+        rfqTitle: rfq.templateName,
+        vendorId: sup.isRegistered ? "sup-registered-sim" : "sup-invited-sim",
+        vendorName: sup.name,
+        vendorEmail: sup.email,
+        priority: Math.random() > 0.5 ? "high" : "normal",
+        status: "PENDING",
+        date: new Date().toISOString(),
+        price: randomPrice,
+        leadTimeDays: randomLead,
+        details: {}
+      };
+
+      if (!state.applications) state.applications = [];
+      state.applications.push(newBid);
+      saveState();
+
+      showToast(`Simulated bid from ${sup.name} submitted successfully!`);
+      
+      // Re-render
+      const viewContainer = document.getElementById("workspace-view");
+      renderBiddedVendorsView(viewContainer);
+    };
+
     function renderBiddedVendorsView(container) {
       // Re-load state from local storage to catch any newly submitted bids in real-time
       loadState();
@@ -8584,13 +8661,18 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       const filterBar = document.createElement("div");
       filterBar.style.marginBottom = "24px";
       filterBar.style.display = "flex";
+      filterBar.style.justifyContent = "space-between";
       filterBar.style.alignItems = "center";
-      filterBar.style.gap = "12px";
       filterBar.style.background = "#FFF";
       filterBar.style.padding = "16px 24px";
       filterBar.style.borderRadius = "12px";
       filterBar.style.border = "1px solid var(--border-color)";
       filterBar.style.boxShadow = "0 2px 8px rgba(0,0,0,0.01)";
+
+      const leftDiv = document.createElement("div");
+      leftDiv.style.display = "flex";
+      leftDiv.style.alignItems = "center";
+      leftDiv.style.gap = "12px";
 
       const label = document.createElement("label");
       label.innerText = "Select Executed RFQ Run:";
@@ -8622,8 +8704,23 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         renderBiddedVendorsView(container);
       };
 
-      filterBar.appendChild(label);
-      filterBar.appendChild(select);
+      leftDiv.appendChild(label);
+      leftDiv.appendChild(select);
+
+      const rightDiv = document.createElement("div");
+      
+      const simulateBtn = document.createElement("button");
+      simulateBtn.className = "primary-btn";
+      simulateBtn.style.padding = "8px 16px";
+      simulateBtn.style.fontSize = "13px";
+      simulateBtn.style.fontWeight = "600";
+      simulateBtn.innerText = "✨ Simulate Vendor Bid";
+      simulateBtn.onclick = () => window.simulateVendorBid();
+
+      rightDiv.appendChild(simulateBtn);
+
+      filterBar.appendChild(leftDiv);
+      filterBar.appendChild(rightDiv);
 
       // Filter applications
       const filteredApps = selectedBidsRfqId === "all" 
