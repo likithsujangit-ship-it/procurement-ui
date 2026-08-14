@@ -3751,96 +3751,116 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
   }
 
   window.openPublicRfqDetails = function(rfqId) {
-    const r = state.submittedResponses.find(res => res.id === rfqId);
-    if (!r) return;
-
-    const buyerUser = state.users.find(u => u.email.toLowerCase() === (r.vendorEmail || '').toLowerCase() || u.email.toLowerCase() === (r.buyerEmail || '').toLowerCase());
-    const companyName = buyerUser && buyerUser.profile ? buyerUser.profile.companyName : "Enterprise Sourcing Corp";
-
-    // Dynamic specs generator from fields
-    const specFields = (r.fields || []).map(f => {
-      let dispValue = f.value;
-      if (f.type === 'checkbox') dispValue = f.value ? 'Yes' : 'No';
-      if (f.type === 'file' && f.value) {
-        dispValue = `<a href="/api/attachments/download?filename=${encodeURIComponent(f.value)}" download>📎 ${escapeHTML(f.value)}</a>`;
+    console.log("openPublicRfqDetails triggered for RFQ ID:", rfqId);
+    try {
+      if (typeof state === 'undefined' || !state.submittedResponses) {
+        console.error("state or state.submittedResponses is undefined!");
+        return;
       }
-      return `
-        <tr style="border-bottom:1px solid rgba(0,0,0,0.03);">
-          <td style="padding:10px; font-weight:600; color:var(--text-secondary); width:40%; font-size:13px;">${escapeHTML(f.label)}</td>
-          <td style="padding:10px; font-size:13.5px;">${dispValue}</td>
-        </tr>
-      `;
-    }).join('');
+      const r = state.submittedResponses.find(res => res.id === rfqId);
+      if (!r) {
+        console.warn("RFQ response not found in state.submittedResponses for ID:", rfqId);
+        return;
+      }
+      console.log("Found RFQ in state:", r);
 
-    // Attachments section
-    const emailAttachments = r.emailAttachments || [];
-    const attachmentsHTML = emailAttachments.length > 0 
-      ? emailAttachments.map(a => {
-          const name = a.name || a;
-          return `<div style="margin-bottom:6px;"><a href="/api/attachments/download?filename=${encodeURIComponent(name)}" download>📁 ${escapeHTML(name)}</a></div>`;
-        }).join('')
-      : `<span style="color:var(--text-secondary); font-size:13px; font-style:italic;">No additional email attachments uploaded.</span>`;
+      const buyerUser = state.users ? state.users.find(u => u.email.toLowerCase() === (r.vendorEmail || '').toLowerCase() || u.email.toLowerCase() === (r.buyerEmail || '').toLowerCase()) : null;
+      const companyName = buyerUser && buyerUser.profile ? buyerUser.profile.companyName : "Enterprise Sourcing Corp";
+      console.log("Resolved Buyer Company:", companyName);
 
-    // Generated spec PDF attachment
-    const pdfName = `${(r.templateName || 'RFQ_Specification').replace(/[^a-z0-9]/gi, '_')}.pdf`;
-    const specPdfHTML = `<div style="margin-bottom:10px;"><a href="/api/rfqs/${r.id}/download-pdf" download style="font-weight:700; color:var(--accent-purple);">📄 ${pdfName}</a></div>`;
+      // Dynamic specs generator from fields
+      const specFields = (r.fields || []).map(f => {
+        let dispValue = f.value;
+        if (f.type === 'checkbox') dispValue = f.value ? 'Yes' : 'No';
+        if (f.type === 'file' && f.value) {
+          dispValue = `<a href="/api/attachments/download?filename=${encodeURIComponent(f.value)}" download>📎 ${escapeHTML(f.value)}</a>`;
+        }
+        return `
+          <tr style="border-bottom:1px solid rgba(0,0,0,0.03);">
+            <td style="padding:10px; font-weight:600; color:var(--text-secondary); width:40%; font-size:13px;">${escapeHTML(f.label)}</td>
+            <td style="padding:10px; font-size:13.5px;">${dispValue}</td>
+          </tr>
+        `;
+      }).join('');
 
-    document.getElementById("pm-title").innerText = r.templateName;
+      // Attachments section
+      const emailAttachments = r.emailAttachments || [];
+      const attachmentsHTML = emailAttachments.length > 0 
+        ? emailAttachments.map(a => {
+            const name = a.name || a;
+            return `<div style="margin-bottom:6px;"><a href="/api/attachments/download?filename=${encodeURIComponent(name)}" download>📁 ${escapeHTML(name)}</a></div>`;
+          }).join('')
+        : `<span style="color:var(--text-secondary); font-size:13px; font-style:italic;">No additional email attachments uploaded.</span>`;
 
-    document.getElementById("pm-body").innerHTML = `
-      <div style="margin-bottom:20px; display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-        <div>
-          <span class="field-label">Sourcing ID</span>
-          <span style="font-weight:700; color:var(--accent-purple);">${escapeHTML(r.responseID || r.id)}</span>
+      // Generated spec PDF attachment
+      const pdfName = `${(r.templateName || 'RFQ_Specification').replace(/[^a-z0-9]/gi, '_')}.pdf`;
+      const specPdfHTML = `<div style="margin-bottom:10px;"><a href="/api/rfqs/${r.id}/download-pdf" download style="font-weight:700; color:var(--accent-purple);">📄 ${pdfName}</a></div>`;
+
+      document.getElementById("pm-title").innerText = r.templateName;
+
+      document.getElementById("pm-body").innerHTML = `
+        <div style="margin-bottom:20px; display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+          <div>
+            <span class="field-label">Sourcing ID</span>
+            <span style="font-weight:700; color:var(--accent-purple);">${escapeHTML(r.responseID || r.id)}</span>
+          </div>
+          <div>
+            <span class="field-label">Buyer Business Entity</span>
+            <span style="font-weight:700;">${escapeHTML(companyName)}</span>
+          </div>
         </div>
-        <div>
-          <span class="field-label">Buyer Business Entity</span>
-          <span style="font-weight:700;">${escapeHTML(companyName)}</span>
+
+        <div style="margin-bottom:20px;">
+          <span class="field-label">RFQ Purpose & Instructions</span>
+          <div style="background:rgba(0,0,0,0.02); border-radius:8px; padding:16px; font-size:13.5px; line-height:1.5; color:var(--text-primary); border:1px solid var(--border-color); white-space:pre-wrap;">${escapeHTML(r.emailBody || 'Dear Sourcing Team,\n\nYou are invited to review the requirements and submit pricing details.')}</div>
         </div>
-      </div>
 
-      <div style="margin-bottom:20px;">
-        <span class="field-label">RFQ Purpose & Instructions</span>
-        <div style="background:rgba(0,0,0,0.02); border-radius:8px; padding:16px; font-size:13.5px; line-height:1.5; color:var(--text-primary); border:1px solid var(--border-color); white-space:pre-wrap;">${escapeHTML(r.emailBody || 'Dear Sourcing Team,\n\nYou are invited to review the requirements and submit pricing details.')}</div>
-      </div>
-
-      <div style="margin-bottom:20px;">
-        <span class="field-label">Required Procurement Scope & Fields</span>
-        <table style="width:100%; border:1px solid var(--border-color); border-radius:8px; overflow:hidden;">
-          <tbody>
-            ${specFields}
-          </tbody>
-        </table>
-      </div>
-
-      <div style="margin-bottom:10px;">
-        <span class="field-label">Document Attachments</span>
-        <div style="background:rgba(0,0,0,0.01); border-radius:8px; padding:16px; border:1px dashed var(--border-color);">
-          ${specPdfHTML}
-          ${attachmentsHTML}
+        <div style="margin-bottom:20px;">
+          <span class="field-label">Required Procurement Scope & Fields</span>
+          <table style="width:100%; border:1px solid var(--border-color); border-radius:8px; overflow:hidden;">
+            <tbody>
+              ${specFields}
+            </tbody>
+          </table>
         </div>
-      </div>
-    `;
 
-    const user = getCurrentUser();
-    const userRecord = getVendorSupplierRecord(user);
-    const hasJoined = (r.supplierIds || []).includes(userRecord.id);
+        <div style="margin-bottom:10px;">
+          <span class="field-label">Document Attachments</span>
+          <div style="background:rgba(0,0,0,0.01); border-radius:8px; padding:16px; border:1px dashed var(--border-color);">
+            ${specPdfHTML}
+            ${attachmentsHTML}
+          </div>
+        </div>
+      `;
 
-    const footer = document.getElementById("pm-footer");
-    if (hasJoined) {
-      footer.innerHTML = `
-        <button class="secondary-btn" onclick="closePublicRfqModal()">Close</button>
-        <button class="primary-btn" onclick="joinAndParticipate('${r.id}', true)">Go to Bid Compiler</button>
-      `;
-    } else {
-      footer.innerHTML = `
-        <button class="secondary-btn" onclick="closePublicRfqModal()">Cancel</button>
-        <button class="primary-btn" onclick="joinAndParticipate('${r.id}', false)">Join & Participate</button>
-      `;
+      const user = getCurrentUser();
+      const userRecord = getVendorSupplierRecord(user);
+      const hasJoined = userRecord ? (r.supplierIds || []).includes(userRecord.id) : false;
+      console.log("User record found:", userRecord, "hasJoined:", hasJoined);
+
+      const footer = document.getElementById("pm-footer");
+      if (hasJoined) {
+        footer.innerHTML = `
+          <button class="secondary-btn" onclick="closePublicRfqModal()">Close</button>
+          <button class="primary-btn" onclick="joinAndParticipate('${r.id}', true)">Go to Bid Compiler</button>
+        `;
+      } else {
+        footer.innerHTML = `
+          <button class="secondary-btn" onclick="closePublicRfqModal()">Cancel</button>
+          <button class="primary-btn" onclick="joinAndParticipate('${r.id}', false)">Join & Participate</button>
+        `;
+      }
+
+      const modal = document.getElementById("public-rfq-detail-modal");
+      if (modal) {
+        modal.classList.add("is-active");
+        console.log("Added is-active class to modal successfully.");
+      } else {
+        console.error("Modal element public-rfq-detail-modal not found in DOM!");
+      }
+    } catch (err) {
+      console.error("Error executing openPublicRfqDetails:", err);
     }
-
-    const modal = document.getElementById("public-rfq-detail-modal");
-    modal.classList.add("is-active");
   };
 
   window.closePublicRfqModal = function() {
