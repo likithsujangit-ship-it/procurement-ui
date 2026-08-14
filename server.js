@@ -76,15 +76,82 @@ const requireHtmlAuth = (roles = []) => {
 };
 
 const path = require('path');
-// Serve genuinely static assets
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/rfq3d', express.static(path.join(__dirname, 'rfq3d')));
-app.use('/solar-system', express.static(path.join(__dirname, 'solar-system')));
 
-// Serve global shared JS files
-app.get('/auth.js', (req, res) => res.sendFile(path.join(__dirname, 'auth.js')));
-app.get('/state.js', (req, res) => res.sendFile(path.join(__dirname, 'state.js')));
+// HTML Pages Gating & Routing
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/index.html', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+
+app.get('/login.html', (req, res) => {
+  const token = getCookie(req, 'token');
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+      return res.redirect(decoded.role === 'vendor' ? '/vendor.html' : '/generate-rfq.html');
+    } catch(e) {}
+  }
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/signup.html', (req, res) => {
+  const token = getCookie(req, 'token');
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+      return res.redirect(decoded.role === 'vendor' ? '/vendor.html' : '/generate-rfq.html');
+    } catch(e) {}
+  }
+  res.sendFile(path.join(__dirname, 'signup.html'));
+});
+
+// Public pages
+const publicPages = [
+  'ourStory.html',
+  'careers.html',
+  'customers.html',
+  'integrations.html',
+  'partners.html',
+  'press.html',
+  'privacy-notice.html',
+  'platformOverview.html',
+  'performance&compilance.html'
+];
+publicPages.forEach(page => {
+  app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, page)));
+});
+
+// Authenticated shared pages
+app.get('/profile.html', requireHtmlAuth(), (req, res) => res.sendFile(path.join(__dirname, 'profile.html')));
+
+// Buyer / Admin pages
+const buyerPages = [
+  'generate-rfq.html',
+  'intakeAgent.html',
+  'supplierDiscoveryAgent.html',
+  'rfxExecutionAgent.html',
+  'evaluationAgent.html'
+];
+buyerPages.forEach(page => {
+  app.get(`/${page}`, requireHtmlAuth(['buyer', 'admin']), (req, res) => res.sendFile(path.join(__dirname, page)));
+});
+
+// Vendor pages
+const vendorPages = [
+  'vendor.html',
+  'supplierPortal.html'
+];
+vendorPages.forEach(page => {
+  app.get(`/${page}`, requireHtmlAuth(['vendor']), (req, res) => res.sendFile(path.join(__dirname, page)));
+});
+
+// Dedicated Admin route
+app.get('/admin.html', requireHtmlAuth(['admin']), (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
+
+// Serve all static assets (CSS, JS, fonts, images, CDN folders) from root directory.
+// HTML files are excluded — they are served only through the explicit gated route handlers below.
+app.use(express.static(path.join(__dirname, '.'), {
+  index: false,       // Don't auto-serve index.html for '/'
+  extensions: []      // Don't auto-resolve .html extensions
+}));
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nexpro';
@@ -1593,75 +1660,6 @@ Procurement Team, nexPro Sourcing Division`;
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-
-// HTML Pages Gating & Routing
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/index.html', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-
-app.get('/login.html', (req, res) => {
-  const token = getCookie(req, 'token');
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
-      return res.redirect(decoded.role === 'vendor' ? '/vendor.html' : '/generate-rfq.html');
-    } catch(e) {}
-  }
-  res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-app.get('/signup.html', (req, res) => {
-  const token = getCookie(req, 'token');
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
-      return res.redirect(decoded.role === 'vendor' ? '/vendor.html' : '/generate-rfq.html');
-    } catch(e) {}
-  }
-  res.sendFile(path.join(__dirname, 'signup.html'));
-});
-
-// Public pages
-const publicPages = [
-  'ourStory.html',
-  'careers.html',
-  'customers.html',
-  'integrations.html',
-  'partners.html',
-  'press.html',
-  'privacy-notice.html',
-  'platformOverview.html',
-  'performance&compilance.html'
-];
-publicPages.forEach(page => {
-  app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, page)));
-});
-
-// Authenticated shared pages
-app.get('/profile.html', requireHtmlAuth(), (req, res) => res.sendFile(path.join(__dirname, 'profile.html')));
-
-// Buyer / Admin pages
-const buyerPages = [
-  'generate-rfq.html',
-  'intakeAgent.html',
-  'supplierDiscoveryAgent.html',
-  'rfxExecutionAgent.html',
-  'evaluationAgent.html'
-];
-buyerPages.forEach(page => {
-  app.get(`/${page}`, requireHtmlAuth(['buyer', 'admin']), (req, res) => res.sendFile(path.join(__dirname, page)));
-});
-
-// Vendor pages
-const vendorPages = [
-  'vendor.html',
-  'supplierPortal.html'
-];
-vendorPages.forEach(page => {
-  app.get(`/${page}`, requireHtmlAuth(['vendor']), (req, res) => res.sendFile(path.join(__dirname, page)));
-});
-
-// Dedicated Admin route
-app.get('/admin.html', requireHtmlAuth(['admin']), (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
