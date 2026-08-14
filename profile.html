@@ -515,23 +515,28 @@
     }
 
   
-  /* Exclude Demo/CTA button from hover scale zoom and keep it completely static */
-  .navlink.is-nav-cta,
+  /* Lock Demo/CTA button background color to black on hover */
   .navlink.is-nav-cta:hover {
-    transform: none !important;
-    transition: none !important;
     background-color: #1A1A1A !important;
   }
   /* Disable the background sliding pill completely */
   .hover-bg {
     display: none !important;
   }
-  /* Add a subtle zoom animation on hover for navbar links */
-  .navlink {
+  /* Add a subtle zoom animation on hover for navbar links, buttons, and CTAs */
+  .navlink,
+  button,
+  .w-button,
+  .primary-btn,
+  .btn {
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
     display: inline-block !important;
   }
-  .navlink:hover {
+  .navlink:hover,
+  button:hover,
+  .w-button:hover,
+  .primary-btn:hover,
+  .btn:hover {
     transform: scale(1.05) !important;
   }
 </style>
