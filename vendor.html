@@ -3731,7 +3731,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
         const hasJoined = (r.supplierIds || []).includes(vendorRecord.id);
         const actionBtn = hasJoined 
-          ? `<button class="secondary-btn" style="padding:6px 12px; font-size:12.5px;" onclick="openPublicRfqDetails('${r.id}')">View Details</button>`
+          ? `<button class="secondary-btn" style="padding:6px 12px; font-size:12.5px; border-color:var(--accent-purple); color:var(--accent-purple); background:rgba(118, 0, 230, 0.03);" onclick="openPublicRfqDetails('${r.id}')">View Details</button>`
           : `<button class="primary-btn" style="padding:6px 12px; font-size:12.5px;" onclick="openPublicRfqDetails('${r.id}')">Join & Bid</button>`;
 
         return `
