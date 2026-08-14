@@ -3255,6 +3255,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     }
 
     function render() {
+      loadState();
       renderBreadcrumbs();
       renderHeader();
       
@@ -8569,13 +8570,71 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       // Stub loader
     }
 
+    let selectedBidsRfqId = "all";
+
     function renderBiddedVendorsView(container) {
+      // Re-load state from local storage to catch any newly submitted bids in real-time
+      loadState();
+
       const apps = state.applications || [];
+      // Get all executed RFQs that have been created and sent
+      const activeRfqs = state.submittedResponses || [];
+
+      // Create filter control bar container
+      const filterBar = document.createElement("div");
+      filterBar.style.marginBottom = "24px";
+      filterBar.style.display = "flex";
+      filterBar.style.alignItems = "center";
+      filterBar.style.gap = "12px";
+      filterBar.style.background = "#FFF";
+      filterBar.style.padding = "16px 24px";
+      filterBar.style.borderRadius = "12px";
+      filterBar.style.border = "1px solid var(--border-color)";
+      filterBar.style.boxShadow = "0 2px 8px rgba(0,0,0,0.01)";
+
+      const label = document.createElement("label");
+      label.innerText = "Select Executed RFQ Run:";
+      label.style.fontWeight = "700";
+      label.style.fontSize = "12px";
+      label.style.color = "var(--text-secondary)";
+      label.style.textTransform = "uppercase";
+      label.style.margin = "0";
+
+      const select = document.createElement("select");
+      select.className = "response-select";
+      select.style.minWidth = "300px";
+      select.style.padding = "8px 12px";
+      select.style.borderRadius = "8px";
+      select.style.border = "1px solid var(--border-color)";
+      select.style.fontSize = "13.5px";
+      select.style.fontWeight = "600";
+      select.style.color = "var(--text-primary)";
+      select.style.cursor = "pointer";
+
+      let optionsHTML = `<option value="all" ${selectedBidsRfqId === "all" ? "selected" : ""}>Show All Executed RFQs</option>`;
+      activeRfqs.forEach(r => {
+        optionsHTML += `<option value="${r.id}" ${r.id === selectedBidsRfqId ? "selected" : ""}>${escapeHTML(r.templateName)} (${escapeHTML(r.responseID || r.id)})</option>`;
+      });
+      select.innerHTML = optionsHTML;
+
+      select.onchange = (e) => {
+        selectedBidsRfqId = e.target.value;
+        renderBiddedVendorsView(container);
+      };
+
+      filterBar.appendChild(label);
+      filterBar.appendChild(select);
+
+      // Filter applications
+      const filteredApps = selectedBidsRfqId === "all" 
+        ? apps 
+        : apps.filter(a => a.rfqId === selectedBidsRfqId);
+
       const regBidders = [];
       const emailBidders = [];
       const publicBidders = [];
 
-      apps.forEach(app => {
+      filteredApps.forEach(app => {
         const rfq = state.submittedResponses.find(r => r.id === app.rfqId);
         const isPublic = rfq && rfq.distribution === "public";
 
@@ -8597,6 +8656,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           emailBidders.push(appDetails);
         }
       });
+
+      // Clear previous elements
+      container.innerHTML = "";
 
       const layout = document.createElement("div");
       layout.style.width = "100%";
@@ -8644,7 +8706,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid rgba(0,0,0,0.05); padding-top:12px; margin-top:4px;">
                   <span style="font-size:12.5px; color:var(--text-secondary); font-weight:500;">Bid Quote:</span>
-                  <strong style="font-size:15px; color:${color}; font-weight:700;">${(b.price || 0).toLocaleString()}</strong>
+                  <strong style="font-size:15px; color:${color}; font-weight:700;">$${(b.price || 0).toLocaleString()}</strong>
                 </div>
               </div>
             `).join("")
@@ -8672,6 +8734,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
       layout.innerHTML = summaryHTML;
       layout.appendChild(colsContainer);
+
+      container.appendChild(filterBar);
       container.appendChild(layout);
     }
 
