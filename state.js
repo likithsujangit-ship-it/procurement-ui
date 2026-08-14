@@ -1,182 +1,9 @@
 // Centralized Mock Data & State Management for Nexpro UI
 
-const DEFAULT_SUPPLIERS = [
-  {
-    id: "sup-acme-supplier",
-    linkedUserEmail: "vendor@nexpro.com",
-    name: "Acme Supplier Inc",
-    category: "Chemical Raw Materials",
-    status: "Active",
-    contactPerson: "John Smith",
-    designation: "Sourcing Manager",
-    email: "vendor@nexpro.com",
-    phone: "+1 555-0244",
-    altPhone: "",
-    website: "www.acmesupplier.example",
-    addressLine: "456 Vendor Way",
-    city: "San Francisco",
-    state: "California",
-    country: "USA",
-    zip: "94107",
-    gstin: "10AAAAA1111A1Z1",
-    registrationNumber: "U31900CA2018PTC088734",
-    yearsInBusiness: 8,
-    paymentTerms: "Net 30",
-    preferredCurrency: "USD ($)",
-    leadTimeDays: 10,
-    minOrderQty: "100 Metric Tons",
-    certifications: ["ISO 9001", "REACH Compliant"],
-    rating: 4.9,
-    pastDealsCount: 4,
-    totalBusinessValue: "$2.4M",
-    bankName: "Silicon Valley Bank",
-    bankAccountLast4: "9044",
-    ifscSwift: "SVBCUS33XXX",
-    notes: "Preferred propellant and chemical raw material supplier for nexPro enterprise.",
-    onboardedDate: "2025-01-15",
-    lastDealDate: "2026-05-18"
-  }
-];
-
-const DEFAULT_TEMPLATES = [
-  {
-    id: "template-propellant",
-    name: "Falcon 9 Propellant Sourcing",
-    category: "Chemical Raw Materials",
-    supplierIds: ["sup-acme-supplier"],
-    fields: [
-      { id: "field-supplier", label: "Supplier Name", type: "short-text", required: true, options: [], order: 0 },
-      { id: "field-spec", label: "Fuel Grade Specifications", type: "long-text", required: true, options: [], order: 1 },
-      { id: "field-qty", label: "Estimated Quantity (Metric Tons)", type: "number", required: true, options: [], order: 2 },
-      { id: "field-date", label: "Delivery Target Date", type: "date", required: true, options: [], order: 3 },
-      { id: "field-cert", label: "Compliance Certification", type: "file", required: false, options: [], order: 4 }
-    ]
-  },
-  {
-    id: "template-50point",
-    name: "Enterprise Sourcing - 50 Point Assessment",
-    category: "MRO Spares",
-    supplierIds: ["sup-acme-supplier"],
-    fields: [
-      // Commercial Terms (1-15)
-      { id: "field-1", label: "Supplier Name", type: "short-text", required: true, options: [], order: 0 },
-      { id: "field-2", label: "Quote Reference Number", type: "short-text", required: true, options: [], order: 1 },
-      { id: "field-3", label: "Preferred Currency", type: "dropdown", required: true, options: ["USD ($)", "EUR (€)", "INR (₹)", "GBP (£)", "JPY (¥)"], order: 2 },
-      { id: "field-4", label: "Base Unit Price", type: "number", required: true, options: [], order: 3 },
-      { id: "field-5", label: "Volume Discount Percentage", type: "number", required: false, options: [], order: 4 },
-      { id: "field-6", label: "Applicable Tax Rate (%)", type: "number", required: true, options: [], order: 5 },
-      { id: "field-7", label: "Payment Terms Days", type: "dropdown", required: true, options: ["Net 30", "Net 45", "Net 60", "Net 90", "Due on Receipt"], order: 6 },
-      { id: "field-8", label: "Quotation Validity Date", type: "date", required: true, options: [], order: 7 },
-      { id: "field-9", label: "Warranty Period (Months)", type: "number", required: true, options: [], order: 8 },
-      { id: "field-10", label: "Estimated Delivery Lead Time (Days)", type: "number", required: true, options: [], order: 9 },
-      { id: "field-11", label: "Shipping Mode", type: "dropdown", required: true, options: ["Air Freight", "Ocean Freight", "Road Transport", "Rail Cargo"], order: 10 },
-      { id: "field-12", label: "Incoterms Rule", type: "dropdown", required: true, options: ["EXW", "FOB", "CIF", "DDP", "DAP"], order: 11 },
-      { id: "field-13", label: "Minimum Order Quantity (MOQ)", type: "number", required: true, options: [], order: 12 },
-      { id: "field-14", label: "Standard Packaging Description", type: "long-text", required: false, options: [], order: 13 },
-      { id: "field-15", label: "Estimated Freight Costs ($)", type: "number", required: false, options: [], order: 14 },
-      
-      // Technical Specifications (16-25)
-      { id: "field-16", label: "Manufacturer Part Number (MPN)", type: "short-text", required: true, options: [], order: 15 },
-      { id: "field-17", label: "Original Equipment Manufacturer (OEM)", type: "short-text", required: true, options: [], order: 16 },
-      { id: "field-18", label: "Country of Origin", type: "short-text", required: true, options: [], order: 17 },
-      { id: "field-19", label: "Material Grade Specifications", type: "short-text", required: true, options: [], order: 18 },
-      { id: "field-20", label: "Purity or Concentration Level (%)", type: "number", required: true, options: [], order: 19 },
-      { id: "field-21", label: "Technical Drawing Compliance", type: "checkbox", required: true, options: [], order: 20 },
-      { id: "field-22", label: "Operations Manual Provided", type: "checkbox", required: false, options: [], order: 21 },
-      { id: "field-23", label: "Safe Operating Temperature Range", type: "short-text", required: false, options: [], order: 22 },
-      { id: "field-24", label: "Maximum Pressure Rating (PSI)", type: "number", required: false, options: [], order: 23 },
-      { id: "field-25", label: "Certificate of Analysis (CoA) Included", type: "checkbox", required: true, options: [], order: 24 },
-
-      // Compliance & Standards (26-35)
-      { id: "field-26", label: "ISO 9001 Certification Status", type: "dropdown", required: true, options: ["Certified", "In Progress", "Not Certified"], order: 25 },
-      { id: "field-27", label: "ISO 14001 Environmental Certification", type: "dropdown", required: true, options: ["Certified", "In Progress", "Not Certified"], order: 26 },
-      { id: "field-28", label: "RoHS Directive Compliance", type: "checkbox", required: true, options: [], order: 27 },
-      { id: "field-29", label: "REACH Chemical Registration", type: "checkbox", required: true, options: [], order: 28 },
-      { id: "field-30", label: "Estimated Environmental Impact Score", type: "number", required: false, options: [], order: 29 },
-      { id: "field-31", label: "Safety Data Sheet (SDS) Attached", type: "checkbox", required: true, options: [], order: 30 },
-      { id: "field-32", label: "Carbon Offset Percentage (%)", type: "number", required: false, options: [], order: 31 },
-      { id: "field-33", label: "Conflict Minerals Free Declaration", type: "checkbox", required: true, options: [], order: 32 },
-      { id: "field-34", label: "Responsible Labor Standards Audit", type: "checkbox", required: true, options: [], order: 33 },
-      { id: "field-35", label: "Child Labor Policy Audited", type: "checkbox", required: true, options: [], order: 34 },
-
-      // Supplier Health & Risk (36-43)
-      { id: "field-36", label: "Supplier Years in Business", type: "number", required: true, options: [], order: 35 },
-      { id: "field-37", label: "Financial Credit Risk Score", type: "number", required: true, options: [], order: 36 },
-      { id: "field-38", label: "Annual Business Revenue ($)", type: "number", required: false, options: [], order: 37 },
-      { id: "field-39", label: "Number of Active Enterprise References", type: "number", required: false, options: [], order: 38 },
-      { id: "field-40", label: "Overall Supply Chain Risk Rating", type: "dropdown", required: true, options: ["Low Risk", "Medium Risk", "High Risk"], order: 39 },
-      { id: "field-41", label: "Business Continuity Plan (BCP) Verified", type: "checkbox", required: true, options: [], order: 40 },
-      { id: "field-42", label: "Cybersecurity Certification (SOC2/ISO27001)", type: "checkbox", required: true, options: [], order: 41 },
-      { id: "field-43", label: "Subcontractor Usage Disclosed", type: "checkbox", required: true, options: [], order: 42 },
-
-      // Service & Support (44-50)
-      { id: "field-44", label: "24/7 Technical Support Availability", type: "checkbox", required: false, options: [], order: 43 },
-      { id: "field-45", label: "Incident Response SLA (Hours)", type: "number", required: false, options: [], order: 44 },
-      { id: "field-46", label: "Training Material Provided", type: "checkbox", required: false, options: [], order: 45 },
-      { id: "field-47", label: "Professional On-site Installation Included", type: "checkbox", required: false, options: [], order: 46 },
-      { id: "field-48", label: "Annual Maintenance Contract (AMC) Option", type: "checkbox", required: false, options: [], order: 47 },
-      { id: "field-49", label: "Liquidated Damages Clause Accepted", type: "checkbox", required: true, options: [], order: 48 },
-      { id: "field-50", label: "Governing Law / Arbitration Jurisdiction", type: "short-text", required: true, options: [], order: 49 }
-    ]
-  }
-];
-
-const DEFAULT_RESPONSES = [
-  {
-    id: "resp-propellant-acme",
-    templateId: "template-propellant",
-    templateName: "Falcon 9 Propellant Sourcing",
-    responseID: "RESP-ACME-001",
-    submittedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    status: "COMPLETED",
-    hasProcurement: true,
-    procurementStatus: "COMPLETED",
-    procurementProgress: 100,
-    supplierIds: ["sup-acme-supplier"],
-    distribution: "private",
-    vendorEmail: "vendor@nexpro.com",
-    fields: [
-      { id: "field-supplier", label: "Supplier Name", type: "short-text", value: "Acme Supplier Inc" },
-      { id: "field-spec", label: "Fuel Grade Specifications", type: "long-text", value: "Ultra-pure rocket propellant meeting military standards." },
-      { id: "field-qty", label: "Estimated Quantity (Metric Tons)", type: "number", value: "1200" },
-      { id: "field-date", label: "Delivery Target Date", type: "date", value: "2026-09-30" },
-      { id: "field-cert", label: "Compliance Certification", type: "file", value: "fuel_compliance_2026.pdf" }
-    ]
-  },
-  {
-    id: "resp-propellant-public-seed-v2",
-    templateId: "template-propellant",
-    templateName: "Falcon Heavy Liquid Oxygen Sourcing",
-    responseID: "RESP-LOX-999",
-    submittedAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-    status: "EVALUATING",
-    hasProcurement: true,
-    procurementStatus: "EVALUATING",
-    procurementProgress: 66,
-    supplierIds: [],
-    distribution: "public",
-    vendorEmail: "buyer@nexpro.com",
-    emailSubject: "Invitation to bid on Falcon Heavy Liquid Oxygen Sourcing",
-    emailBody: "Dear Sourcing Partners,\n\nWe are looking to secure liquid oxygen supplies for the upcoming Falcon Heavy launch schedule. Please review the specifications and submit your best bids.",
-    emailAttachments: ["lox_specs_datasheet.pdf", "launch_schedule_q4.xlsx"],
-    fields: [
-      { id: "f-company", label: "Supplier Corporate Name", type: "short-text", required: true, value: "" },
-      { id: "f-plant", label: "Manufacturing Plant Location", type: "short-text", required: true, value: "" },
-      { id: "f-purity", label: "Liquid Oxygen Purity Grade (%)", type: "number", required: true, value: "" },
-      { id: "f-moisture", label: "Max Impurities - Moisture Limit (ppm)", type: "number", required: true, value: "" },
-      { id: "f-co2", label: "Max Impurities - Carbon Dioxide Limit (ppm)", type: "number", required: true, value: "" },
-      { id: "f-msds", label: "Material Safety Data Sheet (MSDS) Upload", type: "file", required: true, value: "" },
-      { id: "f-capacity", label: "Total Available Supply Capacity (Tons)", type: "number", required: true, value: "" },
-      { id: "f-price", label: "Unit Cost per Ton ($)", type: "number", required: true, value: "" },
-      { id: "f-moq", label: "Minimum Order Quantity (MOQ)", type: "number", required: true, value: "" },
-      { id: "f-payterms", label: "Preferred Payment Terms", type: "dropdown", required: true, options: ["Net 30", "Net 45", "Net 60", "Advance Payment"], value: "" },
-      { id: "f-tanker", label: "Cryogenic Tanker Delivery Capability", type: "checkbox", required: true, value: false },
-      { id: "f-lead", label: "Estimated Delivery Lead Time (Days)", type: "number", required: true, value: "" },
-      { id: "f-iso", label: "ISO 9001 Sourcing Quality Certificate", type: "file", required: true, value: "" },
-      { id: "f-epa", label: "Clean Air Act/EPA Compliance Statement", type: "checkbox", required: true, value: false }
-    ]
-  }
-];
+const DEFAULT_SUPPLIERS = [];
+const DEFAULT_TEMPLATES = [];
+const DEFAULT_RESPONSES = [];
+const DEFAULT_APPLICATIONS = [];
 
 // Master state initialization
 window.appState = {
@@ -225,68 +52,7 @@ window.appState = {
   suppliers: [...DEFAULT_SUPPLIERS],
   templates: [...DEFAULT_TEMPLATES],
   submittedResponses: [...DEFAULT_RESPONSES],
-  applications: [
-    {
-      id: "app-propellant-acme-seed",
-      rfqId: "resp-propellant-acme",
-      rfqTitle: "Falcon 9 Propellant Sourcing",
-      vendorId: "sup-acme-supplier",
-      vendorName: "Acme Supplier Inc",
-      priority: "normal",
-      status: "ACCEPTED",
-      date: new Date(Date.now() - 3600000 * 24).toISOString(),
-      price: 1200000,
-      leadTimeDays: 10,
-      deliveryStatus: "Processing",
-      details: {
-        "field-supplier": "Acme Supplier Inc",
-        "field-spec": "Ultra-pure rocket propellant meeting military standards.",
-        "field-qty": "1200",
-        "field-date": "2026-09-30",
-        "field-cert": "fuel_compliance_2026.pdf"
-      }
-    },
-    {
-      id: "app-email-sourcing-seed",
-      rfqId: "resp-propellant-acme",
-      rfqTitle: "Falcon 9 Propellant Sourcing",
-      vendorId: "sup-global-chem",
-      vendorName: "Global Chemical Logistics Ltd",
-      vendorEmail: "logistics@globalchem.com",
-      priority: "normal",
-      status: "PENDING",
-      date: new Date(Date.now() - 3600000 * 12).toISOString(),
-      price: 950000,
-      leadTimeDays: 12,
-      deliveryStatus: "Pending Approval",
-      details: {
-        "field-supplier": "Global Chemical Logistics Ltd",
-        "field-spec": "Standard propellant grade meeting space agency requirements.",
-        "field-qty": "1200"
-      }
-    },
-    {
-      id: "app-public-sourcing-seed",
-      rfqId: "resp-propellant-public-seed-v2",
-      rfqTitle: "Falcon Heavy Liquid Oxygen Sourcing",
-      vendorId: "sup-titan-cryo",
-      vendorName: "Titan Cryogenics Corp",
-      vendorEmail: "sales@titancryo.com",
-      priority: "high",
-      status: "PENDING",
-      date: new Date(Date.now() - 3600000 * 2).toISOString(),
-      price: 2450000,
-      leadTimeDays: 8,
-      deliveryStatus: "Processing",
-      details: {
-        "f-company": "Titan Cryogenics Corp",
-        "f-plant": "Houston cryogenic plant",
-        "f-purity": "99.99",
-        "f-moisture": "0.5",
-        "f-co2": "0.2"
-      }
-    }
-  ], // Vendor applications: { id, rfqId, rfqTitle, vendorId, vendorName, priority, status ("PENDING" | "ACCEPTED" | "REJECTED"), date, details: {} }
+  applications: [...DEFAULT_APPLICATIONS], // Vendor applications: { id, rfqId, rfqTitle, vendorId, vendorName, priority, status ("PENDING" | "ACCEPTED" | "REJECTED"), date, details: {} }
   invoices: [], // Invoice shape: { id, orderId, vendorId, amount, status: "SUBMITTED"|"APPROVED"|"PAID", submittedAt, dueDate }
   currentUser: null
 };
@@ -509,19 +275,19 @@ function loadGlobalState() {
   }
 
   if (!window.appState.applications || !Array.isArray(window.appState.applications)) {
-    window.appState.applications = [...DEFAULT_STATE.applications];
+    window.appState.applications = [...DEFAULT_APPLICATIONS];
     saveGlobalState();
   } else {
     // Add Category 2 seed if missing
     if (!window.appState.applications.some(a => a.id === "app-email-sourcing-seed")) {
-      const emailSeed = DEFAULT_STATE.applications.find(a => a.id === "app-email-sourcing-seed");
+      const emailSeed = DEFAULT_APPLICATIONS.find(a => a.id === "app-email-sourcing-seed");
       if (emailSeed) {
         window.appState.applications.push(emailSeed);
       }
     }
     // Add Category 3 seed if missing
     if (!window.appState.applications.some(a => a.id === "app-public-sourcing-seed")) {
-      const publicSeed = DEFAULT_STATE.applications.find(a => a.id === "app-public-sourcing-seed");
+      const publicSeed = DEFAULT_APPLICATIONS.find(a => a.id === "app-public-sourcing-seed");
       if (publicSeed) {
         window.appState.applications.push(publicSeed);
       }
