@@ -148,8 +148,22 @@ document.addEventListener('DOMContentLoaded', () => {
               </a>
             </div>
           `;
-        }
       }
+
+      // Hide dropdown when any of its feature links are clicked
+      const navLinks = dd.querySelectorAll('.dd-navlink');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          dd.classList.remove('w--open');
+          const toggle = dd.querySelector('.w-dropdown-toggle, .dropdown-toggle');
+          if (toggle) toggle.classList.remove('w--open');
+          const list = dd.querySelector('.w-dropdown-list, .dd-content');
+          if (list) {
+            list.classList.remove('w--open');
+            list.style.removeProperty('display');
+          }
+        });
+      });
     }
   });
 
