@@ -2277,6 +2277,21 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     background-color: rgba(118, 0, 230, 0.06) !important;
   }
 
+  /* Protect green hover bg for CTA */
+  .hover-bg.is-green, .is-green {
+    background-color: #00c98b !important;
+  }
+
+  /* Ensure CTA button text is always white */
+  .navbar-div .navlink.is-nav-cta .button-txt,
+  .navlink.is-nav-cta .button-txt {
+    color: #ffffff !important;
+  }
+  .navbar-div .navlink.is-nav-cta:hover .button-txt,
+  .navlink.is-nav-cta:hover .button-txt {
+    color: #ffffff !important;
+  }
+
   /* Hide marketing footer and Book a Demo marquee on workspace */
   footer, .section.is-footer, .footer-cta-link {
     display: none !important;
