@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="dd-link-txt">Monitor sourcing requests, matched suppliers, and evaluations</div>
                 <div class="dd-link-dot"></div>
               </a>
+              <a href="generate-rfq.html#bidded-vendors" class="dd-navlink w-inline-block">
+                <div>Vendor Bids Directory</div>
+                <div class="dd-link-txt">Classify and monitor registered, email, and public bidders</div>
+                <div class="dd-link-dot"></div>
+              </a>
               <a href="generate-rfq.html#admin-logs" class="dd-navlink w-inline-block">
                 <div>System Activity Log</div>
                 <div class="dd-link-txt">Audit records and live system events log</div>

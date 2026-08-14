@@ -2558,6 +2558,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
                       <div class="dd-link-txt">Create and customize RFQ workspaces and templates</div>
                       <div class="dd-link-dot"></div>
                     </a>
+                    <a href="generate-rfq.html#bidded-vendors" class="dd-navlink w-inline-block">
+                      <div>Vendor Bids Directory</div>
+                      <div class="dd-link-txt">Classify and monitor registered, email, and public bidders</div>
+                      <div class="dd-link-dot"></div>
+                    </a>
                     <a href="generate-rfq.html#submitted-responses" class="dd-navlink w-inline-block">
                       <div>Submitted Responses</div>
                       <div class="dd-link-txt">Browse and manage submitted supplier responses</div>
@@ -3266,10 +3271,14 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         renderEmailDispatchView(viewContainer);
       } else if (currentView === "form") {
         renderFormView(viewContainer);
+      } else if (currentView === "bidded-vendors") {
+        renderBiddedVendorsView(viewContainer);
       } else if (currentView === "submitted-responses") {
         renderSubmittedResponsesView(viewContainer);
       } else if (currentView === "new-procurement") {
         renderNewProcurementView(viewContainer);
+      } else if (currentView === "bidded-vendors") {
+        breadcrumb.innerHTML = "<span>Vendor Bids Directory</span>";
       } else if (currentView === "cumulative-dashboard") {
         renderCumulativeDashboardView(viewContainer);
       } else if (currentView === "users-directory") {
@@ -3390,6 +3399,11 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           <button class="primary-btn" onclick="navigateTo('companies')">
             Go to Generate RFQ
           </button>
+        `;
+      } else if (currentView === "bidded-vendors") {
+        titleEl.innerText = "Vendor Bids Directory";
+        actionsEl.innerHTML = `
+          <button class="secondary-btn" onclick="navigateTo('companies')" style="margin-right: 12px;">Back to Templates</button>
         `;
       } else if (currentView === "submitted-responses") {
         titleEl.innerText = "Submitted Responses";
@@ -8555,6 +8569,112 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       // Stub loader
     }
 
+    function renderBiddedVendorsView(container) {
+      const apps = state.applications || [];
+      const regBidders = [];
+      const emailBidders = [];
+      const publicBidders = [];
+
+      apps.forEach(app => {
+        const rfq = state.submittedResponses.find(r => r.id === app.rfqId);
+        const isPublic = rfq && rfq.distribution === "public";
+
+        const supplier = state.suppliers.find(s => s.id === app.vendorId || s.name === app.vendorName || (s.email || '').toLowerCase() === (app.vendorEmail || '').toLowerCase());
+        const userRec = state.users.find(u => u.role === 'vendor' && (u.email.toLowerCase() === (supplier ? supplier.email : '').toLowerCase() || u.email.toLowerCase() === (app.vendorEmail || '').toLowerCase()));
+        const isRegistered = !!userRec;
+
+        const appDetails = {
+          ...app,
+          rfqTitle: rfq ? rfq.templateName : (app.rfqTitle || "Unknown RFQ"),
+          supplierEmail: supplier ? supplier.email : (app.vendorEmail || "invited-vendor@nexpro.com")
+        };
+
+        if (isPublic) {
+          publicBidders.push(appDetails);
+        } else if (isRegistered) {
+          regBidders.push(appDetails);
+        } else {
+          emailBidders.push(appDetails);
+        }
+      });
+
+      const layout = document.createElement("div");
+      layout.style.width = "100%";
+      layout.style.display = "flex";
+      layout.style.flexDirection = "column";
+      layout.style.gap = "24px";
+
+      const summaryHTML = `
+        <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 8px;">
+          <div class="stat-card glass-card" style="border-left: 4px solid var(--accent-purple); background:#FFF; padding:20px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.02);">
+            <span class="stat-title" style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase;">Registered Platform Bids</span>
+            <h3 class="stat-value" style="font-size:32px; font-weight:800; margin:8px 0 4px 0; font-family:'Outfit';">${regBidders.length}</h3>
+            <span style="font-size:12px; color:var(--text-secondary);">Bids from onboarded platform vendors</span>
+          </div>
+          <div class="stat-card glass-card" style="border-left: 4px solid var(--accent-blue); background:#FFF; padding:20px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.02);">
+            <span class="stat-title" style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase;">Email Invited Bids</span>
+            <h3 class="stat-value" style="font-size:32px; font-weight:800; margin:8px 0 4px 0; font-family:'Outfit';">${emailBidders.length}</h3>
+            <span style="font-size:12px; color:var(--text-secondary);">Offline vendor responses via email</span>
+          </div>
+          <div class="stat-card glass-card" style="border-left: 4px solid var(--accent-green); background:#FFF; padding:20px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.02);">
+            <span class="stat-title" style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase;">Public RFQ Bidders</span>
+            <h3 class="stat-value" style="font-size:32px; font-weight:800; margin:8px 0 4px 0; font-family:'Outfit';">${publicBidders.length}</h3>
+            <span style="font-size:12px; color:var(--text-secondary);">Bidders from public sourcing runs</span>
+          </div>
+        </div>
+      `;
+
+      const colsContainer = document.createElement("div");
+      colsContainer.style.display = "grid";
+      colsContainer.style.gridTemplateColumns = "repeat(auto-fit, minmax(320px, 1fr))";
+      colsContainer.style.gap = "20px";
+
+      const renderColHTML = (title, icon, color, list) => {
+        const cardsHTML = list.length > 0 
+          ? list.map(b => `
+              <div class="glass-card" style="padding: 20px; border-radius: 12px; background:#FFF; display:flex; flex-direction:column; gap:12px; border: 1px solid var(--border-color); box-shadow:0 4px 12px rgba(0,0,0,0.015); transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.015)';">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong style="font-size:14.5px; color:var(--text-primary);">${escapeHTML(b.vendorName)}</strong>
+                  <span class="badge-${(b.status || 'PENDING').toLowerCase()}" style="font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:100px;">${escapeHTML(b.status || 'PENDING')}</span>
+                </div>
+                <div style="font-size:13px; color:var(--text-secondary); line-height:1.5;">
+                  <div style="margin-bottom:3px;">RFQ Run: <strong style="color:var(--text-primary);">${escapeHTML(b.rfqTitle)}</strong></div>
+                  <div style="margin-bottom:3px;">Contact Email: <span style="text-decoration:underline;">${escapeHTML(b.supplierEmail)}</span></div>
+                  <div>Submitted: ${new Date(b.date).toLocaleDateString()}</div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid rgba(0,0,0,0.05); padding-top:12px; margin-top:4px;">
+                  <span style="font-size:12.5px; color:var(--text-secondary); font-weight:500;">Bid Quote:</span>
+                  <strong style="font-size:15px; color:${color}; font-weight:700;">${(b.price || 0).toLocaleString()}</strong>
+                </div>
+              </div>
+            `).join("")
+          : `<div style="text-align:center; padding:48px 24px; border:1px dashed var(--border-color); border-radius:12px; color:var(--text-secondary); background:rgba(0,0,0,0.005); font-size:13px; font-style:italic;">No vendor bids found in this category.</div>`;
+
+        return `
+          <div style="display:flex; flex-direction:column; gap:18px; background: rgba(0,0,0,0.008); border-radius:16px; padding:24px; border:1px solid var(--border-color);">
+            <div style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(0,0,0,0.06); padding-bottom:14px; margin-bottom:4px;">
+              <span style="font-size:20px;">${icon}</span>
+              <h3 style="font-family:'Outfit'; font-size:15px; font-weight:800; margin:0; color:var(--text-primary);">${title}</h3>
+              <span style="background:${color}; color:#FFF; font-size:11px; font-weight:800; padding:3px 9px; border-radius:100px; margin-left:auto; font-family:'Outfit';">${list.length}</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:14px; max-height: 62vh; overflow-y:auto; padding-right:4px;">
+              ${cardsHTML}
+            </div>
+          </div>
+        `;
+      };
+
+      colsContainer.innerHTML = `
+        ${renderColHTML("Registered Platform Bidders", "🏢", "var(--accent-purple)", regBidders)}
+        ${renderColHTML("Email Invited Replies", "✉️", "var(--accent-blue)", emailBidders)}
+        ${renderColHTML("Public RFQ Bidders", "🌐", "var(--accent-green)", publicBidders)}
+      `;
+
+      layout.innerHTML = summaryHTML;
+      layout.appendChild(colsContainer);
+      container.appendChild(layout);
+    }
+
     // Initialize App
     window.addEventListener("DOMContentLoaded", () => {
       loadState();
@@ -8582,6 +8702,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           selectedTemplateId = null;
         } else if (hash === "#suppliers") {
           currentView = "suppliers";
+          selectedTemplateId = null;
+        } else if (hash === "#bidded-vendors") {
+          currentView = "bidded-vendors";
           selectedTemplateId = null;
         } else if (hash === "#submitted-responses") {
           currentView = "submitted-responses";
