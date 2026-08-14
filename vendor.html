@@ -4034,6 +4034,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     }
 
     const template = state.templates.find(t => t.id === rfq.templateId) || { id: rfq.templateId, name: rfq.templateName, fields: rfq.fields || [] };
+    const fieldsToRender = rfq.fields && rfq.fields.length > 0 ? rfq.fields : (template.fields || []);
 
     // Guard: already submitted
     const existingBid = state.applications.find(a => a.rfqId === rfqId && a.vendorId === vendorRecord.id);
@@ -4051,8 +4052,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     formCard.style.margin = "0 auto";
 
     let fieldsHTML = "";
-    if (template.fields && template.fields.length > 0) {
-      fieldsHTML = template.fields.map(field => {
+    if (fieldsToRender && fieldsToRender.length > 0) {
+      fieldsHTML = fieldsToRender.map(field => {
         if (field.id === "field-supplier") {
           return `
             <div style="margin-bottom:18px;">
@@ -4179,6 +4180,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     if (!rfq) return;
 
     const template = state.templates.find(t => t.id === rfq.templateId) || { id: rfq.templateId, name: rfq.templateName, fields: rfq.fields || [] };
+    const fieldsToValidate = rfq.fields && rfq.fields.length > 0 ? rfq.fields : (template.fields || []);
 
     // Reset validations
     const errors = document.querySelectorAll(".field-validation-error");
@@ -4214,8 +4216,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
     // Validate dynamic template fields
     const bidDetails = {};
-    if (template.fields) {
-      for (const field of template.fields) {
+    if (fieldsToValidate) {
+      for (const field of fieldsToValidate) {
         if (field.id === "field-supplier") {
           bidDetails[field.id] = vendorRecord.name;
           continue;
