@@ -25,6 +25,25 @@
     height: auto !important;
     overflow: visible !important;
   }
+
+  /* Exclude Demo/CTA button from hover scale zoom and keep it completely static */
+  .navlink.is-nav-cta,
+  .navlink.is-nav-cta:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+  /* Disable the background sliding pill completely */
+  .hover-bg {
+    display: none !important;
+  }
+  /* Add a subtle zoom animation on hover for navbar links */
+  .navlink {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: inline-block !important;
+  }
+  .navlink:hover {
+    transform: scale(1.05) !important;
+  }
 </style>
 <style>
 @media (min-width:992px) {html.w-mod-js:not(.w-mod-ix) [data-w-id="b67283ff-8e39-7250-77bd-dac70cd758a0"] {border-color:rgba(122,122,122,0.3);}}

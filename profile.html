@@ -6,22 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="assets/style.css" />
   <style>
     :root {
-      --bg-main: #F3F3F3;
-      --bg-card: #FFFFFF;
-      --text-primary: #1A1A1A;
-      --text-secondary: #7A7A7A;
-      --border-color: #D9D9D9;
-      --accent-purple: #7600E6;
-      --accent-purple-light: #AA63ED;
-      --accent-purple-dark: #510A94;
-      --accent-green: #00A370;
-      --accent-blue: #4700E0;
-      --accent-current: var(--accent-purple);
-      --accent-current-soft: rgba(118, 0, 230, 0.12);
+      --bg-main: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.5);
+      --text-primary: #1D1D21;
+      --text-secondary: #7E7E8F;
+      --border-color: rgba(0, 0, 0, 0.06);
+      --accent-green: #00c98b;
+      --accent-purple: #00c98b;
+      --accent-purple-light: #00c98b;
+      --accent-purple-dark: #00a370;
+      --accent-blue: #00c98b;
+      --accent-current: var(--accent-green);
+      --accent-current-soft: rgba(0, 201, 139, 0.08);
       --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     * {
@@ -31,10 +31,8 @@
     }
 
     body {
-      background-color: var(--bg-main) !important;
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(118, 0, 230, 0.06) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(0, 255, 140, 0.05) 0%, transparent 40%) !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
       color: var(--text-primary);
       min-height: 100vh;
       font-family: "Public Sans", system-ui, -apple-system, sans-serif;
@@ -42,71 +40,25 @@
       position: relative;
     }
 
-    /* Ambient background graphics */
-    .aurora-layer {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    #particles-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .aurora-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.45;
-      will-change: transform;
-      mix-blend-mode: multiply;
-    }
-
-    .aurora-blob.b1 {
-      width: 620px; height: 620px;
-      top: -200px; left: -160px;
-      background: radial-gradient(circle, rgba(118, 0, 230, 0.25) 0%, transparent 70%);
-      animation: driftA 22s ease-in-out infinite;
-    }
-
-    .aurora-blob.b2 {
-      width: 560px; height: 560px;
-      bottom: -220px; right: -140px;
-      background: radial-gradient(circle, rgba(0, 255, 140, 0.22) 0%, transparent 70%);
-      animation: driftB 27s ease-in-out infinite;
-    }
-
-    @keyframes driftA {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(40px) scale(1.15); }
-    }
-    @keyframes driftB {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-40px) scale(1.1); }
-    }
-
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: 0;
-      pointer-events: none;
+    /* Ambient background graphics - hidden to match clean landing page */
+    .aurora-layer, #particles-canvas, .grid-overlay {
+      display: none !important;
     }
 
     /* Fixed Top Navbar */
+    .navbar-div {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
     .navbar {
-      background-color: rgba(255, 255, 255, 0.85) !important;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color) !important;
+      background-color: rgba(255, 255, 255, 0.8) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
       height: 80px;
       display: flex;
       align-items: center;
@@ -133,11 +85,16 @@
     }
 
     .navlink {
-      font-size: 14.5px;
-      font-weight: 600;
-      color: var(--text-primary) !important;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1D1D21 !important;
       text-decoration: none;
       transition: color 0.2s ease;
+      letter-spacing: -0.2px;
+    }
+
+    .navlink:hover {
+      color: var(--accent-purple) !important;
     }
 
     /* Profile Container */
@@ -147,15 +104,21 @@
       padding: 0 20px;
       position: relative;
       z-index: 10;
+      perspective: 1000px;
     }
 
     .card-shell {
       position: relative;
-      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.5) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6) !important;
       border-radius: 24px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.6);
       animation: cardEntrance 0.75s var(--ease-premium) both;
       overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.5s var(--ease-premium);
     }
 
     @keyframes cardEntrance {
@@ -163,12 +126,26 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    .profile-card {
+      background: transparent;
+    }
+
     /* Hero Banner Area */
     .hero-banner {
       height: 140px;
-      background: var(--accent-current);
+      background: linear-gradient(135deg, rgba(118, 0, 230, 0.06) 0%, rgba(0, 198, 255, 0.04) 100%) !important;
       position: relative;
-      transition: background-color 0.4s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,0,0,0.01) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
     }
 
     .identity-section {
@@ -178,7 +155,7 @@
       align-items: flex-end;
       gap: 24px;
       margin-top: -64px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
       flex-wrap: wrap;
     }
 
@@ -191,16 +168,16 @@
       width: 110px;
       height: 110px;
       border-radius: 50%;
-      background: var(--bg-card);
-      border: 4px solid var(--bg-card);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      background: #FFFFFF;
+      border: 4px solid #FFFFFF;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 0 20px rgba(118, 0, 230, 0.15);
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 38px;
       font-weight: 800;
       color: var(--accent-current);
-      transition: color 0.4s ease;
+      transition: color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
     .identity-text {
@@ -210,34 +187,135 @@
     }
 
     .display-name {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 800;
-      color: var(--text-primary);
+      color: #1A1A1A;
       margin-bottom: 4px;
       letter-spacing: -0.5px;
     }
 
     .display-email {
       font-size: 14.5px;
-      color: var(--text-secondary);
+      color: #7A7A7A;
       margin-bottom: 8px;
     }
 
     .role-badge {
       display: inline-block;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 99px;
       font-size: 11.5px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
       background: var(--accent-current-soft);
       color: var(--accent-current);
+      border: 1px solid rgba(0, 0, 0, 0.02);
       transition: background-color 0.4s ease, color 0.4s ease;
     }
 
+    /* Actions / Edit Button */
     .header-actions {
       padding-bottom: 8px;
+    }
+
+    /* Details Grid styling */
+    .details-section {
+      padding: 40px 48px;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+      transition: all 0.4s var(--ease-spring);
+      animation: fadeInUp 0.4s var(--ease-premium) both;
+    }
+
+    .detail-item:hover {
+      background: rgba(255, 255, 255, 0.85);
+      border-color: rgba(255, 255, 255, 0.9);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
+    }
+
+    .detail-item.full-width {
+      grid-column: span 2;
+    }
+
+    .detail-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7A7A7A;
+    }
+
+    .detail-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1A1A1A;
+      min-height: 22px;
+      word-break: break-word;
+    }
+
+    .input-field {
+      height: 48px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      padding: 0 16px;
+      font-family: inherit;
+      font-size: 14.5px;
+      background: rgba(255, 255, 255, 0.9) !important;
+      color: #1A1A1A !important;
+      transition: all 0.3s var(--ease-spring);
+      width: 100%;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent-current) !important;
+      box-shadow: 0 0 0 4px var(--accent-current-soft) !important;
+      background: #FFFFFF !important;
+    }
+
+    select.input-field option {
+      background-color: #FFFFFF;
+      color: #1A1A1A;
+    }
+
+    /* Note for Admins */
+    .admin-note {
+      grid-column: span 2;
+      padding: 16px;
+      background: rgba(118, 0, 230, 0.04);
+      border: 1px solid rgba(118, 0, 230, 0.06);
+      border-radius: 12px;
+      color: #7A7A7A;
+      font-size: 13.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    /* Buttons block */
+    .button-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 36px;
+      justify-content: flex-end;
     }
 
     .btn-sm {
@@ -249,13 +327,132 @@
 
     .btn-secondary {
       background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      color: #1A1A1A;
+      transition: all 0.3s ease;
     }
 
     .btn-secondary:hover {
       background: rgba(0, 0, 0, 0.03);
-      border-color: var(--text-primary);
+      border-color: #1A1A1A;
+    }
+
+    .btn-primary {
+      background: var(--accent-current);
+      color: #FFFFFF;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(118, 0, 230, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-purple-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(118, 0, 230, 0.25);
+    }
+
+    /* Back Link styling */
+    .back-nav {
+      display: block;
+      text-align: center;
+      margin-top: 32px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #7A7A7A;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-nav:hover {
+      color: #1A1A1A;
+      transform: translateY(-1px);
+    }
+
+    /* Toast Notification */
+    .toast-notif {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translate(-50%, 40px);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(12px);
+      color: #1A1A1A;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), 0 0 20px rgba(118, 0, 230, 0.05);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s var(--ease-premium), opacity 0.35s var(--ease-premium);
+    }
+
+    .toast-notif.active {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+      .detail-item.full-width, .admin-note {
+        grid-column: span 1;
+      }
+      .identity-section {
+        padding: 0 24px 20px 24px;
+        justify-content: center;
+        text-align: center;
+      }
+      .details-section {
+        padding: 30px 24px;
+      }
+      .avatar {
+        width: 90px; height: 90px;
+        font-size: 32px;
+      }
+    }
+
+    .tabs {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .tab-pill {
+      display: none !important;
+    }
+
+    .tab-btn {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #7E7E8F;
+      cursor: pointer;
+      padding: 12px 4px;
+      position: relative;
+      transition: all 0.3s ease;
+      user-select: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .tab-btn:hover {
+      color: #1D1D21;
+    }
+
+    .tab-btn.active {
+      color: #00c98b;
+      border-bottom: 2px solid #00c98b;
     }
 
     .settings-section {
@@ -265,11 +462,11 @@
 
     .settings-title {
       font-size: 11px;
-      font-weight: 800;
-      color: var(--text-primary);
+      font-weight: 700;
+      color: var(--accent-purple);
       margin: 28px 0 16px 0;
-      letter-spacing: 0.8px;
-      border-bottom: 1px solid var(--border-color);
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       padding-bottom: 8px;
       text-transform: uppercase;
     }
@@ -284,7 +481,15 @@
     .settings-row {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+    }
+
+    .settings-row label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7A7A7A;
     }
 
     .settings-row.full-width {
@@ -302,33 +507,36 @@
     .settings-checkbox-row input[type="checkbox"] {
       width: 18px;
       height: 18px;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #FFFFFF;
+      border-radius: 6px;
       cursor: pointer;
       accent-color: var(--accent-current);
     }
 
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(12px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 600px) {
-      .identity-section {
-        padding: 0 24px 20px 24px;
-        justify-content: center;
-        text-align: center;
-      }
-      .avatar {
-        width: 90px; height: 90px;
-        font-size: 32px;
-      }
-    }
-  </style>
+  
+  /* Exclude Demo/CTA button from hover scale zoom and keep it completely static */
+  .navlink.is-nav-cta,
+  .navlink.is-nav-cta:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+  /* Disable the background sliding pill completely */
+  .hover-bg {
+    display: none !important;
+  }
+  /* Add a subtle zoom animation on hover for navbar links */
+  .navlink {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: inline-block !important;
+  }
+  .navlink:hover {
+    transform: scale(1.05) !important;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Premium Background -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
   <div class="aurora-layer" aria-hidden="true">
     <div class="aurora-blob b1"></div>
@@ -343,13 +551,14 @@
         <a href="index.html" class="brand">
           <div class="logo w-embed" style="display:flex; align-items:center;">
             <svg width="150" height="40" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <text x="10" y="55" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Public Sans', sans-serif" font-weight="900" font-size="56px" fill="#1A1A1A" letter-spacing="-2px">
+              <text x="10" y="55" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Public Sans', sans-serif" font-weight="900" font-size="56px" fill="#1A1A1A" letter-spacing="-2px" class="logo-text">
                 nex<tspan fill="#00A370">Pro</tspan>
               </text>
             </svg>
           </div>
         </a>
         <div class="nav-links-wrap" id="nav-links">
+          <!-- Will be dynamically populated by auth.js -->
           <a href="generate-rfq.html" class="navlink is-login">Workspace</a>
         </div>
       </div>
@@ -358,7 +567,7 @@
 
   <div class="profile-container">
     <div class="card-shell" id="card-shell">
-      <div class="np-profile-card">
+      <div class="profile-card">
         <!-- Colored Hero Banner -->
         <div class="hero-banner" id="hero-banner"></div>
 
@@ -373,60 +582,51 @@
             <span class="role-badge" id="role-badge">Buyer</span>
           </div>
           <div class="header-actions">
-            <button class="np-btn np-btn-outline btn-sm" id="edit-btn" onclick="toggleEditMode()">Edit Profile</button>
-          </div>
+            <button class="btn btn-secondary btn-sm" id="edit-btn" onclick="toggleEditMode()">Edit Profile</button>
         </div>
 
-        <!-- Stats Chips Row -->
-        <div class="np-stat-chip-row" id="stats-row">
-          <!-- Loaded dynamically -->
+        <!-- Tabs Switcher for Profile vs Settings -->
+        <div class="tabs" id="profile-tabs" style="margin: 28px 48px 0px 48px;">
+          <div class="tab-pill" id="profile-tab-pill"></div>
+          <div class="tab-btn active" data-tab="details" onclick="switchProfileTab('details')">My Details</div>
+          <div class="tab-btn" data-tab="settings" onclick="switchProfileTab('settings')">Settings</div>
         </div>
 
-        <!-- Tabs Switcher (Tab 1, Tab 2, Tab 3) -->
-        <div class="np-ptab" id="profile-tabs">
-          <button class="np-ptab-btn active" data-tab="details" onclick="switchProfileTab('details')">My Details</button>
-          <button class="np-ptab-btn" id="second-tab-btn" data-tab="role-tab" onclick="switchProfileTab('role-tab')">Sourcing Preferences</button>
-          <button class="np-ptab-btn" data-tab="security" onclick="switchProfileTab('security')">Security & Preferences</button>
-        </div>
-
-        <!-- Details Grid wrapper -->
-        <div class="np-details-wrapper" id="details-section-wrapper">
+        <!-- Info / Details Grid -->
+        <div class="details-section" id="details-section-wrapper">
           <form id="profile-form" onsubmit="saveProfileChanges(event)">
-            <div class="np-edit-grid" id="details-grid">
-              <!-- Dynamically populated per user role and tab -->
+            <div class="details-grid" id="details-grid">
+              <!-- Dynamically populated per user role -->
             </div>
 
             <!-- Action buttons visible in Edit mode -->
-            <div class="np-edit-actions" id="edit-actions" style="display: none;">
-              <button type="button" class="np-btn np-btn-outline btn-sm" onclick="cancelEditMode()">Cancel</button>
-              <button type="submit" class="np-btn np-btn-dark btn-sm" id="save-btn">
-                <span class="np-spin" aria-hidden="true"></span>
-                <span class="np-btn-label">Save Changes</span>
-              </button>
+            <div class="button-group" id="edit-actions" style="display: none;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEditMode()">Cancel</button>
+              <button type="submit" class="btn btn-primary btn-sm btn-buyer" id="save-btn">Save Changes</button>
             </div>
           </form>
         </div>
 
-        <!-- Security & Preferences Tab Section -->
-        <div class="np-details-wrapper settings-section" id="security-section">
+        <!-- Info / Settings Section -->
+        <div class="details-section settings-section" id="settings-section">
           <!-- Change Password Form -->
           <div class="settings-title">Change Password</div>
           <form id="settings-password-form" onsubmit="handlePasswordChange(event)">
             <div class="settings-grid">
               <div class="settings-row full-width">
                 <label for="old-password">Current Password</label>
-                <input type="password" id="old-password" class="np-field" required placeholder="••••••••" style="max-width: 320px;" />
+                <input type="password" id="old-password" class="input-field" required placeholder="••••••••" style="max-width: 320px;" />
               </div>
               <div class="settings-row">
                 <label for="new-password">New Password</label>
-                <input type="password" id="new-password" class="np-field" required placeholder="••••••••" />
+                <input type="password" id="new-password" class="input-field" required placeholder="••••••••" />
               </div>
               <div class="settings-row">
                 <label for="confirm-new-password">Confirm New Password</label>
-                <input type="password" id="confirm-new-password" class="np-field" required placeholder="••••••••" />
+                <input type="password" id="confirm-new-password" class="input-field" required placeholder="••••••••" />
               </div>
               <div class="settings-row full-width" style="margin-top: 10px;">
-                <button type="submit" class="np-btn np-btn-dark btn-sm" id="change-pass-btn" style="max-width: 180px;">Update Password</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="change-pass-btn" style="max-width: 180px;">Update Password</button>
               </div>
             </div>
           </form>
@@ -436,9 +636,9 @@
           <div class="settings-grid">
             <div class="settings-row">
               <label for="theme-pref">Color Theme</label>
-              <select id="theme-pref" class="np-field" onchange="handleThemePreferenceChange(this.value)">
-                <option value="light">Light Theme (Default)</option>
-                <option value="dark">Dark Theme</option>
+              <select id="theme-pref" class="input-field" onchange="handleThemePreferenceChange(this.value)">
+                <option value="dark">Dark Theme (Default)</option>
+                <option value="light">Light Theme</option>
               </select>
             </div>
             <div class="settings-row full-width" style="margin-top: 10px;">
@@ -452,30 +652,47 @@
               </div>
             </div>
           </div>
+
+          <!-- Your Data & Privacy (DPDP Compliance) -->
+          <div class="settings-title">Your Data &amp; Privacy (DPDP Compliance)</div>
+          <div class="settings-grid">
+            <div class="settings-row full-width" style="margin-top: 10px;">
+              <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 12px;">
+                Under the Digital Personal Data Protection (DPDP) Act, you have the right to access and download your personal data or request deactivation and erasure of your account.
+              </p>
+              <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="downloadMyData()" style="max-width: 220px; background-color: var(--accent-purple);">Download My Data</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="requestAccountDeletion()" style="max-width: 240px; color: var(--accent-red); border-color: var(--accent-red); background: transparent;">Request Account Deletion</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Back to Workspace Nav -->
-    <a href="generate-rfq.html" class="np-link-arrow" id="back-link">← Back to Workspace</a>
+    <a href="generate-rfq.html" class="back-nav" id="back-link">← Back to Workspace</a>
+    <div style="text-align: center; margin-top: 16px; font-size: 13.5px; color: var(--text-secondary);">
+      Data Privacy Officer Contact: <a href="mailto:privacy@nexpro.com" style="color: var(--accent-purple);">privacy@nexpro.com</a> | 
+      Read <a href="privacy-notice.html" target="_blank" style="color: var(--accent-purple);">Privacy Notice</a>
+    </div>
   </div>
 
-  <div id="toast" class="np-toast-notif"></div>
+  <div id="toast" class="toast-notif"></div>
 
   <script src="state.js"></script>
   <script src="auth.js"></script>
-  <script src="assets/app.js"></script>
   <script>
     let isEditMode = false;
     let currentUser = null;
-    let currentTab = 'details';
-    let editBackup = {};
 
     const roleAccents = {
-      buyer: { color: '#7600E6', soft: 'rgba(118, 0, 230, 0.12)', label: 'Buyer' },
-      vendor: { color: '#00A370', soft: 'rgba(63, 122, 84, 0.12)', label: 'Vendor' }
+      buyer: { color: '#00c98b', soft: 'rgba(0, 201, 139, 0.08)', label: 'Buyer' },
+      vendor: { color: '#00c98b', soft: 'rgba(0, 201, 139, 0.08)', label: 'Vendor' },
+      admin: { color: '#00c98b', soft: 'rgba(0, 201, 139, 0.08)', label: 'Admin' }
     };
 
+    // 1. Compute Initials for Avatar
     function getInitials(name, email) {
       if (name && name.trim()) {
         const parts = name.trim().split(/\s+/);
@@ -490,6 +707,7 @@
       return "NP";
     }
 
+    // 2. Load User Profile Details
     function loadProfile() {
       currentUser = getCurrentUser();
       if (!currentUser) {
@@ -497,142 +715,102 @@
         return;
       }
 
-      // Read role from local storage (default to 'buyer' if unset)
-      const role = getNexproRole();
+      // Sync role accent color
+      const role = currentUser.role || 'buyer';
       const accent = roleAccents[role] || roleAccents.buyer;
       document.documentElement.style.setProperty('--accent-current', accent.color);
       document.documentElement.style.setProperty('--accent-current-soft', accent.soft);
       
       const saveBtn = document.getElementById('save-btn');
-      if (saveBtn) saveBtn.className = `np-btn np-btn-dark btn-sm`;
+      saveBtn.className = `btn btn-primary btn-sm btn-${role}`;
 
+      // Bind hero identity information
       document.getElementById('display-email').innerText = currentUser.email;
-      const badge = document.getElementById('role-badge');
-      badge.innerText = accent.label;
-      badge.className = `role-badge ${role}`;
+      document.getElementById('role-badge').innerText = accent.label;
 
       const profile = currentUser.profile || {};
       let name = "";
       if (role === 'buyer') {
         name = profile.fullName || "Jane Doe";
-      } else {
+      } else if (role === 'vendor') {
         name = profile.companyName || "Acme Supplier Inc";
+      } else {
+        name = profile.fullName || "Alex Admin";
       }
 
       document.getElementById('display-name').innerText = name;
       document.getElementById('avatar-initials').innerText = getInitials(name, currentUser.email);
 
-      // Back Link
+      // Handle Back Link destination based on Role
       const backLink = document.getElementById('back-link');
-      backLink.href = 'generate-rfq.html';
-      backLink.className = 'np-link-arrow';
-      backLink.innerText = '← Back to Workspace';
-
-      // Update Tab 2 name
-      const secondTab = document.getElementById('second-tab-btn');
-      if (role === 'buyer') {
-        secondTab.innerText = 'Sourcing Preferences';
+      if (role === 'admin') {
+        backLink.href = 'generate-rfq.html#cumulative-dashboard';
+        backLink.innerText = '← Back to Admin Dashboard';
       } else {
-        secondTab.innerText = 'Business & Payment Info';
+        backLink.href = 'generate-rfq.html';
+        backLink.innerText = '← Back to Workspace';
       }
 
-      renderStatsRow(role);
       renderDetailsGrid();
     }
 
-    function renderStatsRow(role) {
-      const statsRow = document.getElementById('stats-row');
-      statsRow.innerHTML = "";
-      
-      if (role === 'buyer') {
-        statsRow.innerHTML = `
-          <div class="np-stat-chip">
-            <span class="np-stat-label">RFQs Posted</span>
-            <span class="np-stat-val">14</span>
-          </div>
-          <div class="np-stat-chip">
-            <span class="np-stat-label">Active Suppliers</span>
-            <span class="np-stat-val">8</span>
-          </div>
-          <div class="np-stat-chip">
-            <span class="np-stat-label">Total Spend</span>
-            <span class="np-stat-val">$420K</span>
-          </div>
-        `;
-      } else {
-        statsRow.innerHTML = `
-          <div class="np-stat-chip">
-            <span class="np-stat-label">Bids Submitted</span>
-            <span class="np-stat-val">29</span>
-          </div>
-          <div class="np-stat-chip">
-            <span class="np-stat-label">Win Rate</span>
-            <span class="np-stat-val">38%</span>
-          </div>
-          <div class="np-stat-chip">
-            <span class="np-stat-label">Active Contracts</span>
-            <span class="np-stat-val">5</span>
-          </div>
-        `;
-      }
-    }
-
+    // 3. Render grid elements (read-only vs edit inputs)
     function renderDetailsGrid() {
       const grid = document.getElementById('details-grid');
       grid.innerHTML = "";
       const profile = currentUser.profile || {};
-      const role = getNexproRole();
+      const role = currentUser.role || 'buyer';
 
-      if (currentTab === 'details') {
-        if (role === 'buyer') {
-          grid.innerHTML = `
-            ${renderField('Full Name', 'fullName', profile.fullName || '', 'b-name', true)}
-            ${renderField('Designation / Job Title', 'designation', profile.designation || '', 'b-title', true)}
-            ${renderField('Company Name', 'companyName', profile.companyName || '', 'b-company', true)}
-            ${renderField('Department', 'department', profile.department || '', 'b-dept', true)}
-            ${renderField('Phone Number', 'phone', profile.phone || '', 'b-phone', true)}
-          `;
-        } else {
-          grid.innerHTML = `
-            ${renderField('Full Name', 'fullName', profile.fullName || '', 'v-contact', true)}
-            ${renderField('Business Name', 'companyName', profile.companyName || '', 'v-company', true)}
-            ${renderField('GST / Tax ID', 'gstin', profile.gstin || '', 'v-gst', true)}
-            ${renderField('Industry Category', 'category', profile.category || '', 'v-category', true)}
-            ${renderField('Phone Number', 'phone', profile.phone || '', 'v-phone', true)}
-          `;
-        }
-      } else if (currentTab === 'role-tab') {
-        if (role === 'buyer') {
-          grid.innerHTML = `
-            ${renderField('City', 'city', profile.city || '', 'b-city', true)}
-            ${renderField('Country', 'country', profile.country || '', 'b-country', true)}
-            ${renderField('Business Address', 'address', profile.address || '', 'b-address', true, true)}
-          `;
-        } else {
-          grid.innerHTML = `
-            ${renderField('Warehouse Location', 'warehouseLocation', profile.warehouseLocation || '', 'v-warehouse', true)}
-            ${renderField('Country', 'country', profile.country || '', 'v-country', true)}
-            ${renderField('Bank / Payment Details', 'paymentDetails', profile.paymentDetails || '', 'v-payment', true, true)}
-          `;
-        }
+      if (role === 'buyer') {
+        grid.innerHTML = `
+          ${renderField('Full Name', 'fullName', profile.fullName || '', 'b-name', true)}
+          ${renderField('Designation / Job Title', 'designation', profile.designation || '', 'b-title', true)}
+          ${renderField('Company Name', 'companyName', profile.companyName || '', 'b-company', true)}
+          ${renderField('Department', 'department', profile.department || '', 'b-dept', true)}
+          ${renderField('Phone Number', 'phone', profile.phone || '', 'b-phone', true)}
+          ${renderField('City', 'city', profile.city || '', 'b-city', true)}
+          ${renderField('Country', 'country', profile.country || '', 'b-country', true)}
+          ${renderField('Business Address', 'address', profile.address || '', 'b-address', true, true)}
+        `;
+      } else if (role === 'vendor') {
+        grid.innerHTML = `
+          ${renderField('Company / Business Name', 'companyName', profile.companyName || '', 'v-company', true)}
+          ${renderField('Contact Person Name', 'contactName', profile.contactName || '', 'v-contact', true)}
+          ${renderField('Product / Service Category', 'category', profile.category || '', 'v-category', true)}
+          ${renderField('Phone Number', 'phone', profile.phone || '', 'v-phone', true)}
+          ${renderField('GSTIN / Tax ID', 'gstin', profile.gstin || '', 'v-gst', true)}
+          ${renderField('City', 'city', profile.city || '', 'v-city', true)}
+          ${renderField('Website', 'website', profile.website || '', 'v-website', false)}
+          ${renderField('Business Address', 'address', profile.address || '', 'v-address', true, true)}
+        `;
+      } else if (role === 'admin') {
+        grid.innerHTML = `
+          ${renderField('Full Name', 'fullName', profile.fullName || '', 'a-name', true)}
+          ${renderField('Phone Number', 'phone', profile.phone || '', 'a-phone', true)}
+          <div class="admin-note">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-purple);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Admin accounts only store basic contact details.</span>
+          </div>
+        `;
       }
     }
 
+    // Helper: generate HTML snippet for a profile field
     function renderField(label, key, val, id, isRequired, isFullWidth = false) {
       const fullWidthClass = isFullWidth ? 'full-width' : '';
       if (isEditMode) {
         const reqAttr = isRequired ? 'required' : '';
         return `
-          <div class="np-field-row ${fullWidthClass}">
+          <div class="detail-item ${fullWidthClass}">
             <label for="${id}">${label}</label>
-            <input type="text" id="${id}" data-key="${key}" class="np-field" value="${escapeHTML(val)}" ${reqAttr} />
+            <input type="text" id="${id}" data-key="${key}" class="input-field" value="${escapeHTML(val)}" ${reqAttr} />
           </div>
         `;
       } else {
         return `
-          <div class="np-info-row ${fullWidthClass}">
-            <label>${label}</label>
-            <span class="np-value">${escapeHTML(val) || '—'}</span>
+          <div class="detail-item ${fullWidthClass}">
+            <span class="detail-label">${label}</span>
+            <span class="detail-value">${escapeHTML(val) || '—'}</span>
           </div>
         `;
       }
@@ -643,53 +821,34 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
+    // 4. Toggle Edit Mode
     function toggleEditMode() {
-      // Create clean deep copy back up of the fields in currentUser state
-      const profile = currentUser.profile || {};
-      editBackup = JSON.parse(JSON.stringify(profile));
-
+      isEditMode = true;
       document.getElementById('edit-btn').style.display = 'none';
       document.getElementById('edit-actions').style.display = 'flex';
-
-      const grid = document.getElementById('details-grid');
-      grid.style.opacity = 0;
-      grid.style.transform = 'translateY(8px)';
-      
-      setTimeout(() => {
-        isEditMode = true;
-        renderDetailsGrid();
-        grid.offsetHeight;
-        grid.style.opacity = 1;
-        grid.style.transform = 'translateY(0)';
-      }, 190);
+      renderDetailsGrid();
     }
 
     function cancelEditMode() {
-      // Revert edit backup to global state in memory
-      currentUser.profile = JSON.parse(JSON.stringify(editBackup));
-
+      isEditMode = false;
       document.getElementById('edit-btn').style.display = 'block';
       document.getElementById('edit-actions').style.display = 'none';
-
-      const grid = document.getElementById('details-grid');
-      grid.style.opacity = 0;
-      grid.style.transform = 'translateY(-8px)';
-      
-      setTimeout(() => {
-        isEditMode = false;
-        renderDetailsGrid();
-        grid.offsetHeight;
-        grid.style.opacity = 1;
-        grid.style.transform = 'translateY(0)';
-      }, 190);
+      renderDetailsGrid();
     }
 
+    function showToastNotification(text) {
+      const toast = document.getElementById('toast');
+      toast.innerText = text;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 4000);
+    }
+
+    // 5. Save Changes back to state
     function saveProfileChanges(e) {
       e.preventDefault();
       
-      const saveBtn = document.getElementById('save-btn');
-      saveBtn.classList.add('np-loading');
-
       const profile = currentUser.profile || {};
       const inputs = document.querySelectorAll('#profile-form input');
       
@@ -700,141 +859,128 @@
         }
       });
 
-      // Update mock db user
+      // Update matching user object inside users array
       const userIndex = window.appState.users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase() && u.role === currentUser.role);
       if (userIndex !== -1) {
         window.appState.users[userIndex].profile = profile;
         currentUser.profile = profile;
         
+        // Save current user updates
         setCurrentUser(currentUser);
         saveGlobalState();
-      }
-
-      setTimeout(() => {
-        saveBtn.classList.remove('np-loading');
         
+        // Exit edit mode and reload
+        isEditMode = false;
         document.getElementById('edit-btn').style.display = 'block';
         document.getElementById('edit-actions').style.display = 'none';
         
-        const grid = document.getElementById('details-grid');
-        grid.style.opacity = 0;
-        grid.style.transform = 'translateY(-8px)';
-        
-        setTimeout(() => {
-          isEditMode = false;
-          loadProfile();
-          grid.offsetHeight;
-          grid.style.opacity = 1;
-          grid.style.transform = 'translateY(0)';
-          showToast("Profile updated successfully");
-        }, 190);
-      }, 600);
-    }
-
-    function switchProfileTab(tab) {
-      currentTab = tab;
-      
-      document.querySelectorAll('#profile-tabs .np-ptab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.querySelector(`#profile-tabs .np-ptab-btn[data-tab="${tab}"]`);
-      if (activeBtn) activeBtn.classList.add('active');
-
-      const detailsSection = document.getElementById('details-section-wrapper');
-      const securitySection = document.getElementById('security-section');
-      const editBtn = document.getElementById('edit-btn');
-
-      if (tab === 'details' || tab === 'role-tab') {
-        detailsSection.style.display = 'block';
-        securitySection.style.display = 'none';
-        editBtn.style.display = isEditMode ? 'none' : 'block';
-
-        const grid = document.getElementById('details-grid');
-        grid.style.opacity = 0;
-        setTimeout(() => {
-          renderDetailsGrid();
-          grid.offsetHeight;
-          grid.style.opacity = 1;
-        }, 150);
+        loadProfile();
+        showToastNotification("Profile updated successfully");
       } else {
-        detailsSection.style.display = 'none';
-        securitySection.style.display = 'block';
-        editBtn.style.display = 'none';
-        if (isEditMode) cancelEditMode();
+        console.error("Failed to update user profile in global users list");
       }
     }
 
-    function handlePasswordChange(e) {
+    // 6. Sub-tab Profile vs Settings Switcher
+    function moveProfileTabPill(tab) {
+      const tabs = document.getElementById('profile-tabs');
+      const pill = document.getElementById('profile-tab-pill');
+      const target = tabs.querySelector(`.tab-btn[data-tab="${tab}"]`);
+      if (!pill || !target) return;
+      const index = Array.from(tabs.querySelectorAll('.tab-btn')).indexOf(target);
+      pill.style.transform = `translateX(${index * 100}%)`;
+    }
+
+    function switchProfileTab(tab) {
+      document.querySelectorAll('#profile-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`#profile-tabs .tab-btn[data-tab="${tab}"]`).classList.add('active');
+      moveProfileTabPill(tab);
+
+      const detailsSection = document.getElementById('details-section-wrapper');
+      const settingsSection = document.getElementById('settings-section');
+      const editBtn = document.getElementById('edit-btn');
+
+      if (tab === 'details') {
+        detailsSection.style.display = 'block';
+        settingsSection.style.display = 'none';
+        editBtn.style.display = isEditMode ? 'none' : 'block';
+      } else {
+        detailsSection.style.display = 'none';
+        settingsSection.style.display = 'block';
+        editBtn.style.display = 'none';
+        if (isEditMode) cancelEditMode();
+      }
+      hideMessage();
+    }
+
+    function hideMessage() {
+      // Empty helper for compatibility
+    }
+
+    // 7. Settings Handlers
+    async function handlePasswordChange(e) {
       e.preventDefault();
 
       const oldPass = document.getElementById('old-password').value;
       const newPass = document.getElementById('new-password').value;
       const confirmNewPass = document.getElementById('confirm-new-password').value;
 
-      if (currentUser.password !== oldPass) {
-        showToast("Current password does not match.");
-        return;
-      }
       if (newPass !== confirmNewPass) {
-        showToast("New passwords do not match.");
+        showToastNotification("Passwords do not match.");
         return;
       }
       if (newPass.length < 6) {
-        showToast("New password must be at least 6 characters.");
+        showToastNotification("New password must be at least 6 characters.");
         return;
       }
 
-      // Update password inside users array and state
-      const userIndex = window.appState.users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase() && u.role === currentUser.role);
-      if (userIndex !== -1) {
-        window.appState.users[userIndex].password = newPass;
-        currentUser.password = newPass;
+      try {
+        const updatedUser = await syncProfileToDatabase(currentUser.email, null, null, newPass, oldPass);
+        if (updatedUser) {
+          currentUser.password = newPass;
+          setCurrentUser(currentUser);
+          document.getElementById('settings-password-form').reset();
+          showToastNotification("Password updated successfully");
+        } else {
+          showToastNotification("Failed to update password.");
+        }
+      } catch (error) {
+        showToastNotification(error.message || "Failed to update password.");
+      }
+    }
 
-        setCurrentUser(currentUser);
-        saveGlobalState();
+    async function downloadMyData() {
+      try {
+        window.location.href = `${API_URL}/users/me/export?email=${encodeURIComponent(currentUser.email)}`;
+        showToastNotification("Data export initiated.");
+      } catch (err) {
+        showToastNotification("Failed to export data: " + err.message);
+      }
+    }
 
-        document.getElementById('settings-password-form').reset();
-        showToast("Password updated successfully");
+    async function requestAccountDeletion() {
+      const confirmDelete = confirm("Are you sure you want to request deactivation and deletion of your account? This request will be submitted to the administrator for verification and anonymization.");
+      if (!confirmDelete) return;
+
+      try {
+        const response = await fetch(`${API_URL}/users/me/delete-request`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentUser.email })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          showToastNotification("Deletion request submitted successfully.");
+        } else {
+          showToastNotification(data.message || "Failed to submit request.");
+        }
+      } catch (err) {
+        showToastNotification("Failed to request deletion: " + err.message);
       }
     }
 
     function handleThemePreferenceChange(value) {
-      if (value === 'dark') {
-        document.body.classList.add('dark-theme-override');
-        if (!document.getElementById('dark-theme-styles')) {
-          const styles = document.createElement('style');
-          styles.id = 'dark-theme-styles';
-          styles.innerHTML = `
-            body.dark-theme-override {
-              background-color: #121212 !important;
-              color: #E5E5E5 !important;
-            }
-            body.dark-theme-override .np-profile-card {
-              background: rgba(26, 26, 26, 0.85) !important;
-              border-color: rgba(255, 255, 255, 0.1) !important;
-            }
-            body.dark-theme-override .display-name,
-            body.dark-theme-override .np-value,
-            body.dark-theme-override label,
-            body.dark-theme-override .settings-title {
-              color: #E5E5E5 !important;
-            }
-            body.dark-theme-override .np-field {
-              background: rgba(40, 40, 40, 0.95) !important;
-              color: #E5E5E5 !important;
-              border-color: rgba(255, 255, 255, 0.15) !important;
-            }
-            body.dark-theme-override .np-stat-chip {
-              background: #252525 !important;
-              border-color: #333 !important;
-            }
-            body.dark-theme-override .np-stat-val {
-              color: #FFF !important;
-            }
-          `;
-          document.head.appendChild(styles);
-        }
-      } else {
-        document.body.classList.remove('dark-theme-override');
-      }
+      document.body.classList.remove('dark-theme-override');
       savePreferences();
     }
 
@@ -844,7 +990,7 @@
       const systemNotifications = document.getElementById('sys-notif-pref').checked;
 
       currentUser.preferences = {
-        theme,
+        theme: 'light',
         emailNotifications,
         systemNotifications
       };
@@ -857,78 +1003,51 @@
       }
     }
 
+    // Initialize profile bindings
     document.addEventListener('DOMContentLoaded', () => {
       loadProfile();
 
+      // Bind saved preference values
+      document.getElementById('theme-pref').value = 'light';
+      handleThemePreferenceChange('light');
       const prefs = currentUser.preferences || {};
-      if (prefs.theme) {
-        document.getElementById('theme-pref').value = prefs.theme;
-        handleThemePreferenceChange(prefs.theme);
-      }
       document.getElementById('email-notif-pref').checked = (prefs.emailNotifications !== false);
       document.getElementById('sys-notif-pref').checked = (prefs.systemNotifications !== false);
 
+      // Check query parameter prompt_edit
       const params = new URLSearchParams(window.location.search);
       if (params.get('prompt_edit') === 'true') {
         toggleEditMode();
         setTimeout(() => {
-          showToast("Please complete your profile details to proceed.");
+          showToastNotification("Please complete your profile details to proceed.");
         }, 400);
       }
+
+      // Add 3D Tilt Card effect
+      const card = document.getElementById('card-shell');
+      if (card) {
+        card.addEventListener('mousemove', (e) => {
+          if (isEditMode) return;
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = ((centerY - y) / centerY) * 4; 
+          const rotateY = ((x - centerX) / centerX) * 4;
+          
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px) scale(1.005)`;
+          card.style.transition = 'transform 0.1s ease-out';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)`;
+          card.style.transition = 'transform 0.5s ease';
+        });
+      }
     });
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Starfield canvas particles
-    (function initParticles() {
-      const canvas = document.getElementById('particles-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let w, h, particles;
-      let mouseX = 0, mouseY = 0;
-
-      function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-        const count = Math.min(110, Math.floor((w * h) / 14000));
-        particles = Array.from({ length: count }, () => ({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.random() * 1.6 + 0.4,
-          baseAlpha: Math.random() * 0.5 + 0.2,
-          twinkleSpeed: Math.random() * 0.015 + 0.005,
-          phase: Math.random() * Math.PI * 2,
-          depth: Math.random() * 0.6 + 0.2
-        }));
-      }
-
-      function draw(t) {
-        ctx.clearRect(0, 0, w, h);
-        for (const p of particles) {
-          const alpha = p.baseAlpha * (0.6 + 0.4 * Math.sin(t * p.twinkleSpeed + p.phase));
-          const offsetX = (mouseX - w / 2) * p.depth * 0.02;
-          const offsetY = (mouseY - h / 2) * p.depth * 0.02;
-          ctx.beginPath();
-          ctx.arc(p.x + offsetX, p.y + offsetY, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(118, 0, 230, ${alpha * 0.6})`;
-          ctx.fill();
-        }
-        requestAnimationFrame(draw);
-      }
-
-      window.addEventListener('resize', resize);
-      window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      });
-
-      resize();
-      if (!prefersReducedMotion) {
-        requestAnimationFrame(draw);
-      } else {
-        draw(0);
-      }
-    })();
   </script>
 </body>
 </html>

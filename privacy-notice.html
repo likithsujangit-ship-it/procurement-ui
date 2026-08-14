@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Privacy Notice | nexPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.prod.website-files.com/6974c3dfc9de89aed672a42c/css/fairmarkit26.webflow.shared.4c1cb15cc.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root {
+      --bg-main: #F3F3F3;
+      --bg-card: #FFFFFF;
+      --text-primary: #1A1A1A;
+      --text-secondary: #7A7A7A;
+      --border-color: #D9D9D9;
+      --accent-purple: #7600E6;
+      --accent-purple-light: #AA63ED;
+      --accent-purple-dark: #510A94;
+      --accent-orange: #FF6400;
+      --accent-yellow: #FFCF21;
+      --accent-green: #00A370;
+      --accent-red: #FF0E56;
+      --accent-blue: #4700E0;
+      --accent-lightblue: #00C6FF;
+      --error-color: #FF0E56;
+      --accent-current: var(--accent-purple);
+      --accent-current-soft: rgba(118, 0, 230, 0.12);
+      --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      background-color: var(--bg-main) !important;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(118, 0, 230, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 255, 140, 0.05) 0%, transparent 40%) !important;
+      color: var(--text-primary);
+      min-height: 100vh;
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background graphics */
+    .aurora-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.45;
+      will-change: transform;
+      mix-blend-mode: multiply;
+    }
+
+    .aurora-blob.b1 {
+      width: 620px; height: 620px;
+      top: -200px; left: -160px;
+      background: radial-gradient(circle, rgba(118, 0, 230, 0.25) 0%, transparent 70%);
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Fixed Top Navbar */
+    .navbar-div {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color) !important;
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .container.nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      text-decoration: none;
+    }
+
+    .nav-links-wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .navlink {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-primary) !important;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .navlink:hover {
+      color: var(--accent-purple) !important;
+    }
+
+    /* Main Container */
+    .privacy-container {
+      max-width: 800px;
+      margin: 140px auto 80px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card-shell {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.05);
+      padding: 48px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-primary);
+    }
+
+    .logo-highlight {
+      color: var(--accent-green);
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+      border-left: 4px solid var(--accent-purple);
+      padding-left: 12px;
+    }
+
+    p, li {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #333333;
+      margin-bottom: 16px;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    .footer a {
+      color: var(--accent-purple);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  
+  /* Exclude Demo/CTA button from hover scale zoom and keep it completely static */
+  .navlink.is-nav-cta,
+  .navlink.is-nav-cta:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+  /* Disable the background sliding pill completely */
+  .hover-bg {
+    display: none !important;
+  }
+  /* Add a subtle zoom animation on hover for navbar links */
+  .navlink {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: inline-block !important;
+  }
+  .navlink:hover {
+    transform: scale(1.05) !important;
+  }
+</style>
+</head>
+<body>
+
+  <div class="aurora-layer" aria-hidden="true">
+    <div class="aurora-blob b1"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Shared Top Navbar -->
+  <div class="navbar-div">
+    <div role="banner" class="navbar w-nav">
+      <div class="container nav">
+        <a href="index.html" class="brand">
+          <div class="logo w-embed" style="display:flex; align-items:center;">
+            <svg width="150" height="40" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="10" y="55" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Public Sans', sans-serif" font-weight="900" font-size="56px" fill="#1A1A1A" letter-spacing="-2px">
+                nex<tspan fill="#00A370">Pro</tspan>
+              </text>
+            </svg>
+          </div>
+        </a>
+        <div class="nav-links-wrap">
+          <a href="index.html" class="navlink">Home</a>
+          <a href="login.html" class="navlink">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="privacy-container">
+    <div class="card-shell">
+      <div class="logo-wrap">
+        <div class="logo-text">nex<span class="logo-highlight">Pro</span> Sourcing</div>
+      </div>
+      <h1>Privacy Notice & Consent Policy</h1>
+      <p><em>Last Updated: August 10, 2026</em></p>
+      <p>
+        In accordance with the <strong>Digital Personal Data Protection (DPDP) Act, 2023 (India)</strong>, this Privacy Notice explains how nexPro Sourcing collects, stores, processes, and manages personal data of Buyers and Vendor contacts onboarding onto our B2B procurement platform.
+      </p>
+
+      <h2>1. What Personal Data We Collect</h2>
+      <p>We only collect personal data that is necessary for executing sourcing workflows and user onboarding. This includes:</p>
+      <ul>
+        <li><strong>Account Registration details:</strong> Work email address, full name, phone number, physical business address, and hashed passwords.</li>
+        <li><strong>Supplier / Contact Details:</strong> Contact person name, business designation/job title, contact phone number, alternative phone, GSTIN / Tax ID, and bank account information (for billing and transaction routing).</li>
+        <li><strong>Sourcing Response data:</strong> Bid specifications, technical/commercial metrics, and uploaded RFQ documentation.</li>
+      </ul>
+
+      <h2>2. Purpose of Data Processing</h2>
+      <p>We process your personal data solely for B2B procurement operations, including:</p>
+      <ul>
+        <li>Configuring buyer RFQ templates and sending digital sourcing invites.</li>
+        <li>Onboarding vendor businesses and mapping product categories.</li>
+        <li>Generating dynamic binary PDF criteria sheets and dispatching emails.</li>
+        <li>Providing performance analytics and historical reporting.</li>
+      </ul>
+
+      <h2>3. Data Retention Policy</h2>
+      <p>
+        We store personal data for as long as your account remains active on the nexPro platform, or as required for historical compliance and audit logging. If an account is deactivated or deleted, personal data fields are permanently scrubbed/anonymized, while transaction and bidding history records are retained in an aggregate, non-identifiable format to preserve historical auditing trails.
+      </p>
+
+      <h2>4. Data Principal Rights</h2>
+      <p>As a Data Principal under the DPDP Act, you have the following rights:</p>
+      <ul>
+        <li><strong>Right to Access:</strong> You can download a complete summary of your personal data stored on the platform at any time from your Profile page.</li>
+        <li><strong>Right to Correction & Erasure:</strong> You can update your profile details or request the soft-deletion/anonymization of your account details.</li>
+        <li><strong>Right to Withdraw Consent:</strong> You can withdraw your consent for future processing at any time.</li>
+      </ul>
+
+      <h2>5. Consent Withdrawal & Contact Channel</h2>
+      <p>
+        If you wish to withdraw your consent, initiate a data request, or file a complaint regarding personal data handling, please contact our designated Grievance Officer:
+      </p>
+      <p>
+        <strong>Email:</strong> <a href="mailto:privacy@nexpro.com">privacy@nexpro.com</a><br/>
+        <strong>Data Privacy Response Team, nexPro Sourcing Division</strong>
+      </p>
+
+      <div class="footer">
+        <p>&copy; 2026 nexPro Sourcing. All rights reserved. | <a href="login.html">Return to Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="state.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
