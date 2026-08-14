@@ -1,0 +1,28 @@
+{
+  "name": "rfq-solar-system",
+  "version": "1.0.0",
+  "description": "3D Solar System Hero Component",
+  "main": "solar-system/SolarSystemSection.jsx",
+  "scripts": {
+    "build": "esbuild solar-system/SolarSystemSection.jsx --bundle --minify --outfile=rfq3d/solar-system-section.bundle.js --loader:.jsx=jsx"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.109.2",
+    "@react-three/fiber": "^8.16.8",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "gsap": "^3.12.5",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.1",
+    "nodemailer": "^9.0.4",
+    "pdfkit": "^0.19.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.166.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  }
+}

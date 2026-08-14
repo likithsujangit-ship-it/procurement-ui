@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
@@ -17,12 +18,73 @@ function isFakeEmail(email) {
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Cookie parsing helper
+function getCookie(req, name) {
+  const cookies = req.headers.cookie;
+  if (!cookies) return null;
+  const pair = cookies.split(';').map(c => c.trim()).find(c => c.startsWith(name + '='));
+  return pair ? pair.split('=')[1] : null;
+}
+
+// Authentication & Role Middlewares
+const requireAuth = (req, res, next) => {
+  const token = getCookie(req, 'token');
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized. Please login.' });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+    req.user = decoded;
+    next();
+  } catch (err) {
+    res.clearCookie('token');
+    return res.status(401).json({ message: 'Session expired. Please login again.' });
+  }
+};
+
+const requireRole = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Forbidden. Access denied.' });
+    }
+    next();
+  };
+};
+
+const requireHtmlAuth = (roles = []) => {
+  return (req, res, next) => {
+    const token = getCookie(req, 'token');
+    if (!token) {
+      return res.redirect('/login.html');
+    }
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+      req.user = decoded;
+      if (roles.length > 0 && !roles.includes(decoded.role)) {
+        return res.redirect(decoded.role === 'vendor' ? '/vendor.html' : '/generate-rfq.html');
+      }
+      next();
+    } catch (err) {
+      res.clearCookie('token');
+      return res.redirect('/login.html');
+    }
+  };
+};
+
 const path = require('path');
-app.use(express.static(path.join(__dirname, '.')));
+// Serve genuinely static assets
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/rfq3d', express.static(path.join(__dirname, 'rfq3d')));
+app.use('/solar-system', express.static(path.join(__dirname, 'solar-system')));
+
+// Serve global shared JS files
+app.get('/auth.js', (req, res) => res.sendFile(path.join(__dirname, 'auth.js')));
+app.get('/state.js', (req, res) => res.sendFile(path.join(__dirname, 'state.js')));
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nexpro';
@@ -312,7 +374,27 @@ app.post('/api/auth/signup', async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully.', user: newUser });
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET || 'fallback-secret-key',
+      { expiresIn: '24h' }
+    );
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, // Set to true if running under https
+      sameSite: 'strict',
+      maxAge: 86400000
+    });
+    res.status(201).json({
+      message: 'User created successfully.',
+      user: {
+        email: newUser.email,
+        role: newUser.role,
+        onboarded: newUser.onboarded,
+        profile: newUser.profile,
+        preferences: newUser.preferences
+      }
+    });
   } catch (error) {
     console.error('Signup error:', error);
     if (error.code === 11000) {
@@ -323,6 +405,31 @@ app.post('/api/auth/signup', async (req, res) => {
 });
 
 // 2. Login Route
+// 2a. Logout Route
+app.post('/api/auth/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logged out successfully.' });
+});
+
+// 2b. Current User Route
+app.get('/api/auth/me', requireAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    res.json({
+      email: user.email,
+      role: user.role,
+      onboarded: user.onboarded,
+      profile: user.profile,
+      preferences: user.preferences
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching session.', error: error.message });
+  }
+});
+
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -342,6 +449,17 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ message: 'Incorrect password.' });
     }
 
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'fallback-secret-key',
+      { expiresIn: '24h' }
+    );
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, // Set to true if running under https
+      sameSite: 'strict',
+      maxAge: 86400000
+    });
     res.json({
       message: 'Login successful.',
       user: {
@@ -359,9 +477,10 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // 3. Update Profile Route
-app.put('/api/users/profile', async (req, res) => {
+app.put('/api/users/profile', requireAuth, async (req, res) => {
   try {
-    const { email, profile, preferences, password, oldPassword } = req.body;
+    const { profile, preferences, password, oldPassword } = req.body;
+    const email = req.user.email;
     
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
@@ -409,7 +528,7 @@ app.put('/api/users/profile', async (req, res) => {
 });
 
 // 4. Suppliers Route
-app.get('/api/suppliers', async (req, res) => {
+app.get('/api/suppliers', requireAuth, async (req, res) => {
   try {
     const suppliers = await Supplier.find({});
     const vendorUsers = await User.find({ role: 'vendor' });
@@ -429,7 +548,7 @@ app.get('/api/suppliers', async (req, res) => {
   }
 });
 
-app.post('/api/suppliers/bulk', async (req, res) => {
+app.post('/api/suppliers/bulk', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { suppliers } = req.body;
     if (!suppliers || !Array.isArray(suppliers)) {
@@ -453,7 +572,7 @@ app.post('/api/suppliers/bulk', async (req, res) => {
 });
 
 // F12: Supplier Performance History
-app.get('/api/suppliers/:id/performance', async (req, res) => {
+app.get('/api/suppliers/:id/performance', requireAuth, async (req, res) => {
   try {
     const supplier = await Supplier.findOne({ id: req.params.id });
     if (!supplier) {
@@ -510,7 +629,7 @@ app.get('/api/suppliers/:id/performance', async (req, res) => {
 const inviteCooldowns = new Map(); // supplierId -> last invite timestamp (ms)
 const INVITE_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
 
-app.post('/api/suppliers/:id/invite', async (req, res) => {
+app.post('/api/suppliers/:id/invite', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const supplier = await Supplier.findOne({ id: req.params.id });
     if (!supplier) {
@@ -615,7 +734,7 @@ app.get('/api/rfqs', async (req, res) => {
   }
 });
 
-app.post('/api/rfqs/bulk', async (req, res) => {
+app.post('/api/rfqs/bulk', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { rfqs, buyerEmail } = req.body;
     if (!rfqs || !Array.isArray(rfqs)) {
@@ -660,7 +779,7 @@ app.post('/api/rfqs/bulk', async (req, res) => {
 // Security: role is looked up server-side from the User record for the given email,
 // rather than trusted from a client-supplied "role" query param (which any caller
 // could set to anything and bypass the check entirely).
-app.get('/api/rfqs/:id/versions', async (req, res) => {
+app.get('/api/rfqs/:id/versions', requireAuth, async (req, res) => {
   try {
     const rfq = await RFQ.findOne({ id: req.params.id });
     if (!rfq) {
@@ -695,7 +814,7 @@ app.get('/api/responses', async (req, res) => {
     if (req.query.vendorEmail) {
       const email = req.query.vendorEmail.toLowerCase();
       // Find the supplier ID for this email if any
-      const supplier = await SupplierModel.findOne({ email: email });
+      const supplier = await Supplier.findOne({ email: email });
       const supplierId = supplier ? supplier.id : null;
 
       query.$or = [
@@ -727,7 +846,7 @@ app.get('/api/responses/archived', async (req, res) => {
   }
 });
 
-app.post('/api/responses/bulk', async (req, res) => {
+app.post('/api/responses/bulk', requireAuth, requireRole('vendor'), async (req, res) => {
   try {
     const { responses } = req.body;
     if (!responses || !Array.isArray(responses)) {
@@ -766,7 +885,7 @@ app.post('/api/responses/bulk', async (req, res) => {
 });
 
 // 7. AI Sourcing Agent Extraction Route
-app.post('/api/responses/extract', async (req, res) => {
+app.post('/api/responses/extract', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { templateId, files } = req.body;
     if (!files || !Array.isArray(files)) {
@@ -1023,7 +1142,7 @@ app.post('/api/responses/extract', async (req, res) => {
   }
 });
 
-app.post('/api/rfqs/draft-prompt', async (req, res) => {
+app.post('/api/rfqs/draft-prompt', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { promptText, category, rfqName } = req.body;
     if (!promptText) {
@@ -1138,7 +1257,7 @@ app.post('/api/rfqs/draft-prompt', async (req, res) => {
 });
 
 // 8. AI RFQ Document Field Extractor Route
-app.post('/api/rfqs/parse-fields', async (req, res) => {
+app.post('/api/rfqs/parse-fields', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { rfqText, category, rfqName } = req.body;
     if (!rfqText) {
@@ -1212,7 +1331,7 @@ app.post('/api/rfqs/parse-fields', async (req, res) => {
 });
 
 // Email Agent Routes
-app.post('/api/email/draft', async (req, res) => {
+app.post('/api/email/draft', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { rfqName, category, suppliers, attachments, toneDirectives } = req.body;
     if (!rfqName) {
@@ -1342,7 +1461,7 @@ function generateRFQPDFBuffer(templateName, templateFields, category) {
 }
 
 
-app.post('/api/email/send', async (req, res) => {
+app.post('/api/email/send', requireAuth, requireRole('buyer', 'admin'), async (req, res) => {
   try {
     const { suppliers, subject, body, attachments, templateName, templateFields, category } = req.body;
     if (!suppliers || !Array.isArray(suppliers) || suppliers.length === 0) {
@@ -1483,9 +1602,9 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // =============================================================
 
 // A. Export personal data log
-app.get('/api/users/me/export', async (req, res) => {
+app.get('/api/users/me/export', requireAuth, async (req, res) => {
   try {
-    const { email } = req.query;
+    
     if (!email) {
       return res.status(400).json({ message: 'Email query parameter is required.' });
     }
@@ -1556,9 +1675,9 @@ app.get('/api/users/me/export', async (req, res) => {
 });
 
 // B. Request Account Deletion (soft delete)
-app.post('/api/users/me/delete-request', async (req, res) => {
+app.post('/api/users/me/delete-request', requireAuth, async (req, res) => {
   try {
-    const { email } = req.body;
+    const email = req.user.email;
     if (!email) {
       return res.status(400).json({ message: 'Email is required.' });
     }
@@ -1589,7 +1708,7 @@ app.post('/api/users/me/delete-request', async (req, res) => {
 });
 
 // C. Admin List Deletion Requests
-app.get('/api/admin/data-requests', async (req, res) => {
+app.get('/api/admin/data-requests', requireAuth, requireRole('admin'), async (req, res) => {
   try {
     const { email } = req.query;
     const adminUser = await User.findOne({ email: email ? email.toLowerCase() : '' });
@@ -1605,9 +1724,9 @@ app.get('/api/admin/data-requests', async (req, res) => {
 });
 
 // D. Admin Approve Deletion (scrub details, preserve records)
-app.post('/api/admin/data-requests/:id/approve', async (req, res) => {
+app.post('/api/admin/data-requests/:id/approve', requireAuth, requireRole('admin'), async (req, res) => {
   try {
-    const { adminEmail } = req.body;
+    
     const adminUser = await User.findOne({ email: adminEmail ? adminEmail.toLowerCase() : '' });
     if (!adminUser || adminUser.role !== 'admin') {
       return res.status(403).json({ message: 'Admin access only.' });
@@ -1663,7 +1782,7 @@ app.post('/api/admin/data-requests/:id/approve', async (req, res) => {
       action: 'DELETE_APPROVE',
       entityType: 'User',
       entityId: oldEmail,
-      performedBy: adminUser.email,
+      performedBy: req.user.email,
       details: 'Admin approved data deletion. Scrubbed personal details from user and supplier databases.'
     });
     await audit.save();
@@ -1676,9 +1795,9 @@ app.post('/api/admin/data-requests/:id/approve', async (req, res) => {
 });
 
 // E. Admin Reject Deletion
-app.post('/api/admin/data-requests/:id/reject', async (req, res) => {
+app.post('/api/admin/data-requests/:id/reject', requireAuth, requireRole('admin'), async (req, res) => {
   try {
-    const { adminEmail } = req.body;
+    
     const adminUser = await User.findOne({ email: adminEmail ? adminEmail.toLowerCase() : '' });
     if (!adminUser || adminUser.role !== 'admin') {
       return res.status(403).json({ message: 'Admin access only.' });
@@ -1697,7 +1816,7 @@ app.post('/api/admin/data-requests/:id/reject', async (req, res) => {
       action: 'DELETE_REJECT',
       entityType: 'User',
       entityId: targetUser.email,
-      performedBy: adminUser.email,
+      performedBy: req.user.email,
       details: 'Admin rejected data deletion request.'
     });
     await audit.save();
@@ -1710,7 +1829,7 @@ app.post('/api/admin/data-requests/:id/reject', async (req, res) => {
 });
 
 // F. Download Sourcing RFQ PDF
-app.get('/api/rfqs/:id/download-pdf', async (req, res) => {
+app.get('/api/rfqs/:id/download-pdf', requireAuth, async (req, res) => {
   try {
     const rfq = await ResponseModel.findOne({ id: req.params.id });
     if (!rfq) {
@@ -1733,7 +1852,7 @@ app.get('/api/rfqs/:id/download-pdf', async (req, res) => {
 });
 
 // G. Download additional email attachments
-app.get('/api/attachments/download', (req, res) => {
+app.get('/api/attachments/download', requireAuth, (req, res) => {
   const filename = req.query.filename || "attachment.txt";
   res.setHeader('Content-Type', 'application/octet-stream');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);

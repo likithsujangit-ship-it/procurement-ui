@@ -1,5 +1,39 @@
 // Shared Authentication & Routing Guard for Nexpro UI
 
+// Wrap window fetch to intercept 401 Unauthorized status responses globally
+(function() {
+  const originalFetch = window.fetch;
+  window.fetch = async function(...args) {
+    try {
+      const response = await originalFetch(...args);
+      if (response.status === 401) {
+        // Clear local session details on expiration
+        if (window.appState) {
+          window.appState.currentUser = null;
+          try {
+            localStorage.setItem("nexpro_global_state", JSON.stringify(window.appState));
+          } catch(e) {}
+        }
+        
+        // Redirect to login if currently on a protected page
+        const path = window.location.pathname;
+        const pageName = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+        const protectedPages = [
+          'generate-rfq.html', 'profile.html', 'vendor.html', 'supplierPortal.html',
+          'intakeAgent.html', 'supplierDiscoveryAgent.html', 'rfxExecutionAgent.html', 'evaluationAgent.html', 'admin.html'
+        ];
+        if (protectedPages.includes(pageName)) {
+          window.location.href = 'login.html';
+        }
+      }
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  };
+})();
+
+
 // Route Guard logic
 (function() {
   const path = window.location.pathname;
@@ -40,32 +74,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ddContent) {
           ddContent.innerHTML = `
             <div class="dd-column">
-              <a href="generate-rfq.html#cumulative-dashboard" class="dd-navlink w-inline-block">
+              <a href="admin.html#cumulative-dashboard" class="dd-navlink w-inline-block">
                 <div>Cumulative Dashboard</div>
                 <div class="dd-link-txt">System oversight, procurement metrics, and AI performance statistics</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#users-directory" class="dd-navlink w-inline-block">
+              <a href="admin.html#users-directory" class="dd-navlink w-inline-block">
                 <div>Users Directory</div>
                 <div class="dd-link-txt">Access details and onboarding credentials for buyers and vendors</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#admin-procurements" class="dd-navlink w-inline-block">
+              <a href="admin.html#admin-procurements" class="dd-navlink w-inline-block">
                 <div>Procurements Oversight</div>
                 <div class="dd-link-txt">Monitor sourcing requests, matched suppliers, and evaluations</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#bidded-vendors" class="dd-navlink w-inline-block">
+              <a href="admin.html#bidded-vendors" class="dd-navlink w-inline-block">
                 <div>Vendor Bids Directory</div>
                 <div class="dd-link-txt">Classify and monitor registered, email, and public bidders</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#admin-logs" class="dd-navlink w-inline-block">
+              <a href="admin.html#admin-logs" class="dd-navlink w-inline-block">
                 <div>System Activity Log</div>
                 <div class="dd-link-txt">Audit records and live system events log</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#data-requests" class="dd-navlink w-inline-block">
+              <a href="admin.html#data-requests" class="dd-navlink w-inline-block">
                 <div>Data Requests</div>
                 <div class="dd-link-txt">Manage DPDP Act account deletion and data requests</div>
                 <div class="dd-link-dot"></div>
@@ -116,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ddContent) {
           ddContent.innerHTML = `
             <div class="dd-column">
-              <a href="generate-rfq.html#new-procurement" class="dd-navlink w-inline-block">
+              <a href="admin.html#new-procurement" class="dd-navlink w-inline-block">
                 <div>New Procurement</div>
                 <div class="dd-link-txt">Manage active procurements and check responses</div>
                 <div class="dd-link-dot"></div>
@@ -126,17 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="dd-link-txt">Create and customize RFQ workspaces and templates</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#bidded-vendors" class="dd-navlink w-inline-block">
+              <a href="admin.html#bidded-vendors" class="dd-navlink w-inline-block">
                 <div>Vendor Bids Directory</div>
                 <div class="dd-link-txt">Classify and monitor registered, email, and public bidders</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#submitted-responses" class="dd-navlink w-inline-block">
+              <a href="admin.html#submitted-responses" class="dd-navlink w-inline-block">
                 <div>Submitted Responses</div>
                 <div class="dd-link-txt">Browse and manage submitted supplier responses</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="generate-rfq.html#suppliers" class="dd-navlink w-inline-block">
+              <a href="admin.html#suppliers" class="dd-navlink w-inline-block">
                 <div>Supplier Chain</div>
                 <div class="dd-link-txt">Manage vendors and onboard new suppliers</div>
                 <div class="dd-link-dot"></div>
@@ -195,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (oldLogout) oldLogout.remove();
       } else {
         link.innerText = 'Workspace';
-        link.href = (user.role === 'vendor') ? 'vendor.html' : 'generate-rfq.html';
+        link.href = (user.role === 'vendor') ? 'vendor.html' : ((user.role === 'admin') ? 'admin.html' : 'generate-rfq.html');
         link.style.display = 'inline-block';
         
         profileBtn.style.marginLeft = '16px';
