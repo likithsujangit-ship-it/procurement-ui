@@ -245,6 +245,46 @@ window.appState = {
         "field-date": "2026-09-30",
         "field-cert": "fuel_compliance_2026.pdf"
       }
+    },
+    {
+      id: "app-email-sourcing-seed",
+      rfqId: "resp-propellant-acme",
+      rfqTitle: "Falcon 9 Propellant Sourcing",
+      vendorId: "sup-global-chem",
+      vendorName: "Global Chemical Logistics Ltd",
+      vendorEmail: "logistics@globalchem.com",
+      priority: "normal",
+      status: "PENDING",
+      date: new Date(Date.now() - 3600000 * 12).toISOString(),
+      price: 950000,
+      leadTimeDays: 12,
+      deliveryStatus: "Pending Approval",
+      details: {
+        "field-supplier": "Global Chemical Logistics Ltd",
+        "field-spec": "Standard propellant grade meeting space agency requirements.",
+        "field-qty": "1200"
+      }
+    },
+    {
+      id: "app-public-sourcing-seed",
+      rfqId: "resp-propellant-public-seed-v2",
+      rfqTitle: "Falcon Heavy Liquid Oxygen Sourcing",
+      vendorId: "sup-titan-cryo",
+      vendorName: "Titan Cryogenics Corp",
+      vendorEmail: "sales@titancryo.com",
+      priority: "high",
+      status: "PENDING",
+      date: new Date(Date.now() - 3600000 * 2).toISOString(),
+      price: 2450000,
+      leadTimeDays: 8,
+      deliveryStatus: "Processing",
+      details: {
+        "f-company": "Titan Cryogenics Corp",
+        "f-plant": "Houston cryogenic plant",
+        "f-purity": "99.99",
+        "f-moisture": "0.5",
+        "f-co2": "0.2"
+      }
     }
   ], // Vendor applications: { id, rfqId, rfqTitle, vendorId, vendorName, priority, status ("PENDING" | "ACCEPTED" | "REJECTED"), date, details: {} }
   invoices: [], // Invoice shape: { id, orderId, vendorId, amount, status: "SUBMITTED"|"APPROVED"|"PAID", submittedAt, dueDate }
@@ -463,6 +503,27 @@ function loadGlobalState() {
       const seedResponse = DEFAULT_RESPONSES.find(r => r.id === seedId);
       if (seedResponse) {
         window.appState.submittedResponses.push(seedResponse);
+      }
+    }
+    saveGlobalState();
+  }
+
+  if (!window.appState.applications || !Array.isArray(window.appState.applications)) {
+    window.appState.applications = [...DEFAULT_STATE.applications];
+    saveGlobalState();
+  } else {
+    // Add Category 2 seed if missing
+    if (!window.appState.applications.some(a => a.id === "app-email-sourcing-seed")) {
+      const emailSeed = DEFAULT_STATE.applications.find(a => a.id === "app-email-sourcing-seed");
+      if (emailSeed) {
+        window.appState.applications.push(emailSeed);
+      }
+    }
+    // Add Category 3 seed if missing
+    if (!window.appState.applications.some(a => a.id === "app-public-sourcing-seed")) {
+      const publicSeed = DEFAULT_STATE.applications.find(a => a.id === "app-public-sourcing-seed");
+      if (publicSeed) {
+        window.appState.applications.push(publicSeed);
       }
     }
     saveGlobalState();
