@@ -116,6 +116,39 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           `;
         }
+      } else if (isLoggedIn && user.role === 'buyer') {
+        const ddContent = dd.querySelector('.dd-content');
+        if (ddContent) {
+          ddContent.innerHTML = `
+            <div class="dd-column">
+              <a href="generate-rfq.html#new-procurement" class="dd-navlink w-inline-block">
+                <div>New Procurement</div>
+                <div class="dd-link-txt">Manage active procurements and check responses</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="generate-rfq.html" class="dd-navlink w-inline-block">
+                <div>Generate RFQ</div>
+                <div class="dd-link-txt">Create and customize RFQ workspaces and templates</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="generate-rfq.html#bidded-vendors" class="dd-navlink w-inline-block">
+                <div>Vendor Bids Directory</div>
+                <div class="dd-link-txt">Classify and monitor registered, email, and public bidders</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="generate-rfq.html#submitted-responses" class="dd-navlink w-inline-block">
+                <div>Submitted Responses</div>
+                <div class="dd-link-txt">Browse and manage submitted supplier responses</div>
+                <div class="dd-link-dot"></div>
+              </a>
+              <a href="generate-rfq.html#suppliers" class="dd-navlink w-inline-block">
+                <div>Supplier Chain</div>
+                <div class="dd-link-txt">Manage vendors and onboard new suppliers</div>
+                <div class="dd-link-dot"></div>
+              </a>
+            </div>
+          `;
+        }
       }
     }
   });
