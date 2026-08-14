@@ -142,6 +142,29 @@ const DEFAULT_RESPONSES = [
       { id: "field-date", label: "Delivery Target Date", type: "date", value: "2026-09-30" },
       { id: "field-cert", label: "Compliance Certification", type: "file", value: "fuel_compliance_2026.pdf" }
     ]
+  },
+  {
+    id: "resp-propellant-public-seed",
+    templateId: "template-propellant",
+    templateName: "Falcon Heavy Liquid Oxygen Sourcing",
+    responseID: "RESP-LOX-999",
+    submittedAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+    status: "EVALUATING",
+    hasProcurement: true,
+    procurementStatus: "EVALUATING",
+    procurementProgress: 66,
+    supplierIds: [],
+    distribution: "public",
+    vendorEmail: "buyer@nexpro.com",
+    emailSubject: "Invitation to bid on Falcon Heavy Liquid Oxygen Sourcing",
+    emailBody: "Dear Sourcing Partners,\n\nWe are looking to secure liquid oxygen supplies for the upcoming Falcon Heavy launch schedule. Please review the specifications and submit your best bids.",
+    emailAttachments: ["lox_specs_datasheet.pdf", "launch_schedule_q4.xlsx"],
+    fields: [
+      { id: "field-supplier", label: "Supplier Name", type: "short-text", value: "" },
+      { id: "field-spec", label: "Liquid Oxygen Purity Grade", type: "long-text", value: "99.99% liquid oxygen, medical/industrial grade." },
+      { id: "field-qty", label: "Target Volume (Tons)", type: "number", value: "2500" },
+      { id: "field-date", label: "Required Delivery Target", type: "date", value: "2026-11-15" }
+    ]
   }
 ];
 
@@ -415,6 +438,20 @@ function loadGlobalState() {
         window.appState.users.push(defUser);
       }
     });
+  }
+
+  if (!window.appState.submittedResponses || !Array.isArray(window.appState.submittedResponses)) {
+    window.appState.submittedResponses = [...DEFAULT_RESPONSES];
+  } else {
+    const seedId = "resp-propellant-public-seed";
+    const exists = window.appState.submittedResponses.some(r => r.id === seedId);
+    if (!exists) {
+      const seedResponse = DEFAULT_RESPONSES.find(r => r.id === seedId);
+      if (seedResponse) {
+        window.appState.submittedResponses.push(seedResponse);
+        saveGlobalState();
+      }
+    }
   }
 
   // Asynchronously sync latest from MongoDB in the background
