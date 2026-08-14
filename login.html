@@ -992,8 +992,13 @@
           setCurrentUser(dbUser);
 
           setTimeout(() => {
-            // Redirect directly to the solar system page
-            window.location.href = 'platformOverview.html';
+let targetPage = 'generate-rfq.html';
+            if (dbUser.role === 'vendor') {
+              targetPage = 'vendor.html';
+            } else if (dbUser.role === 'admin') {
+              targetPage = 'admin.html';
+            }
+            window.location.href = targetPage;
           }, 450);
         })
         .catch(err => {
