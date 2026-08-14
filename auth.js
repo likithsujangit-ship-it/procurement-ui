@@ -259,13 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
       .hover-bg {
         display: none !important;
       }
-      /* Add a subtle zoom animation on hover for navbar links */
+      /* Add a subtle zoom animation on hover for navbar links, excluding CTA button */
       .navlink {
         transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         display: inline-block !important; /* Ensure scale transform works correctly */
       }
       .navlink:hover {
         transform: scale(1.05) !important;
+      }
+      /* Exclude CTA/Demo button from hover scale zoom and keep it completely static */
+      .navlink.is-nav-cta,
+      .navlink.is-nav-cta:hover {
+        transform: none !important;
+        transition: none !important;
       }
       /* Ensure CTA button text is always white and doesn't inherit the navbar dark color */
       .navbar-div .navlink.is-nav-cta .button-txt,
