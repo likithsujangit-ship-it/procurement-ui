@@ -144,7 +144,7 @@ const DEFAULT_RESPONSES = [
     ]
   },
   {
-    id: "resp-propellant-public-seed",
+    id: "resp-propellant-public-seed-v2",
     templateId: "template-propellant",
     templateName: "Falcon Heavy Liquid Oxygen Sourcing",
     responseID: "RESP-LOX-999",
@@ -160,10 +160,20 @@ const DEFAULT_RESPONSES = [
     emailBody: "Dear Sourcing Partners,\n\nWe are looking to secure liquid oxygen supplies for the upcoming Falcon Heavy launch schedule. Please review the specifications and submit your best bids.",
     emailAttachments: ["lox_specs_datasheet.pdf", "launch_schedule_q4.xlsx"],
     fields: [
-      { id: "field-supplier", label: "Supplier Name", type: "short-text", value: "" },
-      { id: "field-spec", label: "Liquid Oxygen Purity Grade", type: "long-text", value: "99.99% liquid oxygen, medical/industrial grade." },
-      { id: "field-qty", label: "Target Volume (Tons)", type: "number", value: "2500" },
-      { id: "field-date", label: "Required Delivery Target", type: "date", value: "2026-11-15" }
+      { id: "f-company", label: "Supplier Corporate Name", type: "short-text", required: true, value: "" },
+      { id: "f-plant", label: "Manufacturing Plant Location", type: "short-text", required: true, value: "" },
+      { id: "f-purity", label: "Liquid Oxygen Purity Grade (%)", type: "number", required: true, value: "" },
+      { id: "f-moisture", label: "Max Impurities - Moisture Limit (ppm)", type: "number", required: true, value: "" },
+      { id: "f-co2", label: "Max Impurities - Carbon Dioxide Limit (ppm)", type: "number", required: true, value: "" },
+      { id: "f-msds", label: "Material Safety Data Sheet (MSDS) Upload", type: "file", required: true, value: "" },
+      { id: "f-capacity", label: "Total Available Supply Capacity (Tons)", type: "number", required: true, value: "" },
+      { id: "f-price", label: "Unit Cost per Ton ($)", type: "number", required: true, value: "" },
+      { id: "f-moq", label: "Minimum Order Quantity (MOQ)", type: "number", required: true, value: "" },
+      { id: "f-payterms", label: "Preferred Payment Terms", type: "dropdown", required: true, options: ["Net 30", "Net 45", "Net 60", "Advance Payment"], value: "" },
+      { id: "f-tanker", label: "Cryogenic Tanker Delivery Capability", type: "checkbox", required: true, value: false },
+      { id: "f-lead", label: "Estimated Delivery Lead Time (Days)", type: "number", required: true, value: "" },
+      { id: "f-iso", label: "ISO 9001 Sourcing Quality Certificate", type: "file", required: true, value: "" },
+      { id: "f-epa", label: "Clean Air Act/EPA Compliance Statement", type: "checkbox", required: true, value: false }
     ]
   }
 ];
@@ -443,7 +453,7 @@ function loadGlobalState() {
   if (!window.appState.submittedResponses || !Array.isArray(window.appState.submittedResponses)) {
     window.appState.submittedResponses = [...DEFAULT_RESPONSES];
   } else {
-    const seedId = "resp-propellant-public-seed";
+    const seedId = "resp-propellant-public-seed-v2";
     const exists = window.appState.submittedResponses.some(r => r.id === seedId);
     if (!exists) {
       const seedResponse = DEFAULT_RESPONSES.find(r => r.id === seedId);
