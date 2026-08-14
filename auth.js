@@ -83,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="dd-link-txt">View sourcing requests you've been matched with</div>
                 <div class="dd-link-dot"></div>
               </a>
+              <a href="vendor.html#public-rfqs" class="dd-navlink w-inline-block">
+                <div>Public Opportunities</div>
+                <div class="dd-link-txt">Browse and participate in open sourcing runs</div>
+                <div class="dd-link-dot"></div>
+              </a>
               <a href="vendor.html#my-bids" class="dd-navlink w-inline-block">
                 <div>My Bids</div>
                 <div class="dd-link-txt">Track submitted proposals and their status</div>

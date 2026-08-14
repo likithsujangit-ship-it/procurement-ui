@@ -6231,6 +6231,9 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
           if (!response.ok) throw new Error("Dispatch failed.");
           const data = await response.json();
 
+          // Ask buyer if they want to make the RFQ public
+          const makePublic = confirm("Sourcing emails sent successfully!\n\nWould you like to make this RFQ public on the portal so other potential suppliers can discover it and submit bids?\n\n- Click OK (Yes) to make it Public.\n- Click Cancel (No) to keep it Private.");
+
           // Create/update responses in appState
           // Mark all selected suppliers as invited on this RFQ template
           template.supplierIds = window.activeDispatchSuppliers.map(s => s.id);
@@ -6242,6 +6245,10 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
             responseObj.procurementStatus = "EVALUATING";
             responseObj.procurementProgress = 66;
             responseObj.supplierIds = window.activeDispatchSuppliers.map(s => s.id);
+            responseObj.distribution = makePublic ? "public" : "private";
+            responseObj.emailSubject = subject;
+            responseObj.emailBody = body;
+            responseObj.emailAttachments = savedAttachments;
           }
           saveState();
 
