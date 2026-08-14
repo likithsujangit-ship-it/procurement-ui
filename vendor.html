@@ -3822,7 +3822,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       </div>
     `;
 
-    const userRecord = getVendorSupplierRecord(currentUser);
+    const user = getCurrentUser();
+    const userRecord = getVendorSupplierRecord(user);
     const hasJoined = (r.supplierIds || []).includes(userRecord.id);
 
     const footer = document.getElementById("pm-footer");
