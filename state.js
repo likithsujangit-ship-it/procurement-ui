@@ -350,7 +350,7 @@ async function syncDatabaseState() {
     const sRes = await fetch(`${API_URL}/suppliers`);
     if (sRes.ok) {
       const dbSuppliers = await sRes.json();
-      if (dbSuppliers && dbSuppliers.length > 0) {
+      if (dbSuppliers && Array.isArray(dbSuppliers)) {
         window.appState.suppliers = dbSuppliers;
       }
     }
@@ -368,7 +368,7 @@ async function syncDatabaseState() {
     const rRes = await fetch(rfqUrl);
     if (rRes.ok) {
       const dbRfqs = await rRes.json();
-      if (dbRfqs && dbRfqs.length > 0) {
+      if (dbRfqs && Array.isArray(dbRfqs)) {
         window.appState.templates = dbRfqs;
       } else if (currentUser && currentUser.role === 'vendor') {
         // If vendor was not invited to any RFQs, clear templates list
@@ -386,7 +386,7 @@ async function syncDatabaseState() {
     const bRes = await fetch(respUrl);
     if (bRes.ok) {
       const dbResponses = await bRes.json();
-      if (dbResponses && dbResponses.length > 0) {
+      if (dbResponses && Array.isArray(dbResponses)) {
         window.appState.submittedResponses = dbResponses;
       }
     }

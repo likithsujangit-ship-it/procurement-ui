@@ -270,6 +270,9 @@ async function seedDatabase() {
       await User.insertMany(defaultUsers);
     }
 
+    // Only seed user login accounts, keep everything else empty as requested
+    return;
+
     const supplierCount = await Supplier.countDocuments();
     if (supplierCount === 0) {
       console.log('Seeding initial Suppliers...');
@@ -1913,4 +1916,35 @@ app.post('/api/admin/data-requests/:id/reject', async (req, res) => {
     console.error('Delete reject error:', error);
     res.status(500).json({ message: 'Failed to reject deletion.', error: error.message });
   }
+});
+
+// F. Download Sourcing RFQ PDF
+app.get('/api/rfqs/:id/download-pdf', async (req, res) => {
+  try {
+    const rfq = await ResponseModel.findOne({ id: req.params.id });
+    if (!rfq) {
+      return res.status(404).json({ message: "RFQ not found" });
+    }
+    const templateName = rfq.templateName;
+    const templateFields = rfq.fields;
+    const category = rfq.category;
+
+    const rfqPdfBuffer = await generateRFQPDFBuffer(templateName, templateFields, category);
+    const pdfName = `${(templateName || 'RFQ_Specification').replace(/[^a-z0-9]/gi, '_')}.pdf`;
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${pdfName}"`);
+    res.send(rfqPdfBuffer);
+  } catch (error) {
+    console.error("PDF download failed:", error);
+    res.status(500).json({ message: "Failed to generate PDF download" });
+  }
+});
+
+// G. Download additional email attachments
+app.get('/api/attachments/download', (req, res) => {
+  const filename = req.query.filename || "attachment.txt";
+  res.setHeader('Content-Type', 'application/octet-stream');
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.send(`This is a mock simulated file content for attachment: ${filename}`);
 });
