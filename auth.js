@@ -1,11 +1,13 @@
 // Shared Authentication & Routing Guard for Nexpro UI
 
-// Wrap window fetch to intercept 401 Unauthorized status responses globally
+// Wrap window fetch to: (1) inject credentials:'include' for cookie auth, (2) intercept 401 responses
 (function() {
   const originalFetch = window.fetch;
-  window.fetch = async function(...args) {
+  window.fetch = async function(input, init = {}) {
+    // Always send cookies with every request
+    init.credentials = 'include';
     try {
-      const response = await originalFetch(...args);
+      const response = await originalFetch(input, init);
       if (response.status === 401) {
         // Clear local session details on expiration
         if (window.appState) {
