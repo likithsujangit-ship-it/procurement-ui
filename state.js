@@ -453,15 +453,19 @@ function loadGlobalState() {
   if (!window.appState.submittedResponses || !Array.isArray(window.appState.submittedResponses)) {
     window.appState.submittedResponses = [...DEFAULT_RESPONSES];
   } else {
+    // Clean up old public seed if present
+    window.appState.submittedResponses = window.appState.submittedResponses.filter(
+      r => r.id !== "resp-propellant-public-seed"
+    );
     const seedId = "resp-propellant-public-seed-v2";
     const exists = window.appState.submittedResponses.some(r => r.id === seedId);
     if (!exists) {
       const seedResponse = DEFAULT_RESPONSES.find(r => r.id === seedId);
       if (seedResponse) {
         window.appState.submittedResponses.push(seedResponse);
-        saveGlobalState();
       }
     }
+    saveGlobalState();
   }
 
   // Asynchronously sync latest from MongoDB in the background

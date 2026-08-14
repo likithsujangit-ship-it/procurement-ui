@@ -438,6 +438,9 @@ async function seedDatabase() {
       await ResponseModel.insertMany(defaultResponses);
     }
 
+    // Delete old seed if it exists to avoid duplicates
+    await ResponseModel.deleteMany({ id: "resp-propellant-public-seed" });
+
     const publicSeedExists = await ResponseModel.findOne({ id: "resp-propellant-public-seed-v2" });
     if (!publicSeedExists) {
       console.log('Seeding public RFQ response v2...');
