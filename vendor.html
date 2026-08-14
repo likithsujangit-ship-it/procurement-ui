@@ -3730,8 +3730,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
         const publishedDate = new Date(r.submittedAt).toLocaleDateString();
 
         const hasJoined = (r.supplierIds || []).includes(vendorRecord.id);
-        const actionBtn = hasJoined 
-          ? `<button class="secondary-btn" style="padding:6px 12px; font-size:12.5px; border-color:var(--accent-purple); color:var(--accent-purple); background:rgba(118, 0, 230, 0.03);" onclick="openPublicRfqDetails('${r.id}')">View Details</button>`
+         const actionBtn = hasJoined 
+          ? `<button class="secondary-btn" style="padding:6px 12px; font-size:12.5px; border-color:var(--accent-purple); color:var(--accent-purple); background:rgba(118, 0, 230, 0.03); transition:all 0.2s ease;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='#FFF';" onmouseout="this.style.background='rgba(118, 0, 230, 0.03)'; this.style.color='var(--accent-purple)';" onclick="openPublicRfqDetails('${r.id}')">View Details</button>`
           : `<button class="primary-btn" style="padding:6px 12px; font-size:12.5px;" onclick="openPublicRfqDetails('${r.id}')">Join & Bid</button>`;
 
         return `
