@@ -3736,8 +3736,8 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
 
         return `
           <tr style="border-bottom:1px solid rgba(0,0,0,0.04);">
-            <td style="font-weight:600; font-size:13px; color:var(--accent-purple);">${escapeHTML(r.responseID || r.id)}</td>
-            <td>${escapeHTML(r.templateName)}</td>
+            <td style="font-weight:600; font-size:13px; color:var(--accent-purple); cursor:pointer; text-decoration:underline;" onclick="openPublicRfqDetails('${r.id}')">${escapeHTML(r.responseID || r.id)}</td>
+            <td style="cursor:pointer; font-weight:500;" onclick="openPublicRfqDetails('${r.id}')">${escapeHTML(r.templateName)}</td>
             <td><span style="font-size:12.5px; font-weight:600; color:var(--text-secondary);">${escapeHTML(r.category || 'General')}</span></td>
             <td><span style="font-weight:600;">${escapeHTML(companyName)}</span></td>
             <td>${publishedDate}</td>
@@ -3762,7 +3762,7 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
       let dispValue = f.value;
       if (f.type === 'checkbox') dispValue = f.value ? 'Yes' : 'No';
       if (f.type === 'file' && f.value) {
-        dispValue = `<a href="#" onclick="event.preventDefault(); showToast('Downloading specification attachment: ${escapeHTML(f.value)}')">📎 ${escapeHTML(f.value)}</a>`;
+        dispValue = `<a href="/api/attachments/download?filename=${encodeURIComponent(f.value)}" download>📎 ${escapeHTML(f.value)}</a>`;
       }
       return `
         <tr style="border-bottom:1px solid rgba(0,0,0,0.03);">
@@ -3777,13 +3777,13 @@ window.addEventListener('resize', setEqualHeightsForAllSliders);
     const attachmentsHTML = emailAttachments.length > 0 
       ? emailAttachments.map(a => {
           const name = a.name || a;
-          return `<div style="margin-bottom:6px;"><a href="#" onclick="event.preventDefault(); showToast('Downloading attachment: ${escapeHTML(name)}')">📁 ${escapeHTML(name)}</a></div>`;
+          return `<div style="margin-bottom:6px;"><a href="/api/attachments/download?filename=${encodeURIComponent(name)}" download>📁 ${escapeHTML(name)}</a></div>`;
         }).join('')
       : `<span style="color:var(--text-secondary); font-size:13px; font-style:italic;">No additional email attachments uploaded.</span>`;
 
     // Generated spec PDF attachment
     const pdfName = `${(r.templateName || 'RFQ_Specification').replace(/[^a-z0-9]/gi, '_')}.pdf`;
-    const specPdfHTML = `<div style="margin-bottom:10px;"><a href="#" onclick="event.preventDefault(); showToast('Downloading primary RFQ spec sheet: ${pdfName}')" style="font-weight:700; color:var(--accent-purple);">📄 ${pdfName}</a></div>`;
+    const specPdfHTML = `<div style="margin-bottom:10px;"><a href="/api/rfqs/${r.id}/download-pdf" download style="font-weight:700; color:var(--accent-purple);">📄 ${pdfName}</a></div>`;
 
     document.getElementById("pm-title").innerText = r.templateName;
 
