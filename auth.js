@@ -9,11 +9,6 @@
   if (pageName === 'generate-rfq.html' || pageName === 'profile.html' || pageName === 'platformOverview.html') {
     if (!user) {
       window.location.href = 'login.html';
-    }
-  } else if (pageName === 'admin.html') {
-    if (!user || user.role !== 'admin') {
-      window.location.href = 'login.html';
-    }
   } else if (pageName === 'vendor.html') {
     if (!user || user.role !== 'vendor') {
       window.location.href = 'login.html';
