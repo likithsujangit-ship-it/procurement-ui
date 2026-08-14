@@ -255,6 +255,19 @@ document.addEventListener('DOMContentLoaded', () => {
       html, body {
         overflow-x: clip !important;
       }
+      /* Fix default black background hover pills globally */
+      .hover-bg {
+        background-color: rgba(118, 0, 230, 0.06) !important;
+      }
+      /* Ensure CTA button text is always white and doesn't inherit the navbar dark color */
+      .navbar-div .navlink.is-nav-cta .button-txt,
+      .navlink.is-nav-cta .button-txt {
+        color: #ffffff !important;
+      }
+      .navbar-div .navlink.is-nav-cta:hover .button-txt,
+      .navlink.is-nav-cta:hover .button-txt {
+        color: #ffffff !important;
+      }
     `;
     document.head.appendChild(styleEl);
   } catch (e) {
