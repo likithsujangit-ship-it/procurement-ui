@@ -200,6 +200,17 @@ function loadGlobalState() {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
+      
+      // Clean up legacy mock data in-place to prevent reload/clear loops
+      if (parsed.suppliers && Array.isArray(parsed.suppliers)) {
+        parsed.suppliers = parsed.suppliers.filter(s => s.id !== "sup-orion-alloys");
+      }
+      if (parsed.submittedResponses && Array.isArray(parsed.submittedResponses)) {
+        parsed.submittedResponses = parsed.submittedResponses.filter(
+          r => r.id !== "resp-propellant-acme" && r.id !== "resp-propellant-public-seed-v2"
+        );
+      }
+      
       // Merge keys to ensure future changes are backward compatible
       window.appState = { ...window.appState, ...parsed };
     } catch (e) {
