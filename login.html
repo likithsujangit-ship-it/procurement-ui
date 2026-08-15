@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="diagnostics.js"></script>
   <meta charset="utf-8"/>
   <title>Login | nexPro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -992,7 +993,7 @@
           setCurrentUser(dbUser);
 
           setTimeout(() => {
-let targetPage = 'generate-rfq.html';
+            let targetPage = 'platformOverview.html';
             if (dbUser.role === 'vendor') {
               targetPage = 'vendor.html';
             } else if (dbUser.role === 'admin') {

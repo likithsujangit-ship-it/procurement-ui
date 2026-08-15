@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="diagnostics.js"></script>
   <meta charset="utf-8"/>
   <title>Sign Up | nexPro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -976,13 +977,13 @@
             showToastNotification("Account created — welcome to nexPro!");
             
             setTimeout(() => {
-let targetPage = 'generate-rfq.html';
-            if (dbUser.role === 'vendor') {
-              targetPage = 'vendor.html';
-            } else if (dbUser.role === 'admin') {
-              targetPage = 'admin.html';
-            }
-            window.location.href = targetPage;
+              let targetPage = 'platformOverview.html';
+              if (dbUser.role === 'vendor') {
+                targetPage = 'vendor.html';
+              } else if (dbUser.role === 'admin') {
+                targetPage = 'admin.html';
+              }
+              window.location.href = targetPage;
             }, 800);
           }, 500);
         })
