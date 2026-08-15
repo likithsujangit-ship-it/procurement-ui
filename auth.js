@@ -235,23 +235,23 @@ function adjustNavbar() {
     }
   });
 
+  // Remove previously generated dynamic buttons first to ensure clean state
+  const oldDynamicButtons = document.querySelectorAll('.nav-dynamic-btn');
+  oldDynamicButtons.forEach(btn => btn.remove());
+
   // 2. Adjust Login/CTA links
   const loginLinks = document.querySelectorAll('.navlink.is-login');
   loginLinks.forEach(link => {
     if (isLoggedIn) {
       const isWorkspacePage = pageName === 'generate-rfq.html' || pageName === 'profile.html' || pageName === 'vendor.html';
       
-      // Find or create profile link
-      let profileBtn = document.getElementById('nav-profile-btn');
-      if (!profileBtn) {
-        profileBtn = document.createElement('a');
-        profileBtn.id = 'nav-profile-btn';
-        profileBtn.className = 'navlink is-login';
-        profileBtn.innerText = 'Profile';
-        profileBtn.href = 'profile.html';
-        profileBtn.style.cursor = 'pointer';
-        profileBtn.style.display = 'inline-block';
-      }
+      // Create profile link dynamically with a unique identifier class
+      const profileBtn = document.createElement('a');
+      profileBtn.className = 'navlink nav-dynamic-btn';
+      profileBtn.innerText = 'Profile';
+      profileBtn.href = 'profile.html';
+      profileBtn.style.cursor = 'pointer';
+      profileBtn.style.display = 'inline-block';
 
       if (isWorkspacePage) {
         profileBtn.style.marginRight = '16px';
@@ -264,11 +264,10 @@ function adjustNavbar() {
           e.preventDefault();
           logoutUser();
         };
-        const oldLogout = document.getElementById('nav-logout-btn');
-        if (oldLogout) oldLogout.remove();
       } else {
         link.innerText = 'Workspace';
         link.href = (user.role === 'vendor') ? 'vendor.html' : 'generate-rfq.html';
+        link.onclick = null;
         link.style.display = 'inline-block';
         
         profileBtn.style.marginLeft = '16px';
@@ -276,28 +275,22 @@ function adjustNavbar() {
         link.parentNode.insertBefore(profileBtn, link.nextSibling);
 
         // Also add a logout link right next to it
-        if (!document.getElementById('nav-logout-btn')) {
-          const logoutBtn = document.createElement('a');
-          logoutBtn.id = 'nav-logout-btn';
-          logoutBtn.className = 'navlink is-login';
-          logoutBtn.innerText = 'Logout';
-          logoutBtn.href = '#';
-          logoutBtn.style.marginLeft = '16px';
-          logoutBtn.style.cursor = 'pointer';
-          logoutBtn.onclick = (e) => {
-            e.preventDefault();
-            logoutUser();
-          };
-          link.parentNode.appendChild(logoutBtn);
-        }
+        const logoutBtn = document.createElement('a');
+        logoutBtn.className = 'navlink nav-dynamic-btn';
+        logoutBtn.innerText = 'Logout';
+        logoutBtn.href = '#';
+        logoutBtn.style.marginLeft = '16px';
+        logoutBtn.style.cursor = 'pointer';
+        logoutBtn.onclick = (e) => {
+          e.preventDefault();
+          logoutUser();
+        };
+        link.parentNode.insertBefore(logoutBtn, profileBtn.nextSibling);
       }
     } else {
       link.innerText = 'Login';
       link.href = 'login.html';
-      const oldProfile = document.getElementById('nav-profile-btn');
-      if (oldProfile) oldProfile.remove();
-      const oldLogout = document.getElementById('nav-logout-btn');
-      if (oldLogout) oldLogout.remove();
+      link.onclick = null;
     }
   });
 
