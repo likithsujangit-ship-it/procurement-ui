@@ -59,8 +59,7 @@ function checkRouteGuard() {
   ];
 
   const protectedSharedPages = [
-    'profile.html',
-    'platformOverview.html'
+    'profile.html'
   ];
 
   const adminPages = [
@@ -104,7 +103,8 @@ function adjustNavbar() {
   dropdowns.forEach(dd => {
     const btnTxt = dd.querySelector('.button-txt');
     if (btnTxt && btnTxt.innerText.trim() === 'Features') {
-      dd.style.setProperty('display', isLoggedIn ? 'block' : 'none', 'important');
+      // Always show Features dropdown to both logged-in and logged-out users
+      dd.style.setProperty('display', 'block', 'important');
       
       // If admin, rewrite the links inside the Features dropdown
       if (isLoggedIn && user.role === 'admin') {
@@ -183,7 +183,8 @@ function adjustNavbar() {
             </div>
           `;
         }
-      } else if (isLoggedIn && user.role === 'buyer') {
+      } else {
+        // Buyer or logged-out user (show buyer features)
         const ddContent = dd.querySelector('.dd-content');
         if (ddContent) {
           ddContent.innerHTML = `
