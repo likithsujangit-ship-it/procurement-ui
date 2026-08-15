@@ -40,7 +40,7 @@
 
 
 // Route Guard logic
-(function() {
+function checkRouteGuard() {
   const path = window.location.pathname;
   const pageName = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
   const user = getCurrentUser();
@@ -87,19 +87,13 @@
     }
   } else if (pageName === 'login.html' || pageName === 'signup.html') {
     if (user) {
-      if (user.role === 'vendor') {
-        window.location.href = 'vendor.html';
-      } else if (user.role === 'admin') {
-        window.location.href = 'admin.html';
-      } else {
-        window.location.href = 'platformOverview.html';
-      }
+      window.location.href = 'platformOverview.html';
     }
   }
-})();
+}
 
 // DOM Adjustments for Navbar
-document.addEventListener('DOMContentLoaded', () => {
+function adjustNavbar() {
   const user = getCurrentUser();
   const isLoggedIn = !!user;
   const path = window.location.pathname;
@@ -118,32 +112,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ddContent) {
           ddContent.innerHTML = `
             <div class="dd-column">
-              <a href="admin.html#cumulative-dashboard" class="dd-navlink w-inline-block">
+              <a href="generate-rfq.html#cumulative-dashboard" class="dd-navlink w-inline-block">
                 <div>Cumulative Dashboard</div>
                 <div class="dd-link-txt">System oversight, procurement metrics, and AI performance statistics</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="admin.html#users-directory" class="dd-navlink w-inline-block">
+              <a href="generate-rfq.html#users-directory" class="dd-navlink w-inline-block">
                 <div>Users Directory</div>
                 <div class="dd-link-txt">Access details and onboarding credentials for buyers and vendors</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="admin.html#admin-procurements" class="dd-navlink w-inline-block">
+              <a href="generate-rfq.html#admin-procurements" class="dd-navlink w-inline-block">
                 <div>Procurements Oversight</div>
                 <div class="dd-link-txt">Monitor sourcing requests, matched suppliers, and evaluations</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="admin.html#bidded-vendors" class="dd-navlink w-inline-block">
+              <a href="generate-rfq.html#bidded-vendors" class="dd-navlink w-inline-block">
                 <div>Vendor Bids Directory</div>
                 <div class="dd-link-txt">Classify and monitor registered, email, and public bidders</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="admin.html#admin-logs" class="dd-navlink w-inline-block">
+              <a href="generate-rfq.html#admin-logs" class="dd-navlink w-inline-block">
                 <div>System Activity Log</div>
                 <div class="dd-link-txt">Audit records and live system events log</div>
                 <div class="dd-link-dot"></div>
               </a>
-              <a href="admin.html#data-requests" class="dd-navlink w-inline-block">
+              <a href="generate-rfq.html#data-requests" class="dd-navlink w-inline-block">
                 <div>Data Requests</div>
                 <div class="dd-link-txt">Manage DPDP Act account deletion and data requests</div>
                 <div class="dd-link-dot"></div>
@@ -274,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (oldLogout) oldLogout.remove();
       } else {
         link.innerText = 'Workspace';
-        link.href = (user.role === 'vendor') ? 'vendor.html' : ((user.role === 'admin') ? 'admin.html' : 'generate-rfq.html');
+        link.href = (user.role === 'vendor') ? 'vendor.html' : 'generate-rfq.html';
         link.style.display = 'inline-block';
         
         profileBtn.style.marginLeft = '16px';
@@ -302,6 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
       link.href = 'login.html';
       const oldProfile = document.getElementById('nav-profile-btn');
       if (oldProfile) oldProfile.remove();
+      const oldLogout = document.getElementById('nav-logout-btn');
+      if (oldLogout) oldLogout.remove();
     }
   });
 
@@ -322,52 +318,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inject global style to prevent horizontal scrollbar and horizontal scroll
   try {
-    const styleEl = document.createElement('style');
-    styleEl.id = 'hide-global-scrollbars-style';
-    styleEl.innerHTML = `
-      /* Prevent horizontal scroll entirely and remove horizontal scrollbar without blocking touchpad vertical gestures */
-      html, body {
-        overflow-x: clip !important;
-      }
-      /* Disable the background sliding pill completely */
-      .hover-bg {
-        display: none !important;
-      }
-      /* Add a subtle zoom animation on hover for navbar links and all buttons globally */
-      .navlink,
-      button,
-      .w-button,
-      .primary-btn,
-      .secondary-btn,
-      .btn {
-        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        display: inline-block !important; /* Ensure scale transform works correctly */
-      }
-      .navlink:hover,
-      button:hover,
-      .w-button:hover,
-      .primary-btn:hover,
-      .secondary-btn:hover,
-      .btn:hover {
-        transform: scale(1.05) !important;
-      }
-      /* Exclude CTA/Demo button from hover scale zoom and keep it completely static */
-      .navlink.is-nav-cta,
-      .navlink.is-nav-cta:hover {
-        transform: none !important;
-        transition: none !important;
-      }
-      /* Ensure CTA button text is always white and doesn't inherit the navbar dark color */
-      .navbar-div .navlink.is-nav-cta .button-txt,
-      .navlink.is-nav-cta .button-txt {
-        color: #ffffff !important;
-      }
-      .navbar-div .navlink.is-nav-cta:hover .button-txt,
-      .navlink.is-nav-cta:hover .button-txt {
-        color: #ffffff !important;
-      }
-    `;
-    document.head.appendChild(styleEl);
+    // Prevent duplicate style injections
+    if (!document.getElementById('hide-global-scrollbars-style')) {
+      const styleEl = document.createElement('style');
+      styleEl.id = 'hide-global-scrollbars-style';
+      styleEl.innerHTML = `
+        /* Prevent horizontal scroll entirely and remove horizontal scrollbar without blocking touchpad vertical gestures */
+        html, body {
+          overflow-x: clip !important;
+        }
+        /* Disable the background sliding pill completely */
+        .hover-bg {
+          display: none !important;
+        }
+        /* Add a subtle zoom animation on hover for navbar links and all buttons globally */
+        .navlink,
+        button,
+        .w-button,
+        .primary-btn,
+        .secondary-btn,
+        .btn {
+          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          display: inline-block !important; /* Ensure scale transform works correctly */
+        }
+        .navlink:hover,
+        button:hover,
+        .w-button:hover,
+        .primary-btn:hover,
+        .secondary-btn:hover,
+        .btn:hover {
+          transform: scale(1.05) !important;
+        }
+        /* Exclude CTA/Demo button from hover scale zoom and keep it completely static */
+        .navlink.is-nav-cta,
+        .navlink.is-nav-cta:hover {
+          transform: none !important;
+          transition: none !important;
+        }
+        /* Ensure CTA button text is always white and doesn't inherit the navbar dark color */
+        .navbar-div .navlink.is-nav-cta .button-txt,
+        .navlink.is-nav-cta .button-txt {
+          color: #ffffff !important;
+        }
+        .navbar-div .navlink.is-nav-cta:hover .button-txt,
+        .navlink.is-nav-cta:hover .button-txt {
+          color: #ffffff !important;
+        }
+      `;
+      document.head.appendChild(styleEl);
+    }
   } catch (e) {
     console.error("Scrollbar style injection failed", e);
   }
@@ -422,4 +421,18 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {
     console.warn("Welcome toast display failed", e);
   }
+}
+
+// 1. Run route guard immediately on parsing
+checkRouteGuard();
+
+// 2. Adjust navbar when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  adjustNavbar();
+});
+
+// 3. Re-check route guard and adjust navbar when restoring from bfcache
+window.addEventListener('pageshow', (event) => {
+  checkRouteGuard();
+  adjustNavbar();
 });
