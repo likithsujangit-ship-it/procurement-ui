@@ -4,11 +4,14 @@
 (function() {
   const originalFetch = window.fetch;
   window.fetch = async function(input, init = {}) {
-    // Always send cookies with every request
-    init.credentials = 'include';
+    // Only target local /api requests
+    const isLocalApi = typeof input === 'string' && (input.startsWith('/api') || input.includes(window.location.host + '/api'));
+    if (isLocalApi) {
+      init.credentials = 'include';
+    }
     try {
       const response = await originalFetch(input, init);
-      if (response.status === 401) {
+      if (response.status === 401 && isLocalApi) {
         // Clear local session details on expiration
         if (window.appState) {
           window.appState.currentUser = null;
