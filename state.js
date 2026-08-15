@@ -200,23 +200,8 @@ function loadGlobalState() {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      // Force clean reload if legacy mock data exists in user storage
-      const hasLegacySuppliers = parsed.suppliers && parsed.suppliers.some(s => s.id === "sup-orion-alloys");
-      const hasLegacyResponses = parsed.submittedResponses && parsed.submittedResponses.some(r => r.id === "resp-propellant-acme" || r.id === "resp-propellant-public-seed-v2");
-      if (hasLegacySuppliers || hasLegacyResponses) {
-        console.log("Legacy mock data detected. Clearing storage to load clean workspace.");
-        localStorage.removeItem("nexpro_global_state");
-        localStorage.removeItem("nexpro_rfq_workspace");
-        window.appState.suppliers = [];
-        window.appState.templates = [];
-        window.appState.submittedResponses = [];
-        window.appState.applications = [];
-        saveGlobalState();
-        location.reload();
-      } else {
-        // Merge keys to ensure future changes are backward compatible
-        window.appState = { ...window.appState, ...parsed };
-      }
+      // Merge keys to ensure future changes are backward compatible
+      window.appState = { ...window.appState, ...parsed };
     } catch (e) {
       console.error("Failed to load global state, resetting...", e);
       saveGlobalState();
