@@ -50,8 +50,7 @@
     'intakeAgent.html',
     'supplierDiscoveryAgent.html',
     'rfxExecutionAgent.html',
-    'evaluationAgent.html',
-    'platformOverview.html'
+    'evaluationAgent.html'
   ];
   
   const protectedVendorPages = [
@@ -60,7 +59,8 @@
   ];
 
   const protectedSharedPages = [
-    'profile.html'
+    'profile.html',
+    'platformOverview.html'
   ];
 
   const adminPages = [
